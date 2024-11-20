@@ -3,7 +3,7 @@
 import React from 'react';
 
 const BusinessFeature = () => {
-  return <div>BusinessFeature</div>;
+  return <div suppressHydrationWarning={true}>BusinessFeature</div>;
 };
 
 export default BusinessFeature;

@@ -3,7 +3,7 @@
 import React from 'react';
 
 const Advertise = () => {
-  return <div>Advertise</div>;
+  return <div suppressHydrationWarning={true}>Advertise</div>;
 };
 
 export default Advertise;

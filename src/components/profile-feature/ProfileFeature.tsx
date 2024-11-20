@@ -2,7 +2,7 @@
 import React from 'react';
 
 const ProfileFeature = () => {
-  return <div>ProfileFeature</div>;
+  return <div suppressHydrationWarning={true}>ProfileFeature</div>;
 };
 
 export default ProfileFeature;

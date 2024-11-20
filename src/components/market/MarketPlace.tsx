@@ -2,7 +2,7 @@
 import React from 'react';
 
 const MarketPlace = () => {
-  return <div>Market Place</div>;
+  return <div suppressHydrationWarning={true}>Market Place</div>;
 };
 
 export default MarketPlace;

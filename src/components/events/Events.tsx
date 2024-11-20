@@ -1,7 +1,7 @@
 'use client';
 const Events = () => {
   return (
-    <div>
+    <div suppressHydrationWarning={true}>
       <h1>Events Page</h1>
       <p>This is the events page content.</p>
     </div>
