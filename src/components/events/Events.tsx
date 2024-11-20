@@ -10,7 +10,6 @@ const Container = styled.div`
   padding: 10px;
   height: 100%;
   z-index: 99;
-  background-color: pink;
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;
@@ -19,7 +18,6 @@ const Container = styled.div`
 
 const SectionContainer = styled.section`
   padding: 10px;
-  border: 1px solid red;
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;
