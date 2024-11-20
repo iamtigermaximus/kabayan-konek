@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Image1 from '../../../assets/pinoy-konek.jpg';
 import LogoImage from '../../../assets/kabayan-konek-logo.png';
@@ -8,10 +8,6 @@ import LogoImage from '../../../assets/kabayan-konek-logo.png';
 import Image from 'next/image';
 import { breakpoints as bp } from '../../../utils/layout';
 import Link from 'next/link';
-
-interface SidebarProps {
-  $isOpen: boolean;
-}
 
 const HeroSection = styled.div`
   position: relative;
@@ -115,32 +111,8 @@ const BurgerMenu = styled.div`
   }
 `;
 
-const Sidebar = styled.div<SidebarProps>`
-  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
-  position: fixed;
-  top: 0;
-  width: 250px;
-  height: 100vh;
-  background-color: white;
-  color: white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transition: left 0.3s ease;
-  z-index: 2000;
-  border-right: 1px rgba(0, 0, 0, 0.7);
-
-  a {
-    color: #636363;
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-
-    &:hover {
-      color: lightblue;
-    }
-  }
+const Sidebar = styled.div`
+  display: none;
 `;
 
 const CloseButton = styled.button`
@@ -156,17 +128,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const Backdrop = styled.div<{ $isOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
-  z-index: 99;
-`;
+const Backdrop = styled.div``;
 
 const LogoContainer = styled.div`
   position: absolute;
@@ -181,11 +143,11 @@ const LogoContainer = styled.div`
 `;
 
 const Navbar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
-  };
+  // const toggleSidebar = () => {
+  //   setSidebarOpen((prev) => !prev);
+  // };
 
   return (
     <HeroSection>
@@ -207,41 +169,27 @@ const Navbar = () => {
         <MenuLink href="/advertise">Advertisement</MenuLink>
       </MenuContainer>
 
-      <BurgerMenu onClick={toggleSidebar}>
+      <BurgerMenu>
         <span />
         <span />
         <span />
       </BurgerMenu>
 
-      <Sidebar $isOpen={sidebarOpen}>
+      <Sidebar>
         <LogoContainer>
           <Image src={LogoImage} alt="logo" width={150} height={70} />
         </LogoContainer>
-        <CloseButton onClick={toggleSidebar}>&times;</CloseButton>
-        <Link href="/" onClick={toggleSidebar}>
-          Home
-        </Link>
-        <Link href="/lifestyle" onClick={toggleSidebar}>
-          Lifestyle
-        </Link>
-        <Link href="/profile" onClick={toggleSidebar}>
-          Kabayan
-        </Link>
-        <Link href="/news" onClick={toggleSidebar}>
-          News
-        </Link>
-        <Link href="/events" onClick={toggleSidebar}>
-          Events
-        </Link>
-        <Link href="/market" onClick={toggleSidebar}>
-          Marketplace
-        </Link>
-        <Link href="/advertise" onClick={toggleSidebar}>
-          Advertisement
-        </Link>
+        <CloseButton>&times;</CloseButton>
+        <Link href="/">Home</Link>
+        <Link href="/lifestyle">Lifestyle</Link>
+        <Link href="/profile">Kabayan</Link>
+        <Link href="/news">News</Link>
+        <Link href="/events">Events</Link>
+        <Link href="/market">Marketplace</Link>
+        <Link href="/advertise">Advertisement</Link>
       </Sidebar>
 
-      <Backdrop $isOpen={sidebarOpen} onClick={toggleSidebar} />
+      <Backdrop />
 
       <TextOverlayContainer>
         <LogoContainer>
