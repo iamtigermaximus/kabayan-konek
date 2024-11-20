@@ -127,7 +127,7 @@ const Sidebar = styled.div.attrs<{ $isOpen: boolean }>((props) => ({
   flex-direction: column;
   gap: 20px;
   transition: left 0.3s ease;
-  z-index: 100;
+  z-index: 2000;
   border-right: 1px rgba(0, 0, 0, 0.7);
 
   a {
@@ -164,7 +164,7 @@ const Backdrop = styled.div<{ $isOpen: boolean }>`
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
-  z-index: 50;
+  z-index: 99;
 `;
 
 const LogoContainer = styled.div`
@@ -198,10 +198,10 @@ const Navbar = () => {
 
       <MenuContainer>
         <MenuLink href="/">Home</MenuLink>
-        <MenuLink href="/events">Events</MenuLink>
+        <MenuLink href="/lifestyle">Lifestyle</MenuLink>
+        <MenuLink href="/profile">Kabayan</MenuLink>
         <MenuLink href="/news">News</MenuLink>
-        <MenuLink href="/profile">Pinoy ako!</MenuLink>
-        <MenuLink href="/business">Business</MenuLink>
+        <MenuLink href="/events">Events</MenuLink>
         <MenuLink href="/market">Market</MenuLink>
         <MenuLink href="/advertise">Advertisement</MenuLink>
       </MenuContainer>
@@ -220,17 +220,17 @@ const Navbar = () => {
         <Link href="/" onClick={toggleSidebar}>
           Home
         </Link>
-        <Link href="/events" onClick={toggleSidebar}>
-          Events
+        <Link href="/lifestyle" onClick={toggleSidebar}>
+          Lifestyle
+        </Link>
+        <Link href="/profile" onClick={toggleSidebar}>
+          Kabayan
         </Link>
         <Link href="/news" onClick={toggleSidebar}>
           News
         </Link>
-        <Link href="/profile" onClick={toggleSidebar}>
-          Pinoy ako!
-        </Link>
-        <Link href="/business" onClick={toggleSidebar}>
-          Business
+        <Link href="/events" onClick={toggleSidebar}>
+          Events
         </Link>
         <Link href="/market" onClick={toggleSidebar}>
           Market
