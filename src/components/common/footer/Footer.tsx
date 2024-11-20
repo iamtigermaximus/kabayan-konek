@@ -156,7 +156,9 @@ const Footer = () => {
         </Section>
       </FooterContent>
       <Copyright>
-        © {new Date().getFullYear()} KabayanKonek. All Rights Reserved.
+        © {new Date().getFullYear()}{' '}
+        <strong style={{ color: 'tomato' }}>kabayankonek</strong>. All Rights
+        Reserved.
       </Copyright>
     </FooterContainer>
   );
