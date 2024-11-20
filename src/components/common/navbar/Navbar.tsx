@@ -9,6 +9,10 @@ import Image from 'next/image';
 import { breakpoints as bp } from '../../../utils/layout';
 import Link from 'next/link';
 
+interface SidebarProps {
+  $isOpen: boolean;
+}
+
 const HeroSection = styled.div`
   position: relative;
   width: 100vw;
@@ -111,11 +115,8 @@ const BurgerMenu = styled.div`
   }
 `;
 
-const Sidebar = styled.div.attrs<{ $isOpen: boolean }>((props) => ({
-  style: {
-    left: props.$isOpen ? '0' : '-100%',
-  },
-}))`
+const Sidebar = styled.div<SidebarProps>`
+  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
   position: fixed;
   top: 0;
   width: 250px;
