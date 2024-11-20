@@ -198,6 +198,8 @@ const ProfileFeature = () => {
   };
   return (
     <Container>
+      <title>KABAYAN SPOTLIGHT | kabayankonek</title>
+
       <DividerContainer>
         <DividerLine />
         <DividerLabel>KABAYAN SPOTLIGHT</DividerLabel>

@@ -373,6 +373,8 @@ const Home = () => {
   ];
   return (
     <Container>
+      <title>HOME | kabayankonek</title>
+
       <DividerContainer>
         <DividerLine />
         <DividerLabel>FEATURE</DividerLabel>

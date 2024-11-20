@@ -121,7 +121,7 @@ const Footer = () => {
               <Link href="/news">News</Link>
             </li>{' '}
             <li>
-              <Link href="/market">Market Place</Link>
+              <Link href="/market">Marketplace</Link>
             </li>{' '}
             <li>
               <Link href="/advertise">Advertisement</Link>

@@ -236,6 +236,7 @@ const Advertise = () => {
 
   return (
     <Container>
+      <title>ADVERTISEMENTS | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>ADVERTISEMENTS</DividerLabel>

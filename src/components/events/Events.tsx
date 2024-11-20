@@ -166,9 +166,11 @@ const Events = () => {
 
   return (
     <Container>
+      <title>EVENTS | kabayankonek</title>
+
       <DividerContainer>
         <DividerLine />
-        <DividerLabel>LIFESTYLE</DividerLabel>
+        <DividerLabel>EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
       <SectionContainer>

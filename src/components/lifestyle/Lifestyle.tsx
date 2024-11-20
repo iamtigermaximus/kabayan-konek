@@ -197,6 +197,8 @@ const Lifestyle = () => {
   };
   return (
     <Container>
+      <title>LIFESTYLE | kabayankonek</title>
+
       <DividerContainer>
         <DividerLine />
         <DividerLabel>LIFESTYLE</DividerLabel>

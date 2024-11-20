@@ -287,9 +287,10 @@ const MarketPlace = () => {
 
   return (
     <Container>
+      <title>MARKETPLACE | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
-        <DividerLabel>MARKET PLACE</DividerLabel>
+        <DividerLabel>MARKETPLACE</DividerLabel>
         <DividerLine />
       </DividerContainer>
       <SectionContainer>
