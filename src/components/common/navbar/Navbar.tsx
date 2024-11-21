@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image1 from '../../../assets/pinoy-konek.jpg';
 import LogoImage from '../../../assets/kabayan-konek-logo.png';
@@ -111,8 +111,37 @@ const BurgerMenu = styled.div`
   }
 `;
 
-const Sidebar = styled.div`
-  display: none;
+const Sidebar = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  transform: ${(props) =>
+    props.isOpen ? 'translateX(0)' : 'translateX(-100%)'};
+  transition: left 0.3s ease;
+  z-index: 1000;
+  gap: 20px;
+
+  a {
+    color: #636363;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+    &:hover {
+      color: tomato;
+    }
+  }
+
+  @media (min-width: ${bp.md}) {
+    display: none;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -128,12 +157,36 @@ const CloseButton = styled.button`
   }
 `;
 
-const Backdrop = styled.div``;
+const Backdrop = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+  z-index: 999;
+
+  @media (min-width: ${bp.md}) {
+    display: none;
+  }
+`;
 
 const LogoContainer = styled.div`
   position: absolute;
-  z-index: 99;
+  /* z-index: 99; */
   top: 20px;
+  margin-bottom: 100px;
+
+  @media (min-width: ${bp.md}) {
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+`;
+
+const SidebarLogoContainer = styled.div`
+  margin-bottom: 10px;
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -143,11 +196,15 @@ const LogoContainer = styled.div`
 `;
 
 const Navbar = () => {
-  // const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // const toggleSidebar = () => {
-  //   setSidebarOpen((prev) => !prev);
-  // };
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   return (
     <HeroSection>
@@ -169,27 +226,57 @@ const Navbar = () => {
         <MenuLink href="/advertise">Advertisement</MenuLink>
       </MenuContainer>
 
-      <BurgerMenu>
+      <BurgerMenu onClick={toggleSidebar}>
         <span />
         <span />
         <span />
       </BurgerMenu>
 
-      <Sidebar>
-        <LogoContainer>
-          <Image src={LogoImage} alt="logo" width={150} height={70} />
-        </LogoContainer>
-        <CloseButton>&times;</CloseButton>
-        <Link href="/">Home</Link>
-        <Link href="/lifestyle">Lifestyle</Link>
-        <Link href="/profile">Kabayan</Link>
-        <Link href="/news">News</Link>
-        <Link href="/events">Events</Link>
-        <Link href="/market">Marketplace</Link>
-        <Link href="/advertise">Advertisement</Link>
+      <Sidebar isOpen={sidebarOpen}>
+        <CloseButton onClick={toggleSidebar}>&times;</CloseButton>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <SidebarLogoContainer>
+            <Image src={LogoImage} alt="logo" width={150} height={70} />
+          </SidebarLogoContainer>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}
+        >
+          <Link href="/" onClick={toggleSidebar}>
+            Home
+          </Link>
+          <Link href="/lifestyle" onClick={toggleSidebar}>
+            Lifestyle
+          </Link>
+          <Link href="/profile" onClick={toggleSidebar}>
+            Kabayan
+          </Link>
+          <Link href="/news" onClick={toggleSidebar}>
+            News
+          </Link>
+          <Link href="/events" onClick={toggleSidebar}>
+            Events
+          </Link>
+          <Link href="/market" onClick={toggleSidebar}>
+            Marketplace
+          </Link>
+          <Link href="/advertise" onClick={toggleSidebar}>
+            Advertisement
+          </Link>
+        </div>
       </Sidebar>
 
-      <Backdrop />
+      <Backdrop isOpen={sidebarOpen} onClick={closeSidebar} />
 
       <TextOverlayContainer>
         <LogoContainer>

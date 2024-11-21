@@ -57,20 +57,32 @@ const Section = styled.section`
 `;
 
 const Subtitle = styled.h2`
-  font-size: 1.75rem;
+  font-size: 1rem;
   margin-bottom: 15px;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.75rem;
+  }
 `;
 
 const Paragraph = styled.p`
-  font-size: 1rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
 `;
 
 const List = styled.ul`
   list-style-type: disc;
   padding-left: 20px;
-  font-size: 1rem;
+  font-size: 0.75rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
 `;
 
 const About = () => {

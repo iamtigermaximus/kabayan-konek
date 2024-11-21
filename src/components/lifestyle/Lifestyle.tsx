@@ -4,7 +4,6 @@ import { breakpoints as bp } from '../../utils/layout';
 import FeatureImage1 from '../../assets/pexels-elevate-1267320.jpg';
 import FeatureImage2 from '../../assets/pexels-pixabay-258154.jpg';
 import FeatureImage3 from '../../assets/pexels-tapio-haaja-1214336-2311602.jpg';
-import KabayanImage1 from '../../assets/pexels-filipina.jpg';
 
 import Image from 'next/image';
 import { useState } from 'react';
@@ -19,62 +18,43 @@ const Container = styled.div`
     padding: 20px 50px;
   }
 `;
-
-const SectionContainer = styled.section`
+const FeaturesSectionContainer = styled.section`
   padding: 10px;
-  /* border: 1px solid red; */
-
-  @media (min-width: ${bp.md}) {
-    padding: 20px 50px;
-  }
-`;
-
-const ItemsContainer = styled.div`
   display: grid;
-  gap: 20px;
   grid-template-columns: 1fr;
-
-  @media (min-width: ${bp.md}) {
-    grid-template-columns: 1fr;
-  }
+  gap: 20px;
+  z-index: 10;
 
   @media (min-width: ${bp.lg}) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `;
 
-const Item = styled.div`
-  position: relative;
-  overflow: hidden;
-  background-color: #e4e4e4;
-  border-radius: 8px;
-  aspect-ratio: 16/9;
-  height: auto;
-
-  @media (min-width: ${bp.lg}) {
-    aspect-ratio: 9/10;
-  }
+const FeaturesCard = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const ItemImage = styled(Image)`
+const FeaturesImage = styled(Image)`
   width: 100%;
+  /* height: auto; */
+  border-radius: 8px;
+  margin-bottom: 15px;
   height: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  min-height: 300px;
+  max-height: 350px;
 `;
 
-const ItemTitle = styled.div`
-  position: absolute;
-  bottom: 0;
+const FeaturesTitleContainer = styled.div`
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
+  padding: 5px;
+`;
+
+const FeaturesTitle = styled.h3`
   font-size: 1rem;
+  font-weight: bold;
+  color: #494848;
 
   @media (min-width: ${bp.md}) {
     font-size: 1.25rem;
@@ -165,19 +145,83 @@ const PageInfo = styled.span`
 
 const Lifestyle = () => {
   const items = [
-    { id: 1, title: 'Item Title 1', image: FeatureImage1 },
-    { id: 2, title: 'Item Title 2', image: FeatureImage2 },
-    { id: 3, title: 'Item Title 3', image: FeatureImage3 },
-    { id: 4, title: 'Item Title 4', image: KabayanImage1 },
-    { id: 5, title: 'Item Title 5', image: FeatureImage2 },
-    { id: 6, title: 'Item Title 6', image: FeatureImage3 },
-    { id: 7, title: 'Item Title 7', image: FeatureImage1 },
-    { id: 8, title: 'Item Title 8', image: KabayanImage1 },
-    { id: 9, title: 'Item Title 9', image: FeatureImage3 },
-    { id: 10, title: 'Item Title 10', image: FeatureImage3 },
-    { id: 11, title: 'Item Title 11', image: FeatureImage1 },
-    { id: 12, title: 'Item Title 12', image: KabayanImage1 },
-    { id: 13, title: 'Item Title 13', image: FeatureImage3 },
+    {
+      id: 1,
+      image: FeatureImage1,
+      title: '10 Tips for a Healthier Lifestyle',
+      article:
+        "Living a healthy lifestyle doesn't have to be complicated. Start with small changes like drinking more water, incorporating exercise into your daily routine, and eating balanced meals. Over time, these small habits can lead to big results.",
+    },
+    {
+      id: 2,
+      image: FeatureImage2,
+      title: 'The Ultimate Guide to Minimalist Living',
+      article:
+        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
+    },
+    {
+      id: 3,
+      image: FeatureImage3,
+      title: 'Top 5 Travel Destinations for 2024',
+      article:
+        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
+    },
+    {
+      id: 4,
+      image: FeatureImage1,
+      title: '10 Tips for a Healthier Lifestyle',
+      article:
+        "Living a healthy lifestyle doesn't have to be complicated. Start with small changes like drinking more water, incorporating exercise into your daily routine, and eating balanced meals. Over time, these small habits can lead to big results.",
+    },
+    {
+      id: 5,
+      image: FeatureImage2,
+      title: 'The Ultimate Guide to Minimalist Living',
+      article:
+        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
+    },
+    {
+      id: 6,
+      image: FeatureImage3,
+      title: 'Top 5 Travel Destinations for 2024',
+      article:
+        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
+    },
+    {
+      id: 7,
+      image: FeatureImage2,
+      title: 'The Ultimate Guide to Minimalist Living',
+      article:
+        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
+    },
+    {
+      id: 8,
+      image: FeatureImage3,
+      title: 'Top 5 Travel Destinations for 2024',
+      article:
+        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
+    },
+    {
+      id: 9,
+      image: FeatureImage1,
+      title: '10 Tips for a Healthier Lifestyle',
+      article:
+        "Living a healthy lifestyle doesn't have to be complicated. Start with small changes like drinking more water, incorporating exercise into your daily routine, and eating balanced meals. Over time, these small habits can lead to big results.",
+    },
+    {
+      id: 10,
+      image: FeatureImage2,
+      title: 'The Ultimate Guide to Minimalist Living',
+      article:
+        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
+    },
+    {
+      id: 11,
+      image: FeatureImage3,
+      title: 'Top 5 Travel Destinations for 2024',
+      article:
+        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
+    },
   ];
   const itemsPerPage = 6; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
@@ -204,22 +248,20 @@ const Lifestyle = () => {
         <DividerLabel>LIFESTYLE</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <SectionContainer>
-        <ItemsContainer>
-          {displayedItems.map((item) => (
-            <Item key={item.id}>
-              <ItemImage
-                src={item.image}
-                alt={item.title}
-                priority
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-              <ItemTitle>{item.title}</ItemTitle>
-            </Item>
-          ))}
-        </ItemsContainer>
-      </SectionContainer>
+      <FeaturesSectionContainer>
+        {displayedItems.map((lifestyle) => (
+          <FeaturesCard key={lifestyle.id}>
+            <FeaturesImage
+              src={lifestyle.image}
+              alt={lifestyle.title}
+              priority
+            />
+            <FeaturesTitleContainer>
+              <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+            </FeaturesTitleContainer>
+          </FeaturesCard>
+        ))}
+      </FeaturesSectionContainer>
       <PaginationContainer>
         <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
           Previous

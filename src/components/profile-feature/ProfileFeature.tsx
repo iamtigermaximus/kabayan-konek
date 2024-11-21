@@ -21,61 +21,43 @@ const Container = styled.div`
   }
 `;
 
-const SectionContainer = styled.section`
+const FeaturesSectionContainer = styled.section`
   padding: 10px;
-  /* border: 1px solid red; */
-
-  @media (min-width: ${bp.md}) {
-    padding: 20px 50px;
-  }
-`;
-
-const ItemsContainer = styled.div`
   display: grid;
-  gap: 20px;
   grid-template-columns: 1fr;
-
-  @media (min-width: ${bp.md}) {
-    grid-template-columns: 1fr;
-  }
+  gap: 20px;
+  z-index: 10;
 
   @media (min-width: ${bp.lg}) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `;
 
-const Item = styled.div`
-  position: relative;
-  overflow: hidden;
-  background-color: #e4e4e4;
-  border-radius: 8px;
-  aspect-ratio: 16/9;
-  height: auto;
-
-  @media (min-width: ${bp.lg}) {
-    aspect-ratio: 9/10;
-  }
+const FeaturesCard = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const ItemImage = styled(Image)`
+const FeaturesImage = styled(Image)`
   width: 100%;
+  /* height: auto; */
+  border-radius: 8px;
+  margin-bottom: 15px;
   height: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
+  min-height: 300px;
+  max-height: 350px;
 `;
 
-const ItemTitle = styled.div`
-  position: absolute;
-  bottom: 0;
+const FeaturesTitleContainer = styled.div`
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
+  padding: 5px;
+`;
+
+const FeaturesTitle = styled.h3`
   font-size: 1rem;
+  font-weight: bold;
+  color: #494848;
 
   @media (min-width: ${bp.md}) {
     font-size: 1.25rem;
@@ -166,20 +148,99 @@ const PageInfo = styled.span`
 
 const ProfileFeature = () => {
   const items = [
-    { id: 1, title: 'Item Title 1', image: KabayanImage1 },
-    { id: 2, title: 'Item Title 2', image: KabayanImage2 },
-    { id: 3, title: 'Item Title 3', image: KabayanImage3 },
-    { id: 4, title: 'Item Title 4', image: KabayanImage4 },
-    { id: 5, title: 'Item Title 5', image: KabayanImage1 },
-    { id: 6, title: 'Item Title 6', image: KabayanImage4 },
-    { id: 7, title: 'Item Title 7', image: KabayanImage3 },
-    { id: 8, title: 'Item Title 8', image: KabayanImage2 },
-    { id: 9, title: 'Item Title 9', image: KabayanImage1 },
-    { id: 10, title: 'Item Title 10', image: KabayanImage2 },
-    { id: 11, title: 'Item Title 11', image: KabayanImage3 },
-    { id: 12, title: 'Item Title 12', image: KabayanImage4 },
-    { id: 13, title: 'Item Title 13', image: KabayanImage1 },
+    {
+      id: 1,
+      title: 'Filipino Chef Wins International Culinary Award',
+      image: KabayanImage1,
+      article:
+        'Chef Juan Dela Cruz has made history by winning the prestigious International Culinary Award for his innovative take on Filipino cuisine. His dishes, inspired by traditional flavors, have captivated the global culinary scene.',
+    },
+    {
+      id: 2,
+      title: 'Pinay Entrepreneur Builds Sustainable Fashion Brand',
+      image: KabayanImage2,
+      article:
+        'Maria Santos, a young entrepreneur from Manila, is revolutionizing the fashion industry with her sustainable clothing line. Using eco-friendly materials, her brand highlights Filipino craftsmanship while promoting environmental awareness.',
+    },
+    {
+      id: 3,
+      title: 'Filipino Scientist Breaks Ground in Renewable Energy',
+      image: KabayanImage3,
+      article:
+        'Dr. Ricardo Reyes, a Filipino scientist, has developed a groundbreaking solar panel technology that is more efficient and affordable. His innovation has the potential to bring renewable energy to remote areas across the Philippines.',
+    },
+    {
+      id: 4,
+      title: 'OFW Launches Community Project for Education',
+      image: KabayanImage4,
+      article:
+        'After years of working abroad, Aling Nena returned to her hometown to establish a community project aimed at providing free education to underprivileged children. Her dedication has inspired many to contribute to the cause.',
+    },
+    {
+      id: 5,
+      title: 'Filipino Artist Exhibits Masterpieces in Europe',
+      image: KabayanImage1,
+      article:
+        'Renowned painter Carlos Mangubat recently showcased his artwork in a European gallery, earning praise for his vibrant depictions of Filipino culture. His works celebrate the resilience and beauty of the Filipino spirit.',
+    },
+    {
+      id: 6,
+      title: 'Pinoy Athlete Wins Gold in International Sports Event',
+      image: KabayanImage2,
+      article:
+        'Mark Velasco brought pride to the Philippines by winning gold in the international athletics championship, showcasing exceptional skill and determination.',
+    },
+    {
+      id: 7,
+      title: 'Filipino Teacher Honored for Excellence in Education',
+      image: KabayanImage3,
+      article:
+        'Teacher Marites Castillo received global recognition for her innovative teaching methods, which have transformed education in rural areas of the Philippines.',
+    },
+    {
+      id: 8,
+      title: 'Filipino Innovator Develops Smart Farming Technology',
+      image: KabayanImage4,
+      article:
+        'Engineer Lorenzo Villanueva has developed a smart farming system that helps farmers optimize yield while reducing environmental impact.',
+    },
+    {
+      id: 9,
+      title: 'Filipino Director Wins International Film Festival Award',
+      image: KabayanImage1,
+      article:
+        'Director Angelica Cruz won Best Director at an international film festival for her moving documentary on Filipino migrant workers.',
+    },
+    {
+      id: 10,
+      title: 'Filipino Activist Advocates for Climate Change Awareness',
+      image: KabayanImage2,
+      article:
+        'Environmental activist Gina Lopez has been leading campaigns to raise awareness about climate change and sustainable living in the Philippines.',
+    },
+    {
+      id: 11,
+      title: 'Young Filipino Coder Develops App for Disaster Preparedness',
+      image: KabayanImage1,
+      article:
+        '15-year-old programmer Kevin Bautista created a disaster preparedness app that provides real-time updates and resources during emergencies.',
+    },
+    {
+      id: 12,
+      title: 'Filipino Doctor Pioneers Breakthrough in Medical Research',
+      image: KabayanImage3,
+      article:
+        'Dr. Andrea Santos has made groundbreaking discoveries in cancer research, giving hope to millions of patients worldwide.',
+    },
+    {
+      id: 13,
+      title: 'Filipino Architect Designs Sustainable Urban Spaces',
+      image: KabayanImage4,
+      article:
+        'Architect Leo Alonzo is gaining recognition for his eco-friendly urban designs, which prioritize sustainability and community well-being.',
+    },
   ];
+
   const itemsPerPage = 6; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -205,22 +266,16 @@ const ProfileFeature = () => {
         <DividerLabel>KABAYAN SPOTLIGHT</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <SectionContainer>
-        <ItemsContainer>
-          {displayedItems.map((item) => (
-            <Item key={item.id}>
-              <ItemImage
-                src={item.image}
-                alt={item.title}
-                priority
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-              <ItemTitle>{item.title}</ItemTitle>
-            </Item>
-          ))}
-        </ItemsContainer>
-      </SectionContainer>
+      <FeaturesSectionContainer>
+        {displayedItems.map((profile) => (
+          <FeaturesCard key={profile.id}>
+            <FeaturesImage src={profile.image} alt={profile.title} priority />
+            <FeaturesTitleContainer>
+              <FeaturesTitle>{profile.title} </FeaturesTitle>
+            </FeaturesTitleContainer>
+          </FeaturesCard>
+        ))}
+      </FeaturesSectionContainer>
       <PaginationContainer>
         <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
           Previous

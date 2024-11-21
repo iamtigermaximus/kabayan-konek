@@ -6,8 +6,17 @@ import FeatureImage2 from '../../assets/pexels-pixabay-258154.jpg';
 import FeatureImage3 from '../../assets/pexels-tapio-haaja-1214336-2311602.jpg';
 import KabayanImage1 from '../../assets/pexels-filipina.jpg';
 import Link from 'next/link';
-
 import Image, { StaticImageData } from 'next/image';
+
+interface Event {
+  id: number;
+  name: string;
+  description: string;
+  date: string;
+  time: string;
+  address: string;
+  image: string | null | StaticImageData;
+}
 
 const Container = styled.div`
   padding: 10px;
@@ -68,58 +77,6 @@ const DividerLabel = styled.span`
   }
 `;
 
-const ItemsContainer = styled.div`
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr;
-
-  @media (min-width: ${bp.md}) {
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: ${bp.lg}) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const Item = styled.div`
-  position: relative;
-  overflow: hidden;
-  background-color: #e4e4e4;
-  border-radius: 8px;
-  aspect-ratio: 16/9;
-  height: auto;
-
-  @media (min-width: ${bp.lg}) {
-    aspect-ratio: 9/10;
-  }
-`;
-
-const ItemImage = styled(Image)`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
-const ItemTitle = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-
-  @media (min-width: ${bp.md}) {
-    font-size: 1.25rem;
-  }
-`;
-
 const ShowMoreButtonContainer = styled.div`
   width: 100%;
   display: flex;
@@ -153,6 +110,49 @@ const ShowMoreButton = styled.button`
 
   &:focus {
     outline: none;
+  }
+`;
+
+const FeaturesSectionContainer = styled.section`
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  z-index: 10;
+
+  @media (min-width: ${bp.lg}) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
+
+const FeaturesCard = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FeaturesImage = styled(Image)`
+  width: 100%;
+  /* height: auto; */
+  border-radius: 8px;
+  margin-bottom: 15px;
+  height: 100%;
+  object-fit: cover;
+  min-height: 300px;
+  max-height: 350px;
+`;
+
+const FeaturesTitleContainer = styled.div`
+  width: 100%;
+  padding: 5px;
+`;
+
+const FeaturesTitle = styled.h3`
+  font-size: 1rem;
+  font-weight: bold;
+  color: #494848;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.25rem;
   }
 `;
 
@@ -264,16 +264,6 @@ const NewsDate = styled.span`
   margin-top: 5px;
 `;
 
-interface Event {
-  id: number;
-  name: string;
-  description: string;
-  date: string; // Date as a string
-  time: string;
-  address: string;
-  image: string | null | StaticImageData;
-}
-
 const Home = () => {
   const placeholderImages = [FeatureImage1, FeatureImage2, FeatureImage3];
 
@@ -371,94 +361,112 @@ const Home = () => {
       date: '2024-11-16',
     },
   ];
+
+  const lifestyleData = [
+    {
+      id: 1,
+      image: FeatureImage1,
+      title: '10 Tips for a Healthier Lifestyle',
+      article:
+        "Living a healthy lifestyle doesn't have to be complicated. Start with small changes like drinking more water, incorporating exercise into your daily routine, and eating balanced meals. Over time, these small habits can lead to big results.",
+    },
+    {
+      id: 2,
+      image: FeatureImage2,
+      title: 'The Ultimate Guide to Minimalist Living',
+      article:
+        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
+    },
+    {
+      id: 3,
+      image: FeatureImage3,
+      title: 'Top 5 Travel Destinations for 2024',
+      article:
+        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
+    },
+  ];
+
+  const kabayanData = [
+    {
+      id: 1,
+      title: 'Filipino Chef Wins International Culinary Award',
+      image: KabayanImage1,
+      article:
+        'Chef Juan Dela Cruz has made history by winning the prestigious International Culinary Award for his innovative take on Filipino cuisine. His dishes, inspired by traditional flavors, have captivated the global culinary scene.',
+    },
+    {
+      id: 2,
+      title: 'Pinay Entrepreneur Builds Sustainable Fashion Brand',
+      image: KabayanImage1,
+      article:
+        'Maria Santos, a young entrepreneur from Manila, is revolutionizing the fashion industry with her sustainable clothing line. Using eco-friendly materials, her brand highlights Filipino craftsmanship while promoting environmental awareness.',
+    },
+    {
+      id: 3,
+      title: 'Filipino Scientist Breaks Ground in Renewable Energy',
+      image: KabayanImage1,
+      article:
+        'Dr. Ricardo Reyes, a Filipino scientist, has developed a groundbreaking solar panel technology that is more efficient and affordable. His innovation has the potential to bring renewable energy to remote areas across the Philippines.',
+    },
+  ];
+
   return (
     <Container>
       <title>HOME | kabayankonek</title>
-
       <DividerContainer>
         <DividerLine />
         <DividerLabel>FEATURE</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <SectionContainer>
-        <ItemsContainer>
-          <Item>
-            <ItemImage
-              src={FeatureImage1}
-              alt="Item 1"
+      <FeaturesSectionContainer>
+        {lifestyleData.map((lifestyle, index) => (
+          <FeaturesCard key={lifestyle.id}>
+            <FeaturesImage
+              src={
+                lifestyle.image ||
+                placeholderImages[index % placeholderImages.length]
+              }
+              alt={lifestyle.title}
               priority
-              fill
-              style={{ objectFit: 'cover' }}
             />
-            <ItemTitle>Item Title 1</ItemTitle>
-          </Item>
-          <Item>
-            <ItemImage
-              src={FeatureImage2}
-              alt="Item 2"
-              priority
-              fill
-              style={{ objectFit: 'cover' }}
-            />{' '}
-            <ItemTitle>Item Title 2</ItemTitle>
-          </Item>
-          <Item>
-            <ItemImage
-              src={FeatureImage3}
-              alt="Item 3"
-              priority
-              fill
-              style={{ objectFit: 'cover' }}
-            />{' '}
-            <ItemTitle>Item Title 3</ItemTitle>
-          </Item>
-        </ItemsContainer>
+            <FeaturesTitleContainer>
+              <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+            </FeaturesTitleContainer>
+          </FeaturesCard>
+        ))}
+      </FeaturesSectionContainer>
+      <ShowMoreButtonContainer>
         <ShowMoreButtonLink href="/lifestyle">
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
-      </SectionContainer>
+      </ShowMoreButtonContainer>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>KABAYAN SPOTLIGHT</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <SectionContainer>
-        <ItemsContainer>
-          <Item>
-            <ItemImage
-              src={KabayanImage1}
-              alt="Item 3"
+      <FeaturesSectionContainer>
+        {kabayanData.map((profile, index) => (
+          <FeaturesCard key={profile.id}>
+            <FeaturesImage
+              src={
+                profile.image ||
+                placeholderImages[index % placeholderImages.length]
+              }
+              alt={profile.title}
               priority
-              fill
-              style={{ objectFit: 'cover' }}
-            />{' '}
-            <ItemTitle>Item Title 1</ItemTitle>
-          </Item>
-          <Item>
-            <ItemImage
-              src={KabayanImage1}
-              alt="Item 3"
-              priority
-              fill
-              style={{ objectFit: 'cover' }}
-            />{' '}
-            <ItemTitle>Item Title 2</ItemTitle>
-          </Item>
-          <Item>
-            <ItemImage
-              src={KabayanImage1}
-              alt="Item 3"
-              priority
-              fill
-              style={{ objectFit: 'cover' }}
-            />{' '}
-            <ItemTitle>Item Title 3</ItemTitle>
-          </Item>
-        </ItemsContainer>
+            />
+            <FeaturesTitleContainer>
+              <FeaturesTitle>{profile.title}</FeaturesTitle>
+            </FeaturesTitleContainer>
+          </FeaturesCard>
+        ))}
+      </FeaturesSectionContainer>
+      <ShowMoreButtonContainer>
         <ShowMoreButtonLink href="/profile">
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
-      </SectionContainer>
+      </ShowMoreButtonContainer>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>EVENTS</DividerLabel>
