@@ -1,150 +1,24 @@
 'use client';
-import styled from 'styled-components';
-import { breakpoints as bp } from '../../utils/layout';
-
 import KabayanImage1 from '../../assets/pexels-filipina.jpg';
 import KabayanImage2 from '../../assets/pexels-filipina2.jpg';
 import KabayanImage3 from '../../assets/pexels-filipino1.jpg';
 import KabayanImage4 from '../../assets/pexels-filipino2.jpg';
-
-import Image from 'next/image';
 import { useState } from 'react';
-
-const Container = styled.div`
-  padding: 10px;
-  height: 100%;
-  z-index: 99;
-  /* background-color: pink; */
-
-  @media (min-width: ${bp.md}) {
-    padding: 20px 50px;
-  }
-`;
-
-const FeaturesSectionContainer = styled.section`
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  z-index: 10;
-
-  @media (min-width: ${bp.lg}) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-`;
-
-const FeaturesCard = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FeaturesImage = styled(Image)`
-  width: 100%;
-  /* height: auto; */
-  border-radius: 8px;
-  margin-bottom: 15px;
-  height: 100%;
-  object-fit: cover;
-  min-height: 300px;
-  max-height: 350px;
-`;
-
-const FeaturesTitleContainer = styled.div`
-  width: 100%;
-  padding: 5px;
-`;
-
-const FeaturesTitle = styled.h3`
-  font-size: 1rem;
-  font-weight: bold;
-  color: #494848;
-
-  @media (min-width: ${bp.md}) {
-    font-size: 1.25rem;
-  }
-`;
-
-const DividerContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-`;
-
-const DividerLine = styled.hr`
-  border: 0;
-  border-top: 1px solid #b4b4b4;
-  width: 100%;
-  margin: 0;
-  flex-grow: 1;
-`;
-
-const DividerLabel = styled.span`
-  /* position: absolute; */
-  top: -12px;
-  background-color: white;
-  padding: 0 10px;
-  font-weight: bold;
-  color: #b4b4b4;
-  font-size: 1rem;
-  white-space: nowrap;
-
-  @media (min-width: ${bp.md}) {
-    font-size: 1.25rem;
-  }
-`;
-
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-`;
-
-const PrevButton = styled.button`
-  padding: 8px 12px;
-  background-color: #222;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100px;
-
-  &:disabled {
-    background-color: #888;
-    cursor: not-allowed;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: tomato;
-  }
-`;
-
-const NextButton = styled.button`
-  padding: 8px 12px;
-  background-color: #222;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100px;
-
-  &:disabled {
-    background-color: #888;
-    cursor: not-allowed;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: tomato;
-  }
-`;
-
-const PageInfo = styled.span`
-  font-size: 1rem;
-  font-weight: bold;
-  color: #555;
-`;
+import {
+  Container,
+  DividerContainer,
+  DividerLabel,
+  DividerLine,
+  FeaturesCard,
+  FeaturesImage,
+  FeaturesSectionContainer,
+  FeaturesTitle,
+  FeaturesTitleContainer,
+  NextButton,
+  PageInfo,
+  PaginationContainer,
+  PrevButton,
+} from './ProfileFeature.styles';
 
 const ProfileFeature = () => {
   const items = [

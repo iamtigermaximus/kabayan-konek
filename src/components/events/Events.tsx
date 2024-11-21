@@ -1,117 +1,27 @@
 'use client';
-import styled from 'styled-components';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import FeatureImage1 from '../../assets/pexels-elevate-1267320.jpg';
 import FeatureImage2 from '../../assets/pexels-pixabay-258154.jpg';
 import FeatureImage3 from '../../assets/pexels-tapio-haaja-1214336-2311602.jpg';
-import { breakpoints as bp } from '../../utils/layout';
+import {
+  Container,
+  DividerContainer,
+  DividerLabel,
+  DividerLine,
+  EventCard,
+  EventDescription,
+  EventDetails,
+  EventImage,
+  EventInfo,
+  EventName,
+  SectionContainer,
+} from './Events.styles';
 
-const Container = styled.div`
-  padding: 10px;
-  height: 100%;
-  z-index: 99;
-
-  @media (min-width: ${bp.md}) {
-    padding: 20px 50px;
-  }
-`;
-
-const SectionContainer = styled.section`
-  padding: 10px;
-
-  @media (min-width: ${bp.md}) {
-    padding: 20px 50px;
-  }
-`;
-
-const EventCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
-`;
-
-const EventImage = styled(Image)`
-  width: 100%;
-  max-width: 150px;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 15px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-    margin-right: 20px;
-  }
-`;
-
-const EventDetails = styled.div`
-  flex: 1;
-`;
-
-const EventName = styled.h2`
-  margin: 0 0 10px;
-  font-size: 1.5rem;
-  color: #333;
-`;
-
-const EventDescription = styled.p`
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #666;
-`;
-
-const EventInfo = styled.div`
-  margin: 10px 0;
-  font-size: 0.9rem;
-  color: #444;
-
-  span {
-    font-weight: bold;
-  }
-`;
-
-const DividerContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-`;
-
-const DividerLine = styled.hr`
-  border: 0;
-  border-top: 1px solid #b4b4b4;
-  width: 100%;
-  margin: 0;
-  flex-grow: 1;
-`;
-
-const DividerLabel = styled.span`
-  top: -12px;
-  background-color: white;
-  padding: 0 10px;
-  font-weight: bold;
-  color: #b4b4b4;
-  font-size: 1rem;
-  white-space: nowrap;
-
-  @media (min-width: ${bp.md}) {
-    font-size: 1.25rem;
-  }
-`;
-
-interface Event {
+export interface Event {
   id: number;
   name: string;
   description: string;
-  date: string; // Date as a string
+  date: string;
   time: string;
   address: string;
   image: string | null | StaticImageData;
