@@ -8,36 +8,108 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
-  role     String   // admin or user
-  events   Event[]
-  products Product[]
+  id            String     @id @default(uuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String    // Add password field for authentication
+  role          String     @default("user") // Role field with default value
+  accounts      Account[]
+  sessions      Session[]
+  events        Event[]
+  products      Product[]
+  kabayanSpotlights KabayanSpotlight[]
+  lifestyleArticles LifestyleArticle[]
+  newsArticles NewsArticle[]
 }
 
+
+model Account {
+  id                 String   @id @default(uuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+}
+
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+}
+
+
 model Event {
-  id          Int      @id @default(autoincrement())
+  id        String   @id @default(uuid()) 
   title       String
   description String
   date        DateTime
-  userId      Int
+  imageUrl    String?  // Optional image URL for the event
+  userId      String
   user        User     @relation(fields: [userId], references: [id])
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+   id        String   @id @default(uuid()) 
   name        String
   description String
   price       Float
-  userId      Int
+  imageUrl    String?  // Optional image URL for the product
+  userId      String
   user        User     @relation(fields: [userId], references: [id])
 }
 
-model Business {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  contact     String
+model KabayanSpotlight {
+   id        String   @id @default(uuid()) 
+  title       String
+  content     String
+  imageUrl    String?  // Optional image URL for the spotlight article
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LifestyleArticle {
+   id        String   @id @default(uuid()) 
+  title       String
+  content     String
+  imageUrl    String?  // Optional image URL for the lifestyle article
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsArticle {
+  id        String   @id @default(uuid()) 
+  title       String
+  contentUrl  String   // URL to the news article from an external site
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

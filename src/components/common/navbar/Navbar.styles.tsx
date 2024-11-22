@@ -74,7 +74,7 @@ export const MenuLink = styled(Link)`
   }
 
   @media (min-width: ${bp.md}) {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   @media (min-width: ${bp.lg}) {
