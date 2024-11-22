@@ -17,10 +17,14 @@ import {
   TextOverlayContainer,
   LogoContainer,
   TextOverlay,
+  LoginButtonContainer,
+  LoginButton,
 } from './Navbar.styles';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -28,6 +32,10 @@ const Navbar = () => {
 
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    router.push('/login');
   };
 
   return (
@@ -108,6 +116,9 @@ const Navbar = () => {
         </LogoContainer>
         <TextOverlay>Connecting Filipinos in Finland</TextOverlay>
       </TextOverlayContainer>
+      <LoginButtonContainer>
+        <LoginButton onClick={handleLoginClick}>LOGIN</LoginButton>
+      </LoginButtonContainer>
     </HeroSection>
   );
 };

@@ -187,3 +187,24 @@ export const SidebarLogoContainer = styled.div`
     transform: translateX(-50%);
   }
 `;
+
+export const LoginButtonContainer = styled.div`
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const LoginButton = styled.button`
+  margin-right: 10px;
+  width: 100px;
+  padding: 2px 8px;
+  background-color: tomato;
+  color: white;
+  cursor: pointer;
+  border: none;
+
+  @media (min-width: ${bp.md}) {
+    margin-right: 20px;
+  }
+`;
