@@ -21,10 +21,12 @@ import {
   LoginButton,
 } from './Navbar.styles';
 import { useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -36,6 +38,10 @@ const Navbar = () => {
 
   const handleLoginClick = () => {
     router.push('/login');
+  };
+
+  const handleLogoutClick = () => {
+    signOut({ callbackUrl: '/' });
   };
 
   return (
@@ -117,7 +123,22 @@ const Navbar = () => {
         <TextOverlay>Connecting Filipinos in Finland</TextOverlay>
       </TextOverlayContainer>
       <LoginButtonContainer>
-        <LoginButton onClick={handleLoginClick}>LOGIN</LoginButton>
+        {session ? (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {/* Display the user's name and logout button */}
+            <div
+              style={{
+                width: '100%',
+              }}
+            >
+              Logged in as {session.user?.name}.
+            </div>
+            <LoginButton onClick={handleLogoutClick}>LOGOUT</LoginButton>
+          </div>
+        ) : (
+          // If not authenticated, show login button
+          <LoginButton onClick={handleLoginClick}>LOGIN</LoginButton>
+        )}{' '}
       </LoginButtonContainer>
     </HeroSection>
   );

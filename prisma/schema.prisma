@@ -16,7 +16,7 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
-  password      String    // Add password field for authentication
+  password      String?    // Add password field for authentication
   role          String     @default("user") // Role field with default value
   accounts      Account[]
   sessions      Session[]

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/common/navbar/Navbar';
 import Footer from '@/components/common/footer/Footer';
+import { NextAuthProvider } from './providers/sessionProviders';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -36,8 +37,10 @@ export default function RootLayout({
           />
           <link rel="manifest" href="/site.webmanifest" />
         </div>
-        <Navbar />
-        {children}
+        <NextAuthProvider>
+          <Navbar />
+          {children}
+        </NextAuthProvider>
         <Footer />
       </body>
     </html>
