@@ -144,7 +144,9 @@ const LoginPageContent = () => {
 };
 
 const Login = () => {
-  const loginWithGoogle = () => signIn('google', { callbackUrl: '/about' });
+  const loginWithGoogle = () => {
+    signIn('google', { callbackUrl: `${window.location.origin}/about` });
+  };
 
   return (
     <Container>

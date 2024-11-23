@@ -135,6 +135,14 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
+    async redirect({ url, baseUrl }) {
+      // Ensure the callback URL is the same as the redirect URL in production
+      if (url.startsWith(baseUrl)) {
+        return url; // redirect to the callback URL passed by NextAuth
+      }
+      return baseUrl; // fallback to home page if any invalid URL is passed
+    },
+
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

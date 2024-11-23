@@ -134,7 +134,10 @@ const SignUp = () => {
     }
   };
 
-  const loginWithGoogle = () => signIn('google', { callbackUrl: '/about' });
+  // In your signUp or login component
+  const loginWithGoogle = () => {
+    signIn('google', { callbackUrl: `${window.location.origin}/about` });
+  };
 
   // const togglePasswordVisibility = () => {
   //   setShowPassword(!showPassword);
