@@ -15,7 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        {/* Add Cloudinary's upload widget script */}
+        <script
+          type="text/javascript"
+          src="https://upload-widget.cloudinary.com/global/all.js"
+          async
+        ></script>
+      </head>
       <body>
         <div>
           <link

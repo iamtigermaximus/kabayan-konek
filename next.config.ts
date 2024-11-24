@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    domains: ['res.cloudinary.com'], // Add Cloudinary to allowed domains
+  },
 };
 
 // Combine your existing configuration with next-intl
