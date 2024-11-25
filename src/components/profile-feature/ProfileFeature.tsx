@@ -35,6 +35,7 @@ import {
 } from './ProfileFeature.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface KabayanArticle {
   id: string;
@@ -262,12 +263,11 @@ const ProfileFeature = () => {
               height={300} // Replace with appropriate height
               priority
             />
-
-            <FeaturesTitleContainer>
-              {/* <Link href={`/lifestyle/${lifestyle.id}`}> */}
-              <FeaturesTitle>{profile.title}</FeaturesTitle>
-              {/* </Link> */}
-            </FeaturesTitleContainer>
+            <Link href={`/profile/${profile.id}`}>
+              <FeaturesTitleContainer>
+                <FeaturesTitle>{profile.title}</FeaturesTitle>
+              </FeaturesTitleContainer>
+            </Link>
           </FeaturesCard>
         ))}
       </FeaturesSectionContainer>
