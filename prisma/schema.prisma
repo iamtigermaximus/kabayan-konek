@@ -108,7 +108,7 @@ model KabayanSpotlight {
 
 model LifestyleArticle {
    id        String   @id @default(uuid()) 
-  title       String
+  title       String  @unique 
   content     String
   imageUrl    String?  // Optional image URL for the lifestyle article
   userId      String

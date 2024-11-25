@@ -36,6 +36,7 @@ import {
 // import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface LifestyleArticle {
   id: string;
@@ -269,9 +270,9 @@ const Lifestyle = () => {
             />
 
             <FeaturesTitleContainer>
-              {/* <Link href={`/lifestyle/${lifestyle.id}`}> */}
-              <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
-              {/* </Link> */}
+              <Link href={`/lifestyle/${lifestyle.id}`} passHref>
+                <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+              </Link>
             </FeaturesTitleContainer>
           </FeaturesCard>
         ))}

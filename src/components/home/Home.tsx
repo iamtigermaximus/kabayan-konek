@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {
   Container,
   DividerContainer,
@@ -178,7 +179,9 @@ const Home = () => {
               priority
             />
             <FeaturesTitleContainer>
-              <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+              <Link href={`/lifestyle/${lifestyle.id}`} passHref>
+                <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+              </Link>
             </FeaturesTitleContainer>
           </FeaturesCard>
         ))}
