@@ -1,10 +1,5 @@
 'use client';
 
-import FeatureImage1 from '../../assets/pexels-elevate-1267320.jpg';
-import FeatureImage2 from '../../assets/pexels-pixabay-258154.jpg';
-import FeatureImage3 from '../../assets/pexels-tapio-haaja-1214336-2311602.jpg';
-import KabayanImage1 from '../../assets/pexels-filipina.jpg';
-import { StaticImageData } from 'next/image';
 import {
   Container,
   DividerContainer,
@@ -34,162 +29,135 @@ import {
   NewsDate,
   NewsSource,
 } from './Home.styles';
+import { useEffect, useState } from 'react';
+interface LifestyleArticle {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string; // Optional
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-interface Event {
-  id: number;
-  name: string;
+interface KabayanArticle {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string; // Optional
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface EventProps {
+  id: string;
+  title: string;
   description: string;
-  date: string;
+  date: Date;
   time: string;
   address: string;
-  image: string | null | StaticImageData;
+  imageUrl?: string;
+  userId: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+interface NewsArticleProps {
+  id: string;
+  title: string;
+  contentUrl: string;
+  newsSummary: string;
+  date: Date;
+  source: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const Home = () => {
-  const placeholderImages = [FeatureImage1, FeatureImage2, FeatureImage3];
+  const [lifestyleArticles, setLifestyleArticles] = useState<
+    LifestyleArticle[]
+  >([]);
+  const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
+  const [events, setEvents] = useState<EventProps[]>([]);
+  const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
 
-  const events: Event[] = [
-    {
-      id: 1,
-      name: 'Tech Conference 2024',
-      description: 'An exciting conference about the latest in tech.',
-      date: '2024-12-12',
-      time: '10:00 AM - 4:00 PM',
-      address: '123 Tech Road, Silicon Valley, CA',
-      image: null,
-    },
-    {
-      id: 2,
-      name: 'Art Workshop',
-      description: 'Learn the basics of watercolor painting.',
-      date: '2024-11-25',
-      time: '2:00 PM - 5:00 PM',
-      address: '456 Creative Street, New York, NY',
-      image: FeatureImage2,
-    },
-    {
-      id: 3,
-      name: 'Filipino Christmas',
-      description: 'A full-day celebration featuring live bands and DJs.',
-      date: '2024-12-24',
-      time: '12:00 PM - 11:00 PM',
-      address: '789 Festival Avenue, Austin, TX',
-      image: null,
-    },
-    {
-      id: 4,
-      name: 'Music Festival',
-      description: 'A full-day festival featuring live bands and DJs.',
-      date: '2025-01-15',
-      time: '12:00 PM - 11:00 PM',
-      address: '789 Festival Avenue, Austin, TX',
-      image: null,
-    },
-  ];
+  const fetchArticles = async () => {
+    try {
+      const response = await fetch('/api/lifestyle');
+      const data: LifestyleArticle[] = await response.json();
+      data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
 
-  // Sort events by nearest date
-  const sortedEvents = events.sort(
-    (a, b) => Date.parse(a.date) - Date.parse(b.date)
-  );
+      setLifestyleArticles(data);
+    } catch (error) {
+      console.error('Error fetching lifestyle articles:', error);
+    }
+  };
 
-  const newsData = [
-    {
-      id: 1,
-      title: 'Finland Tightens Immigration Policies Amid Increased Arrivals',
-      summary:
-        'The Finnish government has announced new immigration regulations in response to the rise in asylum seekers and work-based immigration.',
-      source: 'Helsinki Times',
-      url: 'https://www.helsinkitimes.fi/',
-      date: '2024-11-20',
-    },
-    {
-      id: 2,
-      title:
-        'Study Finds Finland’s Immigrant Population Contributes Billions to Economy',
-      summary:
-        'A recent report highlights the growing importance of immigrants in Finland’s economy, contributing significantly to the workforce and tax revenue.',
-      source: 'Yle News',
-      url: 'https://yle.fi/',
-      date: '2024-11-19',
-    },
-    {
-      id: 3,
-      title: 'Record Number of Immigrants Settle in Finland in 2024',
-      summary:
-        '2024 saw an unprecedented number of people moving to Finland, with a large percentage coming from neighboring countries and beyond.',
-      source: 'Finnish News Agency',
-      url: 'https://www.savonsanomat.fi/',
-      date: '2024-11-18',
-    },
-    {
-      id: 4,
-      title:
-        'Finnish Government Launches New Integration Programs for Immigrants',
-      summary:
-        'The Finnish government is investing heavily in integration programs to help immigrants better assimilate into society, offering language courses and job opportunities.',
-      source: 'Helsinki Times',
-      url: 'https://www.helsinkitimes.fi/',
-      date: '2024-11-17',
-    },
-    {
-      id: 5,
-      title:
-        'Immigration Debate Heats Up in Finland as Parliament Discusses Policy Changes',
-      summary:
-        'A heated debate has emerged in Finland’s parliament regarding potential changes to the country’s immigration policies, with some advocating for stricter controls.',
-      source: 'YLE News',
-      url: 'https://yle.fi/',
-      date: '2024-11-16',
-    },
-  ];
+  useEffect(() => {
+    fetchArticles();
+  }, []);
 
-  const lifestyleData = [
-    {
-      id: 1,
-      image: FeatureImage1,
-      title: '10 Tips for a Healthier Lifestyle',
-      article:
-        "Living a healthy lifestyle doesn't have to be complicated. Start with small changes like drinking more water, incorporating exercise into your daily routine, and eating balanced meals. Over time, these small habits can lead to big results.",
-    },
-    {
-      id: 2,
-      image: FeatureImage2,
-      title: 'The Ultimate Guide to Minimalist Living',
-      article:
-        'Minimalist living is about decluttering your life and focusing on what truly matters. By reducing unnecessary possessions and commitments, you can find greater clarity, peace, and happiness in your daily life.',
-    },
-    {
-      id: 3,
-      image: FeatureImage3,
-      title: 'Top 5 Travel Destinations for 2024',
-      article:
-        'Looking to explore the world in 2024? Check out these top travel destinations: Japan for its cherry blossoms, Greece for its historic beauty, Iceland for its stunning landscapes, New Zealand for adventure, and Bali for relaxation.',
-    },
-  ];
+  const fetchKabayanArticles = async () => {
+    try {
+      const response = await fetch('/api/profile');
+      const data: KabayanArticle[] = await response.json();
 
-  const kabayanData = [
-    {
-      id: 1,
-      title: 'Filipino Chef Wins International Culinary Award',
-      image: KabayanImage1,
-      article:
-        'Chef Juan Dela Cruz has made history by winning the prestigious International Culinary Award for his innovative take on Filipino cuisine. His dishes, inspired by traditional flavors, have captivated the global culinary scene.',
-    },
-    {
-      id: 2,
-      title: 'Pinay Entrepreneur Builds Sustainable Fashion Brand',
-      image: KabayanImage1,
-      article:
-        'Maria Santos, a young entrepreneur from Manila, is revolutionizing the fashion industry with her sustainable clothing line. Using eco-friendly materials, her brand highlights Filipino craftsmanship while promoting environmental awareness.',
-    },
-    {
-      id: 3,
-      title: 'Filipino Scientist Breaks Ground in Renewable Energy',
-      image: KabayanImage1,
-      article:
-        'Dr. Ricardo Reyes, a Filipino scientist, has developed a groundbreaking solar panel technology that is more efficient and affordable. His innovation has the potential to bring renewable energy to remote areas across the Philippines.',
-    },
-  ];
+      data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      setKabayanArticles(data);
+    } catch (error) {
+      console.error('Error fetching lifestyle articles:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchKabayanArticles();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('/api/events');
+      const data: EventProps[] = await response.json();
+
+      data.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+
+      setEvents(data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchNewsArticles = async () => {
+    try {
+      const response = await fetch('/api/news');
+      const data: NewsArticleProps[] = await response.json();
+      data.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+      setNewsArticles(data);
+    } catch (error) {
+      console.error('Error fetching news articles:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNewsArticles();
+  }, []);
 
   return (
     <Container>
@@ -200,14 +168,13 @@ const Home = () => {
         <DividerLine />
       </DividerContainer>
       <FeaturesSectionContainer>
-        {lifestyleData.map((lifestyle, index) => (
+        {lifestyleArticles.slice(0, 6).map((lifestyle) => (
           <FeaturesCard key={lifestyle.id}>
             <FeaturesImage
-              src={
-                lifestyle.image ||
-                placeholderImages[index % placeholderImages.length]
-              }
+              src={lifestyle.imageUrl || '/default-image.jpg'}
               alt={lifestyle.title}
+              width={500} // Replace with appropriate width
+              height={300} // Replace with appropriate height
               priority
             />
             <FeaturesTitleContainer>
@@ -227,14 +194,13 @@ const Home = () => {
         <DividerLine />
       </DividerContainer>
       <FeaturesSectionContainer>
-        {kabayanData.map((profile, index) => (
+        {kabayanArticles.slice(0, 6).map((profile) => (
           <FeaturesCard key={profile.id}>
             <FeaturesImage
-              src={
-                profile.image ||
-                placeholderImages[index % placeholderImages.length]
-              }
+              src={profile.imageUrl || '/default-image.jpg'}
               alt={profile.title}
+              width={500}
+              height={300}
               priority
             />
             <FeaturesTitleContainer>
@@ -254,23 +220,20 @@ const Home = () => {
         <DividerLine />
       </DividerContainer>
       <EventsSectionContainer>
-        {sortedEvents.map((event, index) => (
+        {events.slice(0, 6).map((event) => (
           <EventCard key={event.id}>
             <EventImage
-              src={
-                event.image ||
-                placeholderImages[index % placeholderImages.length]
-              }
-              alt={event.name}
+              src={event.imageUrl || '/default-event.jpg'}
+              alt={event.title}
               width={150}
               height={150}
               priority
             />
             <EventDetails>
-              <EventName>{event.name}</EventName>
+              <EventName>{event.title}</EventName>
               <EventDescription>{event.description}</EventDescription>
               <EventInfo>
-                <span>Date:</span> {event.date}
+                <span>Date:</span> {new Date(event.date).toLocaleDateString()}
               </EventInfo>
               <EventInfo>
                 <span>Time:</span> {event.time}
@@ -294,16 +257,22 @@ const Home = () => {
       </DividerContainer>
       <SectionContainer>
         <NewsList>
-          {newsData.map((news) => (
+          {newsArticles.slice(0, 10).map((news) => (
             <NewsItem key={news.id}>
               <NewsContent>
                 <NewsHeadline>
-                  <a href={news.url} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={news.contentUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {news.title}
                   </a>
                 </NewsHeadline>
-                <NewsSummary>{news.summary}</NewsSummary>
-                <NewsDate>Published: {news.date}</NewsDate>
+                <NewsSummary>{news.newsSummary}</NewsSummary>
+                <NewsDate>
+                  Published: {new Date(news.date).toLocaleDateString()}
+                </NewsDate>
                 <NewsSource>Source: {news.source}</NewsSource>
               </NewsContent>
             </NewsItem>

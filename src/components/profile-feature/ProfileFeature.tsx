@@ -253,11 +253,11 @@ const ProfileFeature = () => {
         </ModalContainer>
       )}
       <FeaturesSectionContainer>
-        {displayedItems.map((lifestyle) => (
-          <FeaturesCard key={lifestyle.id}>
+        {displayedItems.map((profile) => (
+          <FeaturesCard key={profile.id}>
             <FeaturesImage
-              src={lifestyle.imageUrl || '/default-image.jpg'}
-              alt={lifestyle.title}
+              src={profile.imageUrl || '/default-image.jpg'}
+              alt={profile.title}
               width={500} // Replace with appropriate width
               height={300} // Replace with appropriate height
               priority
@@ -265,7 +265,7 @@ const ProfileFeature = () => {
 
             <FeaturesTitleContainer>
               {/* <Link href={`/lifestyle/${lifestyle.id}`}> */}
-              <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
+              <FeaturesTitle>{profile.title}</FeaturesTitle>
               {/* </Link> */}
             </FeaturesTitleContainer>
           </FeaturesCard>
