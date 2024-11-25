@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Container,
   DividerContainer,
@@ -15,155 +15,190 @@ import {
   ProductTitle,
   ProductPrice,
   ProductDescription,
-  Pagination,
-  PageButton,
+  CreateButtonContainer,
+  CreateButton,
+  ModalContainer,
+  ModalContent,
+  ModalContentTitle,
+  ModalContentForm,
+  FormItemContainer,
+  InputLabel,
+  Input,
+  Textarea,
+  UploadedImageContainer,
+  SubmitButton,
+  ModalCloseButton,
+  PaginationContainer,
+  PrevButton,
+  PageInfo,
+  NextButton,
+  ModalContentTitleContainer,
+  ImageContainer,
+  UploadButtonContainer,
+  UploadButton,
 } from './MarketPlace.styles';
+// import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+
+export interface ProductProps {
+  id?: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  contactEmail: string;
+  contactPhone: string;
+  imageUrl?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface CloudinaryWidgetResult {
+  event: string;
+  info: {
+    secure_url: string;
+  };
+}
+
+interface CloudinaryWidget {
+  open: () => void;
+  close: () => void;
+}
 
 const MarketPlace = () => {
   const [category, setCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [products, setProducts] = useState<ProductProps[]>([]);
+  const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
 
-  const products = [
-    {
-      id: 1,
-      title: 'Smartphone',
-      image: 'https://via.placeholder.com/500x500.png?text=Smartphone',
-      price: '$299.99',
-      description: 'A high-quality smartphone with great features.',
-      category: 'electronics',
-    },
-    {
-      id: 2,
-      title: 'Sneakers',
-      image: 'https://via.placeholder.com/500x500.png?text=Sneakers',
-      price: '$89.99',
-      description: 'Comfortable and stylish sneakers for all-day wear.',
-      category: 'fashion',
-    },
-    {
-      id: 3,
-      title: 'Laptop',
-      image: 'https://via.placeholder.com/500x500.png?text=Laptop',
-      price: '$999.99',
-      description: 'A powerful laptop for work and play.',
-      category: 'electronics',
-    },
-    {
-      id: 4,
-      title: 'Coffee Maker',
-      image: 'https://via.placeholder.com/500x500.png?text=Coffee+Maker',
-      price: '$49.99',
-      description: 'Brew your favorite coffee with ease.',
-      category: 'home',
-    },
-    {
-      id: 5,
-      title: 'Burger Meal',
-      image: 'https://via.placeholder.com/500x500.png?text=Burger+Meal',
-      price: '$9.99',
-      description: 'A delicious burger with fries and a drink.',
-      category: 'food',
-    },
-    {
-      id: 6,
-      title: 'Pizza',
-      image: 'https://via.placeholder.com/500x500.png?text=Pizza',
-      price: '$12.99',
-      description: 'Fresh pizza with your favorite toppings.',
-      category: 'food',
-    },
-    {
-      id: 7,
-      title: 'Sushi Set',
-      image: 'https://via.placeholder.com/500x500.png?text=Sushi+Set',
-      price: '$19.99',
-      description: 'A set of fresh sushi rolls served with soy sauce.',
-      category: 'food',
-    },
-    {
-      id: 8,
-      title: 'Pasta Dish',
-      image: 'https://via.placeholder.com/500x500.png?text=Pasta+Dish',
-      price: '$14.99',
-      description: 'A creamy pasta dish with chicken and vegetables.',
-      category: 'food',
-    },
-    {
-      id: 9,
-      title: 'Adobo Meal',
-      image: 'https://via.placeholder.com/500x500.png?text=Adobo+Meal',
-      price: '$10.99',
-      description:
-        'A savory Filipino classic made with marinated pork or chicken in a soy sauce, vinegar, and garlic sauce.',
-      category: 'food',
-    },
-    {
-      id: 10,
-      title: 'Sinigang Set',
-      image: 'https://via.placeholder.com/500x500.png?text=Sinigang+Set',
-      price: '$12.99',
-      description:
-        'A tangy Filipino soup made with tamarind, vegetables, and your choice of pork, shrimp, or fish.',
-      category: 'food',
-    },
-    {
-      id: 11,
-      title: 'Lechon Kawali',
-      image: 'https://via.placeholder.com/500x500.png?text=Lechon+Kawali',
-      price: '$13.99',
-      description:
-        'Crispy deep-fried pork belly, a Filipino delicacy, served with liver sauce or vinegar.',
-      category: 'food',
-    },
-    {
-      id: 12,
-      title: 'Pancit Bihon',
-      image: 'https://via.placeholder.com/500x500.png?text=Pancit+Bihon',
-      price: '$8.99',
-      description:
-        'Stir-fried rice noodles with vegetables, chicken, and shrimp, a popular Filipino dish.',
-      category: 'food',
-    },
-    {
-      id: 13,
-      title: 'Laing',
-      image: 'https://via.placeholder.com/500x500.png?text=Laing',
-      price: '$9.49',
-      description:
-        'A spicy Bicolano dish made with dried taro leaves cooked in coconut milk and chili.',
-      category: 'food',
-    },
-    {
-      id: 14,
-      title: 'Bicol Express',
-      image: 'https://via.placeholder.com/500x500.png?text=Bicol+Express',
-      price: '$11.49',
-      description:
-        'A creamy, spicy Filipino dish made with pork, shrimp, and chili peppers cooked in coconut milk.',
-      category: 'food',
-    },
-  ];
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('/api/marketplace');
+      const data: ProductProps[] = await response.json();
+      setProducts(data);
+      setTotalPages(Math.ceil(data.length / itemsPerPage));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  //  Filter products by selected category
   const filteredProducts =
     category === 'all'
       ? products
       : products.filter((product) => product.category === category);
 
-  // Paginate the filtered products
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // //  Calculate total number of pages
+  // const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedItems = filteredProducts.slice(startIndex, endIndex);
 
-  //  Calculate total number of pages
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
-  // Pagination button click handler
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const handleUploadImage = () => {
+    widgetRef.current?.open();
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.cloudinary) {
+      const cloudinaryWidget = window.cloudinary.createUploadWidget(
+        {
+          cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
+          uploadPreset: 'kabayankonek',
+          multiple: false,
+          sources: ['local', 'url', 'camera'],
+          debug: true,
+        },
+        (error: Error | null, result: CloudinaryWidgetResult) => {
+          if (result?.event === 'success') {
+            setImageUrl(result.info.secure_url);
+          } else if (error) {
+            console.error('Cloudinary upload error:', error);
+          }
+        }
+      );
+      widgetRef.current = cloudinaryWidget;
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !contactEmail ||
+      !contactPhone
+    ) {
+      alert('Please fill out all required fields.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    const productData = {
+      name,
+      description,
+      price: parseFloat(price),
+      category,
+      contactEmail,
+      contactPhone,
+      image: imageUrl || null,
+    };
+
+    try {
+      const response = await fetch('/api/marketplace', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      });
+
+      const responseBody = await response.json();
+
+      if (!response.ok) {
+        console.error(
+          'Error creating product:',
+          responseBody.error || 'Unknown error'
+        );
+        alert(responseBody.error || 'Error creating event');
+        return;
+      }
+
+      console.log('Event created!', responseBody);
+      setIsModalOpen(false);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error creating product:', error);
+      alert('Error creating product. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Container>
@@ -173,6 +208,110 @@ const MarketPlace = () => {
         <DividerLabel>MARKETPLACE</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <CreateButtonContainer>
+        <CreateButton onClick={toggleModal}>Create Product</CreateButton>
+      </CreateButtonContainer>
+
+      {isModalOpen && (
+        <ModalContainer>
+          <ModalContent>
+            <ModalContentTitleContainer>
+              <ModalContentTitle>Create New Product</ModalContentTitle>
+            </ModalContentTitleContainer>
+
+            <ModalContentForm onSubmit={handleSubmit}>
+              <FormItemContainer>
+                <InputLabel htmlFor="name">Product Name:</InputLabel>
+                <Input
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </FormItemContainer>
+              <FormItemContainer>
+                <InputLabel htmlFor="description">Description:</InputLabel>
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </FormItemContainer>
+              <FormItemContainer>
+                <InputLabel htmlFor="price">Price:</InputLabel>
+                <Input
+                  id="price"
+                  type="number"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </FormItemContainer>
+              <FormItemContainer>
+                <InputLabel htmlFor="category">Category:</InputLabel>
+                <FilterSelect
+                  id="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                >
+                  <option value="electronics">Electronics</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="home">Home</option>
+                  <option value="food">Food</option>
+                  <option value="others">Others</option>
+                </FilterSelect>
+              </FormItemContainer>
+
+              <FormItemContainer>
+                <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
+                <Input
+                  id="contactEmail"
+                  type="email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  required
+                />
+              </FormItemContainer>
+              <FormItemContainer>
+                <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
+                <Input
+                  id="contactPhone"
+                  type="tel"
+                  value={contactPhone}
+                  onChange={(e) => setContactPhone(e.target.value)}
+                  required
+                />
+              </FormItemContainer>
+              <FormItemContainer>
+                <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                <ImageContainer>
+                  <UploadButtonContainer>
+                    <UploadButton type="button" onClick={handleUploadImage}>
+                      Upload Image
+                    </UploadButton>
+                  </UploadButtonContainer>
+                  {imageUrl && (
+                    <UploadedImageContainer>
+                      <Image
+                        src={imageUrl}
+                        alt="Product"
+                        width={150}
+                        height={150}
+                      />
+                    </UploadedImageContainer>
+                  )}
+                </ImageContainer>
+              </FormItemContainer>
+              <SubmitButton type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Create Product'}
+              </SubmitButton>
+            </ModalContentForm>
+            <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
+          </ModalContent>
+        </ModalContainer>
+      )}
       <SectionContainer>
         <FilterSection>
           <div>
@@ -194,29 +333,36 @@ const MarketPlace = () => {
         </FilterSection>
 
         <ProductList>
-          {currentProducts.map((product) => (
+          {displayedItems.map((product) => (
             <ProductCard key={product.id}>
-              <ProductImage src={product.image} alt={product.title} />
-              <ProductTitle>{product.title}</ProductTitle>
+              <ProductImage
+                src={product.imageUrl || '/default-event.jpg'}
+                alt={product.name}
+                width={150}
+                height={150}
+                priority
+              />
+              <ProductTitle>{product.name}</ProductTitle>
               <ProductPrice>{product.price}</ProductPrice>
               <ProductDescription>{product.description}</ProductDescription>
             </ProductCard>
           ))}
         </ProductList>
 
-        <Pagination>
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-            (pageNumber) => (
-              <PageButton
-                key={pageNumber}
-                $isActive={currentPage === pageNumber}
-                onClick={() => paginate(pageNumber)}
-              >
-                {pageNumber}
-              </PageButton>
-            )
-          )}
-        </Pagination>
+        <PaginationContainer>
+          <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
+            Previous
+          </PrevButton>
+          <PageInfo>
+            Page {currentPage} of {totalPages}
+          </PageInfo>
+          <NextButton
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </NextButton>
+        </PaginationContainer>
       </SectionContainer>
     </Container>
   );

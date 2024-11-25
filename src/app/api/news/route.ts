@@ -1,28 +1,20 @@
 import prisma from '@/lib/prisma';
-import { v2 as cloudinary } from 'cloudinary';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Correct Cloudinary config setup
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
-
 // GET: Fetch all events
 export async function GET() {
   try {
-    const events = await prisma.event.findMany({
+    const newsArticles = await prisma.newsArticle.findMany({
       include: { user: true },
       // orderBy: { date: 'asc' },
     });
-    return NextResponse.json(events);
+    return NextResponse.json(newsArticles);
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching news articles:', error);
     return NextResponse.json(
-      { error: 'Error fetching events' },
+      { error: 'Error fetching news articles:' },
       { status: 500 }
     );
   }
@@ -37,44 +29,34 @@ export async function POST(req: NextRequest) {
     if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { title, description, date, time, address, image } = body;
+    const { title, contentUrl, newsSummary, date, source } = body;
 
-    if (!title || !description || !date || !time || !address) {
+    if (!title || !contentUrl || !newsSummary || !date || !source) {
       return NextResponse.json(
         {
           error:
-            'All fields (title, description,date,time,address) are required',
+            'All fields ( title,contentUrl,newsSummary,date,source,) are required',
         },
         { status: 400 }
       );
     }
 
-    let imageUrl = null;
-    // Handle optional image upload
-    if (image) {
-      const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'events_folder',
-      });
-      imageUrl = uploadedImage.secure_url;
-    }
-
     // Create article in the database
-    const newEvent = await prisma.event.create({
+    const newNewsArticle = await prisma.newsArticle.create({
       data: {
         title,
-        description,
+        contentUrl,
+        newsSummary,
         date: new Date(date),
-        time,
-        address,
-        imageUrl,
+        source,
         userId: session.user.id, // Add admin's ID as the userId
       },
     });
 
     // Return the created article
-    return NextResponse.json(newEvent, { status: 201 });
+    return NextResponse.json(newNewsArticle, { status: 201 });
   } catch (error) {
-    console.error('Error creating event:', error);
+    console.error('Error creating news article:', error);
     return NextResponse.json(
       { error: 'Error creating event || Unknown error' },
       { status: 500 }

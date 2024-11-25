@@ -191,9 +191,7 @@ const ProfileFeature = () => {
         <ModalContainer>
           <ModalContent>
             <ModalContentTitleContainer>
-              <ModalContentTitle>
-                Create New Lifestyle Article
-              </ModalContentTitle>
+              <ModalContentTitle>Create New Kabayan Article</ModalContentTitle>
             </ModalContentTitleContainer>
             <ModalContentForm onSubmit={handleSubmit}>
               <FormItemContainer>

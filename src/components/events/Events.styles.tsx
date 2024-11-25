@@ -257,7 +257,7 @@ export const Textarea = styled.textarea`
 
 export const ImageContainer = styled.div`
   width: 100%;
-  padding: 0 10px;
+  /* padding: 0 10px; */
   display: flex;
   justify-content: center;
   align-items: center;

@@ -30,6 +30,10 @@ import {
   PrevButton,
   PageInfo,
   NextButton,
+  ImageContainer,
+  UploadButtonContainer,
+  UploadButton,
+  ModalContentTitleContainer,
 } from './Events.styles';
 import Image from 'next/image';
 // import { useSession } from 'next-auth/react';
@@ -196,7 +200,9 @@ const Events = () => {
       {isModalOpen && (
         <ModalContainer>
           <ModalContent>
-            <ModalContentTitle>Create New Event</ModalContentTitle>
+            <ModalContentTitleContainer>
+              <ModalContentTitle>Create New Event</ModalContentTitle>
+            </ModalContentTitleContainer>
             <ModalContentForm onSubmit={handleSubmit}>
               <FormItemContainer>
                 <InputLabel htmlFor="title">Event Name:</InputLabel>
@@ -246,20 +252,24 @@ const Events = () => {
                 />
               </FormItemContainer>
               <FormItemContainer>
-                <InputLabel>Image:</InputLabel>
-                <UploadedImageContainer>
+                <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                <ImageContainer>
+                  <UploadButtonContainer>
+                    <UploadButton type="button" onClick={handleUploadImage}>
+                      Upload Image
+                    </UploadButton>
+                  </UploadButtonContainer>
                   {imageUrl && (
-                    <Image
-                      src={imageUrl}
-                      alt="Event"
-                      width={150}
-                      height={150}
-                    />
+                    <UploadedImageContainer>
+                      <Image
+                        src={imageUrl}
+                        alt="Event"
+                        width={150}
+                        height={150}
+                      />
+                    </UploadedImageContainer>
                   )}
-                </UploadedImageContainer>
-                <button type="button" onClick={handleUploadImage}>
-                  Upload Image
-                </button>
+                </ImageContainer>
               </FormItemContainer>
               <SubmitButton type="submit" disabled={isSubmitting}>
                 {isSubmitting ? 'Submitting...' : 'Submit'}

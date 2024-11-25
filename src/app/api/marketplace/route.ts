@@ -11,24 +11,24 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// GET: Fetch all events
+// GET: Fetch all products
 export async function GET() {
   try {
-    const events = await prisma.event.findMany({
+    const products = await prisma.product.findMany({
       include: { user: true },
       // orderBy: { date: 'asc' },
     });
-    return NextResponse.json(events);
+    return NextResponse.json(products);
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching products:', error);
     return NextResponse.json(
-      { error: 'Error fetching events' },
+      { error: 'Error fetching products' },
       { status: 500 }
     );
   }
 }
 
-// POST: Create a new event
+// POST: Create a new product
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -37,13 +37,28 @@ export async function POST(req: NextRequest) {
     if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { title, description, date, time, address, image } = body;
+    const {
+      name,
+      description,
+      price,
+      category,
+      contactEmail,
+      contactPhone,
+      image,
+    } = body;
 
-    if (!title || !description || !date || !time || !address) {
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !contactEmail ||
+      !contactPhone
+    ) {
       return NextResponse.json(
         {
           error:
-            'All fields (title, description,date,time,address) are required',
+            'All fields (name, description,price,category,contactEmail, contactPhone ) are required',
         },
         { status: 400 }
       );
@@ -53,30 +68,31 @@ export async function POST(req: NextRequest) {
     // Handle optional image upload
     if (image) {
       const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'events_folder',
+        folder: 'marketplace_folder',
       });
       imageUrl = uploadedImage.secure_url;
     }
 
-    // Create article in the database
-    const newEvent = await prisma.event.create({
+    // Create product in the database
+    const newProduct = await prisma.product.create({
       data: {
-        title,
+        name,
         description,
-        date: new Date(date),
-        time,
-        address,
+        price,
+        category,
+        contactEmail,
+        contactPhone,
         imageUrl,
         userId: session.user.id, // Add admin's ID as the userId
       },
     });
 
     // Return the created article
-    return NextResponse.json(newEvent, { status: 201 });
+    return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    console.error('Error creating event:', error);
+    console.error('Error creating product:', error);
     return NextResponse.json(
-      { error: 'Error creating event || Unknown error' },
+      { error: 'Error creating product || Unknown error' },
       { status: 500 }
     );
   }

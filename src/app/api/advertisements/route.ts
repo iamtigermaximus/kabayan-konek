@@ -14,15 +14,15 @@ cloudinary.config({
 // GET: Fetch all events
 export async function GET() {
   try {
-    const events = await prisma.event.findMany({
+    const advertisements = await prisma.advertisement.findMany({
       include: { user: true },
       // orderBy: { date: 'asc' },
     });
-    return NextResponse.json(events);
+    return NextResponse.json(advertisements);
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching advertisement:', error);
     return NextResponse.json(
-      { error: 'Error fetching events' },
+      { error: 'Error fetching advertisement' },
       { status: 500 }
     );
   }
@@ -37,13 +37,12 @@ export async function POST(req: NextRequest) {
     if (!session || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { title, description, date, time, address, image } = body;
+    const { title, description, category, image } = body;
 
-    if (!title || !description || !date || !time || !address) {
+    if (!title || !description || !category) {
       return NextResponse.json(
         {
-          error:
-            'All fields (title, description,date,time,address) are required',
+          error: 'All fields (title, description,category) are required',
         },
         { status: 400 }
       );
@@ -53,30 +52,28 @@ export async function POST(req: NextRequest) {
     // Handle optional image upload
     if (image) {
       const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'events_folder',
+        folder: 'ads_folder',
       });
       imageUrl = uploadedImage.secure_url;
     }
 
     // Create article in the database
-    const newEvent = await prisma.event.create({
+    const newAdvertisement = await prisma.advertisement.create({
       data: {
         title,
         description,
-        date: new Date(date),
-        time,
-        address,
+        category,
         imageUrl,
         userId: session.user.id, // Add admin's ID as the userId
       },
     });
 
     // Return the created article
-    return NextResponse.json(newEvent, { status: 201 });
+    return NextResponse.json(newAdvertisement, { status: 201 });
   } catch (error) {
-    console.error('Error creating event:', error);
+    console.error('Error creating advertisement:', error);
     return NextResponse.json(
-      { error: 'Error creating event || Unknown error' },
+      { error: 'Error creating advertisement || Unknown error' },
       { status: 500 }
     );
   }

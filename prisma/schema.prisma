@@ -25,6 +25,9 @@ model User {
   kabayanSpotlights KabayanSpotlight[]
   lifestyleArticles LifestyleArticle[]
   newsArticles NewsArticle[]
+  advertisements     Advertisement[] 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())  
 }
 
 
@@ -72,17 +75,25 @@ model Event {
   imageUrl    String?  
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())  
 }
 
 model Product {
-   id        String   @id @default(uuid()) 
-  name        String
-  description String
-  price       Float
-  imageUrl    String?  // Optional image URL for the product
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  id            String   @id @default(uuid())
+  name          String
+  description   String
+ category    String   @default("uncategorized") 
+  price         Float
+  contactEmail  String? 
+  contactPhone  String? 
+  imageUrl      String? 
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())  
 }
+
 
 model KabayanSpotlight {
    id        String   @id @default(uuid()) 
@@ -92,7 +103,7 @@ model KabayanSpotlight {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())  
 }
 
 model LifestyleArticle {
@@ -103,15 +114,30 @@ model LifestyleArticle {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())  
 }
 
 model NewsArticle {
   id        String   @id @default(uuid()) 
   title       String
-  contentUrl  String   // URL to the news article from an external site
+  contentUrl  String 
+  newsSummary   String
+  date        DateTime
+  source      String
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())  
+}
+
+model Advertisement {
+  id        String   @id @default(uuid()) 
+  title       String
+  description  String 
+  category   String
+  imageUrl    String?  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())  
 }
