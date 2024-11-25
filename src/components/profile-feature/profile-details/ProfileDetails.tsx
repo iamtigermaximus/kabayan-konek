@@ -14,7 +14,7 @@ interface KabayanArticle {
   updatedAt: string;
 }
 
-const LifestyleDetails = () => {
+const ProfileDetails = () => {
   const [article, setArticle] = useState<KabayanArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -75,4 +75,5 @@ const LifestyleDetails = () => {
   );
 };
 
-export default LifestyleDetails;
+export default ProfileDetails;
+

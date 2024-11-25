@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -38,7 +38,8 @@ import {
   UploadButton,
   UploadButtonContainer,
   UploadedImageContainer,
-} from './Advertise.styles';
+} from './Advertisement.styles';
+import Link from 'next/link';
 
 interface AdvertisementProps {
   id: string;
@@ -63,7 +64,7 @@ interface CloudinaryWidget {
   close: () => void;
 }
 
-const Advertise = () => {
+const Advertisement = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,22 +104,28 @@ const Advertise = () => {
   };
 
   // Filter advertisements by category
-  const filterAdvertisements = (category: string) => {
-    if (category === 'all' || !category) {
-      setFilteredAdvertisements(advertisements);
-    } else {
-      const filtered = advertisements.filter((ad) => ad.category === category);
-      setFilteredAdvertisements(filtered);
-    }
-  };
+  // Memoize the filterAdvertisements function using useCallback
+  const filterAdvertisements = useCallback(
+    (category: string) => {
+      if (category === 'all' || !category) {
+        setFilteredAdvertisements(advertisements);
+      } else {
+        const filtered = advertisements.filter(
+          (ad) => ad.category === category
+        );
+        setFilteredAdvertisements(filtered);
+      }
+    },
+    [advertisements]
+  ); // dependencies: advertisements
 
   useEffect(() => {
     fetchAdvertisements();
   }, []);
 
   useEffect(() => {
-    filterAdvertisements(category); // Filter advertisements when category changes
-  }, [category, advertisements]);
+    filterAdvertisements(category);
+  }, [category, filterAdvertisements]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -383,11 +390,13 @@ const Advertise = () => {
         </FilterSection>
         <AdList>
           {displayedItems.map((ad) => (
-            <AdCard key={ad.id}>
-              <AdImage src={ad.imageUrl} alt={ad.title} />
-              <AdTitle>{ad.title}</AdTitle>
-              <AdDescription>{ad.description}</AdDescription>
-            </AdCard>
+            <Link href={`/advertisement/${ad.id}`} key={ad.id}>
+              <AdCard>
+                <AdImage src={ad.imageUrl} alt={ad.title} />
+                <AdTitle>{ad.title}</AdTitle>
+                <AdDescription>{ad.description}</AdDescription>
+              </AdCard>
+            </Link>
           ))}
         </AdList>
 
@@ -410,4 +419,4 @@ const Advertise = () => {
   );
 };
 
-export default Advertise;
+export default Advertisement;

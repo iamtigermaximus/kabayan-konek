@@ -38,6 +38,7 @@ import {
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface EventProps {
   id: string;
@@ -364,28 +365,30 @@ const Events = () => {
 
       <SectionContainer>
         {displayedItems.map((event) => (
-          <EventCard key={event.id}>
-            <EventImage
-              src={event.imageUrl || '/default-event.jpg'}
-              alt={event.title}
-              width={150}
-              height={150}
-              priority
-            />
-            <EventDetails>
-              <EventName>{event.title}</EventName>
-              <EventDescription>{event.description}</EventDescription>
-              <EventInfo>
-                <span>Date:</span> {new Date(event.date).toLocaleDateString()}
-              </EventInfo>
-              <EventInfo>
-                <span>Time:</span> {event.time}
-              </EventInfo>
-              <EventInfo>
-                <span>Address:</span> {event.address}
-              </EventInfo>
-            </EventDetails>
-          </EventCard>
+          <Link href={`/events/${event.id}`} key={event.id}>
+            <EventCard key={event.id}>
+              <EventImage
+                src={event.imageUrl || '/default-event.jpg'}
+                alt={event.title}
+                width={150}
+                height={150}
+                priority
+              />
+              <EventDetails>
+                <EventName>{event.title}</EventName>
+                <EventDescription>{event.description}</EventDescription>
+                <EventInfo>
+                  <span>Date:</span> {new Date(event.date).toLocaleDateString()}
+                </EventInfo>
+                <EventInfo>
+                  <span>Time:</span> {event.time}
+                </EventInfo>
+                <EventInfo>
+                  <span>Address:</span> {event.address}
+                </EventInfo>
+              </EventDetails>
+            </EventCard>
+          </Link>
         ))}
       </SectionContainer>
 

@@ -36,10 +36,11 @@ import {
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
-} from './MarketPlace.styles';
+} from './Marketplace.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export interface ProductProps {
   id?: string;
@@ -425,7 +426,10 @@ const MarketPlace = () => {
                 height={150}
                 priority
               />
-              <ProductTitle>{product.name}</ProductTitle>
+              <Link href={`/marketplace/${product.id}`}>
+                <ProductTitle>{product.name}</ProductTitle>
+                <ProductTitle>{product.id}</ProductTitle>
+              </Link>
               <ProductPrice>{product.price}</ProductPrice>
               <ProductDescription>{product.description}</ProductDescription>
             </ProductCard>

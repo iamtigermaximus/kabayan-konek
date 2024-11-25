@@ -60,8 +60,8 @@ const Navbar = () => {
         <MenuLink href="/profile">Kabayan</MenuLink>
         <MenuLink href="/news">News</MenuLink>
         <MenuLink href="/events">Events</MenuLink>
-        <MenuLink href="/market">Marketplace</MenuLink>
-        <MenuLink href="/advertise">Advertisement</MenuLink>
+        <MenuLink href="/marketplace">Marketplace</MenuLink>
+        <MenuLink href="/advertisement">Advertisement</MenuLink>
       </MenuContainer>
 
       <BurgerMenu onClick={toggleSidebar}>
@@ -105,10 +105,10 @@ const Navbar = () => {
           <Link href="/events" onClick={toggleSidebar}>
             Events
           </Link>
-          <Link href="/market" onClick={toggleSidebar}>
+          <Link href="/marketplace" onClick={toggleSidebar}>
             Marketplace
           </Link>
-          <Link href="/advertise" onClick={toggleSidebar}>
+          <Link href="/advertisement" onClick={toggleSidebar}>
             Advertisement
           </Link>
         </div>

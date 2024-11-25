@@ -1,7 +1,8 @@
+import NewsDetails from '@/components/news/news-details/NewsDetails';
 import React from 'react';
 
 const NewsDetailsPage = () => {
-  return <div>NewsDetailsPage</div>;
+  return <NewsDetails />;
 };
 
 export default NewsDetailsPage;
