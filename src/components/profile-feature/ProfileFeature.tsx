@@ -76,6 +76,12 @@ const ProfileFeature = () => {
     try {
       const response = await fetch('/api/profile');
       const data: KabayanArticle[] = await response.json();
+
+      data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
       setArticles(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {

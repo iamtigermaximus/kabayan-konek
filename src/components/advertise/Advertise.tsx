@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { breakpoints as bp } from '../../utils/layout';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface AdvertisementProps {
   id: string;
@@ -234,21 +236,22 @@ export const ModalCloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const CreateButtonContainer = styled.div`
-  width: 100%;
-  padding: 0 10px 10px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
+// export const CreateButtonContainer = styled.div`
+//   width: 100%;
+//   padding: 0 10px 10px;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+// `;
 
-export const CreateButton = styled.button`
-  border: none;
-  padding: 10px;
-  width: 150px;
-  background-color: #494848;
-  color: white;
-`;
+// export const CreateButton = styled.button`
+//   border: none;
+//   padding: 10px;
+//   min-width: 150px;
+//   max-width: 100%;
+//   background-color: #494848;
+//   color: white;
+// `;
 
 export const InputLabel = styled.label`
   font-size: 14px;
@@ -333,6 +336,8 @@ export const FilterSelect = styled.select`
 `;
 
 const Advertise = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
@@ -355,6 +360,12 @@ const Advertise = () => {
     try {
       const response = await fetch('/api/advertisements');
       const data: AdvertisementProps[] = await response.json();
+
+      data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
       setAdvertisements(data);
       setFilteredAdvertisements(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
@@ -365,13 +376,12 @@ const Advertise = () => {
 
   // Filter advertisements by category
   const filterAdvertisements = (category: string) => {
-    if (category === 'all') {
+    if (category === 'all' || !category) {
       setFilteredAdvertisements(advertisements);
     } else {
       const filtered = advertisements.filter((ad) => ad.category === category);
       setFilteredAdvertisements(filtered);
     }
-    setCurrentPage(1); // Reset page when category changes
   };
 
   useEffect(() => {
@@ -470,6 +480,10 @@ const Advertise = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   return (
     <Container>
       <title>ADVERTISEMENTS | kabayankonek</title>
@@ -478,13 +492,84 @@ const Advertise = () => {
         <DividerLabel>ADVERTISEMENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <CreateButtonContainer>
-        <CreateButton onClick={toggleModal}>CREATE ADVERTISEMENT</CreateButton>
-      </CreateButtonContainer>
+      <div>
+        {!session ? (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Want to post your own advertisement?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              Log in or sign up to create and manage your advertisements easily.
+            </p>
+            <button
+              onClick={handleLoginClick}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#222',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              Log In or Sign Up
+            </button>
+          </div>
+        ) : (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Ready to share your advertisement with the Filipino community in
+              Finland?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              You are logged in! Create and manage your ads, and reach more
+              potential customers.
+            </p>
+            <button
+              onClick={() => toggleModal()}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              CREATE ADVERTISEMENT
+            </button>
+          </div>
+        )}
+      </div>
+      {/* {session && (
+        <CreateButtonContainer>
+          <CreateButton onClick={toggleModal}>
+            CREATE ADVERTISEMENT
+          </CreateButton>
+        </CreateButtonContainer>
+      )} */}
       {isModalOpen && (
         <ModalContainer>
           <ModalContent>
-            <ModalCloseButton onClick={toggleModal}>&times;</ModalCloseButton>
+            <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
             <ModalContentTitleContainer>
               <ModalContentTitle>Create Advertisement</ModalContentTitle>
             </ModalContentTitleContainer>

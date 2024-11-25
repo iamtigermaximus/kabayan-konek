@@ -77,6 +77,11 @@ const Lifestyle = () => {
     try {
       const response = await fetch('/api/lifestyle');
       const data: LifestyleArticle[] = await response.json();
+      data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
       setArticles(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {

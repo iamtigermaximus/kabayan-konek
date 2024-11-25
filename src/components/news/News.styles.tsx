@@ -180,7 +180,8 @@ export const CreateButtonContainer = styled.div`
 export const CreateButton = styled.button`
   border: none;
   padding: 10px;
-  width: 150px;
+  min-width: 150px;
+  max-width: 100%;
   background-color: #494848;
   color: white;
 `;

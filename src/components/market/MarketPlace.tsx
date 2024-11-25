@@ -15,8 +15,8 @@ import {
   ProductTitle,
   ProductPrice,
   ProductDescription,
-  CreateButtonContainer,
-  CreateButton,
+  // CreateButtonContainer,
+  // CreateButton,
   ModalContainer,
   ModalContent,
   ModalContentTitle,
@@ -37,8 +37,9 @@ import {
   UploadButtonContainer,
   UploadButton,
 } from './MarketPlace.styles';
-// import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export interface ProductProps {
   id?: string;
@@ -66,6 +67,8 @@ interface CloudinaryWidget {
 }
 
 const MarketPlace = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [category, setCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -85,6 +88,13 @@ const MarketPlace = () => {
     try {
       const response = await fetch('/api/marketplace');
       const data: ProductProps[] = await response.json();
+
+      data.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+
       setProducts(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
@@ -200,6 +210,10 @@ const MarketPlace = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   return (
     <Container>
       <title>MARKETPLACE | kabayankonek</title>
@@ -208,9 +222,78 @@ const MarketPlace = () => {
         <DividerLabel>MARKETPLACE</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <CreateButtonContainer>
-        <CreateButton onClick={toggleModal}>Create Product</CreateButton>
-      </CreateButtonContainer>
+      <div>
+        {!session ? (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Want to sell or post your own products?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              Log in or sign up to create and manage your products. Join our
+              marketplace and start selling today!
+            </p>
+            <button
+              onClick={handleLoginClick}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#222',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              Log In or Sign Up
+            </button>
+          </div>
+        ) : (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Ready to share your products with the marketplace?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              You are logged in! Create and manage your products easily, and
+              reach more buyers.
+            </p>
+            <button
+              onClick={() => toggleModal()}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              POST PRODUCT
+            </button>
+          </div>
+        )}
+      </div>
+      {/* {session && (
+        <CreateButtonContainer>
+          <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>
+        </CreateButtonContainer>
+      )} */}
 
       {isModalOpen && (
         <ModalContainer>

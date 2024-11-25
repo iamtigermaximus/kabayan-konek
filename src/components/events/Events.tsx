@@ -13,8 +13,8 @@ import {
   EventName,
   EventDescription,
   EventInfo,
-  CreateButtonContainer,
-  CreateButton,
+  // CreateButtonContainer,
+  // CreateButton,
   ModalContainer,
   ModalContent,
   ModalContentTitle,
@@ -36,7 +36,8 @@ import {
   ModalContentTitleContainer,
 } from './Events.styles';
 import Image from 'next/image';
-// import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface EventProps {
   id: string;
@@ -47,8 +48,8 @@ interface EventProps {
   address: string;
   imageUrl?: string;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface CloudinaryWidgetResult {
@@ -64,7 +65,8 @@ interface CloudinaryWidget {
 }
 
 const Events = () => {
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -84,6 +86,13 @@ const Events = () => {
     try {
       const response = await fetch('/api/events');
       const data: EventProps[] = await response.json();
+
+      data.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+
       setEvents(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
@@ -185,6 +194,10 @@ const Events = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   return (
     <Container>
       <DividerContainer>
@@ -192,10 +205,79 @@ const Events = () => {
         <DividerLabel>EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <div>
+        {!session ? (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Want to post your own events?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              Log in or sign up to create and manage your events with ease. Join
+              our community today!
+            </p>
+            <button
+              onClick={handleLoginClick}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#222',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              Log In or Sign Up
+            </button>
+          </div>
+        ) : (
+          <div
+            style={{
+              margin: '20px 0',
+              padding: '20px',
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              textAlign: 'center',
+              backgroundColor: '#e6f7ff',
+            }}
+          >
+            <h2 style={{ marginBottom: '10px' }}>
+              Ready to share your events with the community?
+            </h2>
+            <p style={{ marginBottom: '20px', color: '#555' }}>
+              You are logged in! Create and manage your events easily, and
+              engage with your audience.
+            </p>
+            <button
+              onClick={() => toggleModal()}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              CREATE AN EVENT
+            </button>
+          </div>
+        )}
+      </div>
 
-      <CreateButtonContainer>
-        <CreateButton onClick={toggleModal}>CREATE EVENT</CreateButton>
-      </CreateButtonContainer>
+      {/* {session && (
+        <CreateButtonContainer>
+          <CreateButton onClick={toggleModal}>CREATE EVENT</CreateButton>
+        </CreateButtonContainer>
+      )} */}
 
       {isModalOpen && (
         <ModalContainer>

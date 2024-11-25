@@ -30,6 +30,7 @@ import {
   SubmitButton,
   ModalCloseButton,
 } from './News.styles';
+import { useSession } from 'next-auth/react';
 
 interface NewsArticleProps {
   id: string;
@@ -44,57 +45,7 @@ interface NewsArticleProps {
 }
 
 const News = () => {
-  // const newsData = [
-  //   {
-  //     id: 1,
-  //     title: 'Finland Tightens Immigration Policies Amid Increased Arrivals',
-  //     summary:
-  //       'The Finnish government has announced new immigration regulations in response to the rise in asylum seekers and work-based immigration.',
-  //     source: 'Helsinki Times',
-  //     url: 'https://www.helsinkitimes.fi/',
-  //     date: '2024-11-20',
-  //   },
-  //   {
-  //     id: 2,
-  //     title:
-  //       'Study Finds Finland’s Immigrant Population Contributes Billions to Economy',
-  //     summary:
-  //       'A recent report highlights the growing importance of immigrants in Finland’s economy, contributing significantly to the workforce and tax revenue.',
-  //     source: 'Yle News',
-  //     url: 'https://yle.fi/',
-  //     date: '2024-11-19',
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'Record Number of Immigrants Settle in Finland in 2024',
-  //     summary:
-  //       '2024 saw an unprecedented number of people moving to Finland, with a large percentage coming from neighboring countries and beyond.',
-  //     source: 'Finnish News Agency',
-  //     url: 'https://www.savonsanomat.fi/',
-  //     date: '2024-11-18',
-  //   },
-  //   {
-  //     id: 4,
-  //     title:
-  //       'Finnish Government Launches New Integration Programs for Immigrants',
-  //     summary:
-  //       'The Finnish government is investing heavily in integration programs to help immigrants better assimilate into society, offering language courses and job opportunities.',
-  //     source: 'Helsinki Times',
-  //     url: 'https://www.helsinkitimes.fi/',
-  //     date: '2024-11-17',
-  //   },
-  //   {
-  //     id: 5,
-  //     title:
-  //       'Immigration Debate Heats Up in Finland as Parliament Discusses Policy Changes',
-  //     summary:
-  //       'A heated debate has emerged in Finland’s parliament regarding potential changes to the country’s immigration policies, with some advocating for stricter controls.',
-  //     source: 'YLE News',
-  //     url: 'https://yle.fi/',
-  //     date: '2024-11-16',
-  //   },
-  // ];
-
+  const { data: session } = useSession();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
@@ -112,6 +63,9 @@ const News = () => {
     try {
       const response = await fetch('/api/news');
       const data: NewsArticleProps[] = await response.json();
+      data.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
       setNewsArticles(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
@@ -195,9 +149,11 @@ const News = () => {
         <DividerLabel>NEWS</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <CreateButtonContainer>
-        <CreateButton onClick={toggleModal}>CREATE NEWS ARTICLE</CreateButton>
-      </CreateButtonContainer>
+      {session?.user?.role === 'admin' && (
+        <CreateButtonContainer>
+          <CreateButton onClick={toggleModal}>CREATE NEWS ARTICLE</CreateButton>
+        </CreateButtonContainer>
+      )}
 
       {isModalOpen && (
         <ModalContainer>

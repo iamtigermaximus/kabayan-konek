@@ -223,21 +223,21 @@ export const ModalCloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const CreateButtonContainer = styled.div`
-  width: 100%;
-  padding: 0 10px 10px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-`;
+// export const CreateButtonContainer = styled.div`
+//   width: 100%;
+//   padding: 0 10px 10px;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: center;
+// `;
 
-export const CreateButton = styled.button`
-  border: none;
-  padding: 10px;
-  width: 150px;
-  background-color: #494848;
-  color: white;
-`;
+// export const CreateButton = styled.button`
+//   border: none;
+//   padding: 10px;
+//   width: 150px;
+//   background-color: #494848;
+//   color: white;
+// `;
 
 export const InputLabel = styled.label`
   font-size: 14px;
