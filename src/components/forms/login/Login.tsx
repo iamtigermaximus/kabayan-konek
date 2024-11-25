@@ -49,7 +49,7 @@ interface Credentials {
 const LoginPageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') ?? '/about';
+  const callbackUrl = searchParams.get('callbackUrl') ?? '/';
 
   const {
     control,
@@ -145,7 +145,8 @@ const LoginPageContent = () => {
 
 const Login = () => {
   const loginWithGoogle = () => {
-    signIn('google', { callbackUrl: `${window.location.origin}/about` });
+    // Sign in with Google and don't pass any callbackUrl
+    signIn('google', { callbackUrl: `${window.location.origin}` });
   };
 
   return (

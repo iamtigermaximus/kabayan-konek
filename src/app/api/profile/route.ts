@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import { v2 as cloudinary } from 'cloudinary';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+// import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Correct Cloudinary config setup
@@ -14,10 +15,10 @@ cloudinary.config({
 // GET request to fetch all lifestyle articles
 export async function GET() {
   try {
-    const lifestyleArticles = await prisma.lifestyleArticle.findMany({
+    const kabayanSpotlights = await prisma.kabayanSpotlight.findMany({
       include: { user: true },
     });
-    return NextResponse.json(lifestyleArticles);
+    return NextResponse.json(kabayanSpotlights);
   } catch (error) {
     console.error('Error fetching lifestyle articles:', error);
     return NextResponse.json(
@@ -53,13 +54,13 @@ export async function POST(req: NextRequest) {
     // Handle optional image upload
     if (image) {
       const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'lifestyle_articles',
+        folder: 'kabayan_spotlights',
       });
       imageUrl = uploadedImage.secure_url;
     }
 
     // Create article in the database
-    const newArticle = await prisma.lifestyleArticle.create({
+    const newArticle = await prisma.kabayanSpotlight.create({
       data: {
         title,
         content,

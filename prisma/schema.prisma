@@ -63,11 +63,13 @@ model VerificationToken {
 
 
 model Event {
-  id        String   @id @default(uuid()) 
+  id          String   @id @default(uuid()) 
   title       String
   description String
   date        DateTime
-  imageUrl    String?  // Optional image URL for the event
+  time        String   
+  address     String   
+  imageUrl    String?  
   userId      String
   user        User     @relation(fields: [userId], references: [id])
 }
