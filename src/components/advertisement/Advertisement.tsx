@@ -2,10 +2,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
+  AdBasicInfoContainer,
   AdCard,
   AdDescription,
   AdImage,
@@ -33,13 +33,31 @@ import {
   PaginationContainer,
   PrevButton,
   SectionContainer,
+  StyledEditorContainer,
+  StyledLink,
   SubmitButton,
-  Textarea,
+  ToolbarButton,
+  ToolbarContainer,
+  // Textarea,
   UploadButton,
   UploadButtonContainer,
   UploadedImageContainer,
 } from './Advertisement.styles';
 import Link from 'next/link';
+import Image from 'next/image';
+
+// Tiptap imports
+import { useEditor, EditorContent } from '@tiptap/react';
+import { StarterKit } from '@tiptap/starter-kit';
+import { Heading } from '@tiptap/extension-heading'; // For headings
+import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
+import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
+import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
+import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
+import { CodeBlock } from '@tiptap/extension-code-block';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Underline } from '@tiptap/extension-underline';
 
 interface AdvertisementProps {
   id: string;
@@ -74,7 +92,7 @@ const Advertisement = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  // const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,6 +102,26 @@ const Advertisement = () => {
   >([]);
 
   const itemsPerPage = 6; // Number of ads to show per page
+
+  //  Initialize Tiptap editor
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ['paragraph', 'heading'],
+      }),
+      Underline,
+      Heading.configure({ levels: [1, 2, 3] }),
+      TiptapLink,
+      TiptapImage,
+      Blockquote,
+      HorizontalRule,
+      TextAlign.configure({ types: ['paragraph', 'heading'] }),
+      CodeBlock,
+      TextStyle,
+    ],
+    content: '',
+  });
 
   const fetchAdvertisements = async () => {
     try {
@@ -145,6 +183,28 @@ const Advertisement = () => {
     widgetRef.current?.open();
   };
 
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined' && window.cloudinary) {
+  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
+  //       {
+  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  //         uploadPreset: 'kabayankonek',
+  //         multiple: false,
+  //         sources: ['local', 'url', 'camera'],
+  //         debug: true,
+  //       },
+  //       (error: Error | null, result: CloudinaryWidgetResult) => {
+  //         if (result?.event === 'success') {
+  //           setImageUrl(result.info.secure_url);
+  //         } else if (error) {
+  //           console.error('Cloudinary upload error:', error);
+  //         }
+  //       }
+  //     );
+  //     widgetRef.current = cloudinaryWidget;
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
@@ -157,21 +217,32 @@ const Advertisement = () => {
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
           if (result?.event === 'success') {
-            setImageUrl(result.info.secure_url);
+            setImageUrl(result.info.secure_url); // Save the uploaded image URL
+
+            // Insert the image URL into the Tiptap editor at the current cursor position
+            if (editor) {
+              editor
+                .chain()
+                .focus()
+                .setImage({ src: result.info.secure_url })
+                .run();
+            }
           } else if (error) {
             console.error('Cloudinary upload error:', error);
           }
         }
       );
       widgetRef.current = cloudinaryWidget;
+    } else {
+      console.log('Cloudinary script is not loaded');
     }
-  }, []);
+  }, [editor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!title || !description || !category) {
+    if (!title || !editor?.getHTML() || !category) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
       return;
@@ -179,7 +250,7 @@ const Advertisement = () => {
 
     const eventData = {
       title,
-      description,
+      description: editor?.getHTML(),
       category,
       image: imageUrl || null,
     };
@@ -321,12 +392,100 @@ const Advertisement = () => {
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel>Description</InputLabel>
-                <Textarea
+                {/* <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                />
+                /> */}
+                <div>
+                  <ToolbarContainer>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBold().run()}
+                    >
+                      Bold
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleItalic().run()
+                      }
+                    >
+                      Italic
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleUnderline().run()
+                      }
+                    >
+                      Underline
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('left').run()
+                      }
+                    >
+                      Left Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('right').run()
+                      }
+                    >
+                      Right Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('justify').run()
+                      }
+                    >
+                      Justify Align
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleStrike().run()
+                      }
+                    >
+                      Strikethrough
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleCode().run()}
+                    >
+                      Code
+                    </ToolbarButton>
+                  </ToolbarContainer>
+
+                  {/* Ensure editor is initialized before rendering the editor */}
+                  <StyledEditorContainer>
+                    {editor && <EditorContent editor={editor} />}
+                  </StyledEditorContainer>
+                </div>
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="category">Category:</InputLabel>
@@ -390,11 +549,45 @@ const Advertisement = () => {
         </FilterSection>
         <AdList>
           {displayedItems.map((ad) => (
-            <Link href={`/advertisement/${ad.id}`} key={ad.id}>
+            <Link
+              href={`/advertisement/${ad.id}`}
+              key={ad.id}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
               <AdCard>
-                <AdImage src={ad.imageUrl} alt={ad.title} />
-                <AdTitle>{ad.title}</AdTitle>
-                <AdDescription>{ad.description}</AdDescription>
+                <AdImage
+                  src={ad.imageUrl || '/default-event.jpg'}
+                  alt={ad.title}
+                  width={150}
+                  height={150}
+                  priority
+                />
+                <AdBasicInfoContainer>
+                  <AdTitle>{ad.title}</AdTitle>
+                  <AdDescription>
+                    {ad.description.length > 200 ? (
+                      <>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: ad.description.slice(0, 100) + '...',
+                          }}
+                        ></div>
+
+                        <div style={{ color: 'blue', cursor: 'pointer' }}>
+                          <StyledLink href={`/advertisement/${ad.id}`}>
+                            Read More
+                          </StyledLink>
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: ad.description,
+                        }}
+                      ></div>
+                    )}
+                  </AdDescription>
+                </AdBasicInfoContainer>
               </AdCard>
             </Link>
           ))}

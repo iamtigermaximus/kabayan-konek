@@ -29,8 +29,13 @@ import {
   NewsSummary,
   NewsDate,
   NewsSource,
+  StyledLink,
+  EventsSectionBannerContainer,
 } from './Home.styles';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
 interface LifestyleArticle {
   id: string;
   title: string;
@@ -76,6 +81,9 @@ interface NewsArticleProps {
 }
 
 const Home = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const [lifestyleArticles, setLifestyleArticles] = useState<
     LifestyleArticle[]
   >([]);
@@ -160,6 +168,10 @@ const Home = () => {
     fetchNewsArticles();
   }, []);
 
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
   return (
     <Container>
       <title>HOME | kabayankonek</title>
@@ -222,6 +234,75 @@ const Home = () => {
         <DividerLabel>EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <EventsSectionBannerContainer>
+        <div>
+          {!session ? (
+            <div
+              style={{
+                margin: '20px 0',
+                padding: '20px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                textAlign: 'center',
+                backgroundColor: '#e6f7ff',
+              }}
+            >
+              <h2 style={{ marginBottom: '10px' }}>
+                Want to post your own events?
+              </h2>
+              <p style={{ marginBottom: '20px', color: '#555' }}>
+                Log in or sign up to create and manage your events with ease.
+                Join our community today!
+              </p>
+              <button
+                onClick={handleLoginClick}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#222',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
+              >
+                Log In or Sign Up
+              </button>
+            </div>
+          ) : (
+            <div
+              style={{
+                margin: '20px 0',
+                padding: '20px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                textAlign: 'center',
+                backgroundColor: '#e6f7ff',
+              }}
+            >
+              <h2 style={{ marginBottom: '10px' }}>
+                Ready to share your events with the community?
+              </h2>
+              <p style={{ marginBottom: '20px', color: '#555' }}>
+                You are logged in! Create and manage your events easily, and
+                engage with your audience.
+              </p>
+              {/* <button
+                onClick={() => toggleModal()}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#4CAF50',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
+              >
+                CREATE AN EVENT
+              </button> */}
+            </div>
+          )}
+        </div>
+      </EventsSectionBannerContainer>
       <EventsSectionContainer>
         {events.slice(0, 6).map((event) => (
           <EventCard key={event.id}>
@@ -233,8 +314,36 @@ const Home = () => {
               priority
             />
             <EventDetails>
-              <EventName>{event.title}</EventName>
-              <EventDescription>{event.description}</EventDescription>
+              <Link
+                href={`/events/${event.id}`}
+                key={event.id}
+                style={{ textDecoration: 'none' }}
+              >
+                <EventName>{event.title}</EventName>
+              </Link>
+
+              <EventDescription>
+                {event.description.length > 100 ? (
+                  <>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: event.description.slice(0, 100) + '...',
+                      }}
+                    ></div>
+                    <StyledLink href={`/events/${event.id}`}>
+                      <span style={{ color: 'blue', cursor: 'pointer' }}>
+                        Read More
+                      </span>
+                    </StyledLink>
+                  </>
+                ) : (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: event.description,
+                    }}
+                  ></div>
+                )}
+              </EventDescription>
               <EventInfo>
                 <span>Date:</span> {new Date(event.date).toLocaleDateString()}
               </EventInfo>

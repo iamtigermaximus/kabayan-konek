@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import styled from 'styled-components';
+import { breakpoints as bp } from '@/utils/layout';
 
 interface AdvertisementProps {
   id: string;
@@ -14,6 +16,113 @@ interface AdvertisementProps {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const AdvertisementDetailContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${bp.md}) {
+    flex-direction: column;
+  }
+`;
+
+const AdvertisementImageContainer = styled.div`
+  display: flex;
+`;
+
+export const AdvertisementImage = styled(Image)`
+  width: 100%;
+  /* height: auto; */
+  border-radius: 8px;
+  margin-bottom: 15px;
+  height: 100%;
+  object-fit: cover;
+  min-height: 300px;
+  max-height: 350px;
+`;
+
+const AdvertisementDetailTitleContainer = styled.div`
+  max-width: 800px;
+  margin-top: 30px;
+`;
+
+const AdvertisementTitle = styled.h1`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2.5rem;
+  }
+`;
+
+const Content = styled.div`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  h2,
+  h3 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+  }
+`;
+
+export const MessageButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  /* padding: 10px 0;
+  border: 1px solid green; */
+`;
+
+export const MessageButton = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: tomato;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.5rem;
+  }
+`;
+
+export const BasicAdInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  gap: 10px;
+  justify-content: flex-start;
+`;
 
 const AdvertisementDetails = () => {
   const [advertisement, setAdvertisement] = useState<AdvertisementProps | null>(
@@ -60,20 +169,28 @@ const AdvertisementDetails = () => {
   }
 
   return (
-    <div>
-      <h1>{advertisement.title}</h1>
-      {advertisement.imageUrl && (
-        <Image
-          src={advertisement.imageUrl}
+    <AdvertisementDetailContainer>
+      <AdvertisementImageContainer>
+        <AdvertisementImage
+          src={advertisement.imageUrl || '/default-event.jpg'}
           alt={advertisement.title}
-          width={500}
-          height={500}
+          width={500} // Replace with appropriate width
+          height={300} // Replace with appropriate height
+          priority
         />
-      )}
-      <h1>{advertisement.description}</h1>
-      <h1>{advertisement.category}</h1>
-      <h1>{advertisement.title}</h1>
-    </div>
+      </AdvertisementImageContainer>
+      <BasicAdInfoContainer>
+        <AdvertisementDetailTitleContainer>
+          <AdvertisementTitle>{advertisement.title}</AdvertisementTitle>
+        </AdvertisementDetailTitleContainer>
+        <Content>
+          <div
+            dangerouslySetInnerHTML={{ __html: advertisement.description }}
+          />
+        </Content>
+        {/* <h1>{advertisement.category}</h1> */}
+      </BasicAdInfoContainer>
+    </AdvertisementDetailContainer>
   );
 };
 

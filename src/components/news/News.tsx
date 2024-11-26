@@ -57,7 +57,7 @@ const News = () => {
   const [source, setSource] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   const fetchNewsArticles = async () => {
     try {

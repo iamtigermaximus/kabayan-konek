@@ -1,3 +1,5 @@
+'use client';
+
 import styled from 'styled-components';
 import { breakpoints as bp } from '../../utils/layout';
 import Image from 'next/image';
@@ -6,7 +8,7 @@ export const Container = styled.div`
   padding: 10px;
   height: 100%;
   z-index: 99;
-  /* background-color: pink; */
+  margin-top: 20px;
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;

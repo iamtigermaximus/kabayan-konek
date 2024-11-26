@@ -1,3 +1,4 @@
+'use client';
 import styled from 'styled-components';
 import { breakpoints as bp } from '../../utils/layout';
 import Link from 'next/link';
@@ -7,6 +8,7 @@ export const Container = styled.div`
   padding: 10px;
   height: 100%;
   z-index: 99;
+  margin-top: 20px;
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;
@@ -18,17 +20,6 @@ export const SectionContainer = styled.section`
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;
-  }
-`;
-
-export const EventsSectionContainer = styled.section`
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-
-  @media (min-width: ${bp.md}) {
-    grid-template-columns: 1fr 1fr;
   }
 `;
 
@@ -143,11 +134,23 @@ export const FeaturesTitle = styled.h3`
   }
 `;
 
+export const EventsSectionContainer = styled.section`
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  flex-direction: column;
+
+  @media (min-width: ${bp.md}) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
 export const EventCard = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 15px;
   margin-bottom: 20px;
   background-color: #f9f9f9;
@@ -249,4 +252,18 @@ export const NewsDate = styled.span`
   color: #888;
   display: block;
   margin-top: 5px;
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    text-decoration: underline;
+    color: blue;
+  }
+`;
+
+export const EventsSectionBannerContainer = styled.div`
+  flex: 1;
 `;

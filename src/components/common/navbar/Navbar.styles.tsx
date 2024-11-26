@@ -1,3 +1,5 @@
+'use client';
+
 import styled from 'styled-components';
 import { breakpoints as bp } from '../../../utils/layout';
 import Link from 'next/link';
@@ -193,16 +195,18 @@ export const LoginButtonContainer = styled.div`
   padding: 8px;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 10px;
 `;
 
 export const LoginButton = styled.button`
   margin-right: 10px;
   width: 100px;
-  padding: 2px 8px;
+  padding: 8px;
   background-color: tomato;
   color: white;
   cursor: pointer;
   border: none;
+  font-size: 1rem;
 
   @media (min-width: ${bp.md}) {
     margin-right: 20px;

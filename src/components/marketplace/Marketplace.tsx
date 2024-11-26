@@ -24,7 +24,7 @@ import {
   FormItemContainer,
   InputLabel,
   Input,
-  Textarea,
+  // Textarea,
   UploadedImageContainer,
   SubmitButton,
   ModalCloseButton,
@@ -36,11 +36,29 @@ import {
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
+  ToolbarButton,
+  ToolbarContainer,
+  StyledEditorContainer,
+  StyledLink,
+  BasicProductInfoContainer,
 } from './Marketplace.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+// Tiptap imports
+import { useEditor, EditorContent } from '@tiptap/react';
+import { StarterKit } from '@tiptap/starter-kit';
+import { Heading } from '@tiptap/extension-heading'; // For headings
+import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
+import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
+import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
+import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
+import { CodeBlock } from '@tiptap/extension-code-block';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Underline } from '@tiptap/extension-underline';
 
 export interface ProductProps {
   id?: string;
@@ -75,7 +93,7 @@ const MarketPlace = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  // const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
@@ -84,6 +102,26 @@ const MarketPlace = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
+
+  // Initialize Tiptap editor
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ['paragraph', 'heading'],
+      }),
+      Underline,
+      Heading.configure({ levels: [1, 2, 3] }),
+      TiptapLink,
+      TiptapImage,
+      Blockquote,
+      HorizontalRule,
+      TextAlign.configure({ types: ['paragraph', 'heading'] }),
+      CodeBlock,
+      TextStyle,
+    ],
+    content: '',
+  });
 
   const fetchProducts = async () => {
     try {
@@ -159,7 +197,7 @@ const MarketPlace = () => {
 
     if (
       !name ||
-      !description ||
+      !editor?.getHTML() ||
       !price ||
       !category ||
       !contactEmail ||
@@ -172,7 +210,7 @@ const MarketPlace = () => {
 
     const productData = {
       name,
-      description,
+      description: editor.getHTML(),
       price: parseFloat(price),
       category,
       contactEmail,
@@ -315,12 +353,100 @@ const MarketPlace = () => {
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="description">Description:</InputLabel>
-                <Textarea
+                {/* <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
-                />
+                /> */}
+                <div>
+                  <ToolbarContainer>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBold().run()}
+                    >
+                      Bold
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleItalic().run()
+                      }
+                    >
+                      Italic
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleUnderline().run()
+                      }
+                    >
+                      Underline
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('left').run()
+                      }
+                    >
+                      Left Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('right').run()
+                      }
+                    >
+                      Right Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('justify').run()
+                      }
+                    >
+                      Justify Align
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleStrike().run()
+                      }
+                    >
+                      Strikethrough
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleCode().run()}
+                    >
+                      Code
+                    </ToolbarButton>
+                  </ToolbarContainer>
+
+                  {/* Ensure editor is initialized before rendering the editor */}
+                  <StyledEditorContainer>
+                    {editor && <EditorContent editor={editor} />}
+                  </StyledEditorContainer>
+                </div>
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="price">Price:</InputLabel>
@@ -426,12 +552,37 @@ const MarketPlace = () => {
                 height={150}
                 priority
               />
-              <Link href={`/marketplace/${product.id}`}>
-                <ProductTitle>{product.name}</ProductTitle>
-                <ProductTitle>{product.id}</ProductTitle>
-              </Link>
-              <ProductPrice>{product.price}</ProductPrice>
-              <ProductDescription>{product.description}</ProductDescription>
+              <BasicProductInfoContainer>
+                <Link
+                  href={`/marketplace/${product.id}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
+                  <ProductTitle>{product.name}</ProductTitle>
+                </Link>
+                <ProductPrice>€{product.price}</ProductPrice>
+                <ProductDescription>
+                  {product.description.length > 100 ? (
+                    <>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: product.description.slice(0, 100) + '...',
+                        }}
+                      ></div>
+                      <StyledLink href={`/marketplace/${product.id}`}>
+                        <span style={{ color: 'blue', cursor: 'pointer' }}>
+                          Read More
+                        </span>
+                      </StyledLink>
+                    </>
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: product.description,
+                      }}
+                    ></div>
+                  )}
+                </ProductDescription>
+              </BasicProductInfoContainer>
             </ProductCard>
           ))}
         </ProductList>
