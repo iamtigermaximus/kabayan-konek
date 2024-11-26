@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kabayan Konek
 
-## Getting Started
+**Kabayan Konek** is a platform that connects Filipinos in Finland. It serves as a community hub, offering various features such as lifestyle content, a spotlight on kababayans, local events, news, a marketplace, and a dedicated page for advertisements. Users can post events, sell products, and share advertisements, all while staying informed about the latest happenings in the Filipino community.
 
-First, run the development server:
+---
 
-```bash
+## 🚀 **Getting Started**
+
+To run **Kabayan Konek** locally, follow the steps below.
+
+### Prerequisites
+
+Ensure that you have the following installed:
+
+- **Node.js** (version 16 or higher)
+- **npm** or **yarn** (depending on your preference)
+- **PostgreSQL** (for database setup)
+- **Cloudinary** (for image hosting)
+
+---
+
+### 1. Clone the Repository
+
+Clone the repository to your local machine:
+
+
+git clone [https://github.com/your-username/kabayan-konek.git](https://github.com/iamtigermaximus/kabayan-konek.git)
+
+cd kabayan-konek
+
+### 2. Install Dependencies
+
+Install the required dependencies:
+
+npm install
+
+### 3. Set Up Environment Variables
+Create a .env.local file in the root of the project and configure the environment variables:
+
+DATABASE_URL=postgresql://user:password@localhost:5432/kabayan_konek?schema=public
+
+# Cloudinary environment variables
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Other environment variables (like API keys)
+NEXTAUTH_SECRET=your-nextauth-secret
+NEXTAUTH_URL=http://localhost:3000
+
+### 4. Set Up PostgreSQL with Prisma
+Run the following commands to set up your database and apply the Prisma migrations:
+
+Install Prisma CLI (if not already installed):
+
+npm install prisma --save-dev
+
+Generate Prisma Client:
+
+npx prisma generate
+
+Apply Migrations (ensure your PostgreSQL database is running):
+
+npx prisma migrate dev
+
+### 5. Run the Development Server
+To start the Next.js development server, run:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000 in your browser to view your site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🌐 Features
+Kabayan Konek offers a variety of features for the Filipino community in Finland:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Lifestyle Features
+Stay updated with lifestyle articles, tips, and stories relevant to the Filipino community in Finland. Articles cover topics such as living in Finland, cultural integration, and personal stories from kababayans.
 
-## Learn More
+2. Kabayan Spotlight
+This page highlights notable Filipinos in Finland who have made a significant impact in their communities. Whether through achievements, community work, or inspiring stories, the Kabayan Spotlight aims to honor and share their experiences.
 
-To learn more about Next.js, take a look at the following resources:
+3. Latest News
+Stay informed about the latest news that affects Filipinos in Finland, including cultural events, local news, and announcements that are relevant to the Filipino community.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Events
+Users can post local events, cultural activities, and meetups. The Events page allows Filipinos to discover and promote events that bring the community together.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Marketplace
+The Marketplace page allows users to buy and sell products. From Filipino goods to local items, this feature enables the Filipino community in Finland to connect through commerce.
 
-## Deploy on Vercel
+6. Advertisement Page
+The Advertisement page allows businesses and individuals to post advertisements for services, products, or events. This is a great way to promote local businesses or personal offerings to the Filipino community.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### ⚙️ Technologies Used
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Kabayan Konek is built using modern web technologies:
+
+Next.js 13: A React-based framework for building static and dynamic websites.
+TypeScript: Provides type safety and improves developer experience.
+Prisma: An ORM (Object Relational Mapper) for PostgreSQL, simplifying database operations.
+PostgreSQL: A powerful, open-source relational database for storing data.
+Cloudinary: A media management platform to handle image and video uploads.
+Styled Components: A CSS-in-JS library for styling components in a scalable and maintainable way.
+Vercel (or other hosting platforms): For seamless deployment.
+
+### 🛠️ Development Setup
+Database Setup
+1.Ensure PostgreSQL is installed on your machine, or use a cloud service like ElephantSQL for PostgreSQL hosting.
+2.Set the DATABASE_URL in the .env.local file to point to your PostgreSQL instance.
+
+### Cloudinary Setup
+Sign up for a Cloudinary account if you haven't already at Cloudinary.
+Get your Cloudinary credentials (cloud name, API key, and API secret) and configure them in .env.local file
+
+### 🛠️ Running Prisma Migrations
+To apply any database changes (after modifying Prisma schema), run:
+
+npx prisma migrate dev
+
+### 📦 Deployment
+To deploy your project, you can use platforms like Vercel or Netlify. Here's how to deploy to Vercel:
+
+Push your code to a GitHub repository.
+Sign in to Vercel at Vercel.
+Import the GitHub repository and deploy the application.
+Vercel automatically detects your Next.js project and builds it.
+
+
