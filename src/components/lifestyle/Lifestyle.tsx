@@ -25,15 +25,29 @@ import {
   FormItemContainer,
   InputLabel,
   Input,
-  Textarea,
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
   SubmitButtonContainer,
   SubmitButton,
   UploadedImageContainer,
+  ToolbarContainer,
+  ToolbarButton,
+  StyledEditorContainer,
 } from './Lifestyle.styles';
-// import Link from 'next/link';
+// Tiptap imports
+import { useEditor, EditorContent } from '@tiptap/react';
+import { StarterKit } from '@tiptap/starter-kit';
+import { Heading } from '@tiptap/extension-heading'; // For headings
+import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
+import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
+import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
+import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
+import { CodeBlock } from '@tiptap/extension-code-block';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Underline } from '@tiptap/extension-underline';
+
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -42,7 +56,7 @@ interface LifestyleArticle {
   id: string;
   title: string;
   content: string;
-  imageUrl?: string; // Optional
+  imageUrl?: string;
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -65,7 +79,6 @@ const Lifestyle = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
@@ -73,6 +86,26 @@ const Lifestyle = () => {
 
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
+
+  // Initialize Tiptap editor
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ['paragraph', 'heading'],
+      }),
+      Underline,
+      Heading.configure({ levels: [1, 2, 3] }),
+      TiptapLink,
+      TiptapImage,
+      Blockquote,
+      HorizontalRule,
+      TextAlign.configure({ types: ['paragraph', 'heading'] }),
+      CodeBlock,
+      TextStyle,
+    ],
+    content: '',
+  });
 
   const fetchArticles = async () => {
     try {
@@ -112,6 +145,30 @@ const Lifestyle = () => {
     widgetRef.current?.open();
   };
 
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined' && window.cloudinary) {
+  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
+  //       {
+  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  //         uploadPreset: 'kabayankonek',
+  //         multiple: false,
+  //         sources: ['local', 'url', 'camera'],
+  //         debug: true,
+  //       },
+  //       (error: Error | null, result: CloudinaryWidgetResult) => {
+  //         if (result?.event === 'success') {
+  //           setImageUrl(result.info.secure_url);
+  //         } else if (error) {
+  //           console.error('Cloudinary upload error:', error);
+  //         }
+  //       }
+  //     );
+  //     widgetRef.current = cloudinaryWidget;
+  //   } else {
+  //     console.log('Cloudinary script is not loaded');
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
@@ -124,8 +181,16 @@ const Lifestyle = () => {
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
           if (result?.event === 'success') {
-            setImageUrl(result.info.secure_url);
-            // console.log('Image uploaded successfully!', result.info.secure_url);
+            setImageUrl(result.info.secure_url); // Save the uploaded image URL
+
+            // Insert the image URL into the Tiptap editor at the current cursor position
+            if (editor) {
+              editor
+                .chain()
+                .focus()
+                .setImage({ src: result.info.secure_url })
+                .run();
+            }
           } else if (error) {
             console.error('Cloudinary upload error:', error);
           }
@@ -135,20 +200,24 @@ const Lifestyle = () => {
     } else {
       console.log('Cloudinary script is not loaded');
     }
-  }, []);
+  }, [editor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!title || !content) {
+    // Make sure the editor is initialized and has content
+    if (!title || !editor?.getHTML()) {
       alert('Please fill out all required fields (title and content)');
       setIsSubmitting(false);
       return;
     }
 
-    // Prepare the data for submission
-    const articleData = { title, content, image: imageUrl || null };
+    const articleData = {
+      title,
+      content: editor.getHTML(),
+      image: imageUrl || null,
+    };
 
     try {
       const response = await fetch('/api/lifestyle', {
@@ -217,12 +286,94 @@ const Lifestyle = () => {
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="content">Content:</InputLabel>
-                <Textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  required
-                />
+                <div>
+                  <ToolbarContainer>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleBold().run()}
+                    >
+                      Bold
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleItalic().run()
+                      }
+                    >
+                      Italic
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleUnderline().run()
+                      }
+                    >
+                      Underline
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('left').run()
+                      }
+                    >
+                      Left Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('center').run()
+                      }
+                    >
+                      Center Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('right').run()
+                      }
+                    >
+                      Right Align
+                    </ToolbarButton>
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().setTextAlign('justify').run()
+                      }
+                    >
+                      Justify Align
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() =>
+                        editor?.chain().focus().toggleStrike().run()
+                      }
+                    >
+                      Strikethrough
+                    </ToolbarButton>
+
+                    <ToolbarButton
+                      type="button"
+                      onClick={() => editor?.chain().focus().toggleCode().run()}
+                    >
+                      Code
+                    </ToolbarButton>
+                  </ToolbarContainer>
+
+                  {/* Ensure editor is initialized before rendering the editor */}
+                  <StyledEditorContainer>
+                    {editor && <EditorContent editor={editor} />}
+                  </StyledEditorContainer>
+                </div>
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="imageUrl">Image:</InputLabel>

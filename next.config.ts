@@ -1,4 +1,5 @@
 import { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -17,6 +18,13 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: ['res.cloudinary.com'], // Add Cloudinary to allowed domains
+  },
+  webpack: (config, { isServer }) => {
+    // Add the yjs alias to webpack configuration
+    if (!isServer) {
+      config.resolve.alias['yjs'] = path.resolve(__dirname, 'node_modules/yjs');
+    }
+    return config;
   },
 };
 
