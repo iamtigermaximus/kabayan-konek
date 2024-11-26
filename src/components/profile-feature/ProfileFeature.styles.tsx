@@ -43,6 +43,8 @@ export const FeaturesImage = styled(Image)`
 export const FeaturesTitleContainer = styled.div`
   width: 100%;
   padding: 5px;
+  height: 100px;
+  /* border: 1px solid black; */
 `;
 
 export const FeaturesTitle = styled.h3`
