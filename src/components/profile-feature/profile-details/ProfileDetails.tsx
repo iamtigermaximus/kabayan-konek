@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 import styled from 'styled-components';
-
+import { breakpoints as bp } from '@/utils/layout';
 interface KabayanArticle {
   id: string;
   title: string;
@@ -21,16 +21,25 @@ const ArticleContainer = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #333;
+const ArticleTitleContainer = styled.div`
+  max-width: 800px;
+  margin-top: 30px;
 `;
 
-const ImageWrapper = styled.div`
+const Title = styled.h1`
+  font-size: 1.5rem;
   margin-bottom: 20px;
-  text-align: center;
+  color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2.5rem;
+  }
 `;
+
+// const ImageWrapper = styled.div`
+//   margin-bottom: 20px;
+//   text-align: center;
+// `;
 
 const Content = styled.div`
   font-size: 1rem;
@@ -113,8 +122,10 @@ const ProfileDetails = () => {
 
   return (
     <ArticleContainer>
-      <Title>{article.title}</Title>
-      {article.imageUrl && (
+      <ArticleTitleContainer>
+        <Title>{article.title}</Title>
+      </ArticleTitleContainer>
+      {/* {article.imageUrl && (
         <ImageWrapper>
           <Image
             src={article.imageUrl}
@@ -124,7 +135,7 @@ const ProfileDetails = () => {
             objectFit="cover"
           />
         </ImageWrapper>
-      )}
+      )} */}
       <Content>
         {/* Dynamically render content with HTML */}
         <div dangerouslySetInnerHTML={{ __html: article.content }} />
