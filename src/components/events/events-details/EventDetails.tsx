@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
@@ -13,18 +14,33 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  margin-top: 30px;
+// const ImageContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   margin-bottom: 1.5rem;
+//   overflow: hidden;
+//   margin-top: 10px;
 
-  img {
-    /* border-radius: 12px; */
-  }
+//   img {
+//     /* border-radius: 12px; */
+//   }
+// `;
+
+const EventImageContainer = styled.div`
+  display: flex;
+`;
+
+export const EventImage = styled(Image)`
+  width: 100%;
+  /* height: auto; */
+  border-radius: 8px;
+  margin-bottom: 15px;
+  height: 100%;
+  object-fit: cover;
+  min-height: 300px;
+  max-height: 350px;
 `;
 
 const DetailsContainer = styled.div`
@@ -130,6 +146,7 @@ interface EventProps {
 
 const EventDetails = () => {
   const { id } = useParams();
+  const router = useRouter();
   const [event, setEvent] = useState<EventProps | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -159,17 +176,39 @@ const EventDetails = () => {
   if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
   if (!event) return <ErrorMessage>Event not found</ErrorMessage>;
 
+  const handleBackButton = () => router.back();
+
   return (
     <Container>
-      <ImageContainer>
-        <Image
+      <div
+        style={{
+          alignItems: 'center',
+          marginTop: '30px',
+          marginBottom: '10px',
+          cursor: 'pointer',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            fontSize: '30px',
+          }}
+          onClick={handleBackButton}
+        >
+          <IoMdArrowRoundBack />
+        </div>
+      </div>
+      <EventImageContainer>
+        <EventImage
           src={event.imageUrl || '/default-event.jpg'}
           alt={event.title}
           width={250}
           height={250}
           className="event-image"
         />
-      </ImageContainer>
+      </EventImageContainer>
       <DetailsContainer>
         <EventTitleContainer>
           <Title>{event.title}</Title>

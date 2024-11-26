@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-// import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { IoMdArrowRoundBack } from 'react-icons/io'; // import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
 interface KabayanArticle {
@@ -84,6 +84,7 @@ const ProfileDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { id } = useParams(); // Use useParams to get the `id`
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -119,10 +120,31 @@ const ProfileDetails = () => {
   if (!article) {
     return <div>Kabayan article not found.</div>;
   }
+  const handleBackButton = () => router.back();
 
   return (
     <ArticleContainer>
       <ArticleTitleContainer>
+        <div
+          style={{
+            alignItems: 'center',
+            marginTop: '30px',
+            marginBottom: '10px',
+            cursor: 'pointer',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              fontSize: '30px',
+            }}
+            onClick={handleBackButton}
+          >
+            <IoMdArrowRoundBack />
+          </div>
+        </div>
         <Title>{article.title}</Title>
       </ArticleTitleContainer>
       {/* {article.imageUrl && (

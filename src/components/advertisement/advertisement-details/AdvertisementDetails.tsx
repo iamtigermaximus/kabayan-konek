@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
@@ -132,6 +133,7 @@ const AdvertisementDetails = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { id } = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -168,8 +170,30 @@ const AdvertisementDetails = () => {
     return <div>Advertisement not found.</div>;
   }
 
+  const handleBackButton = () => router.back();
+
   return (
     <AdvertisementDetailContainer>
+      <div
+        style={{
+          alignItems: 'center',
+          marginTop: '30px',
+          marginBottom: '10px',
+          cursor: 'pointer',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            fontSize: '30px',
+          }}
+          onClick={handleBackButton}
+        >
+          <IoMdArrowRoundBack />
+        </div>
+      </div>
       <AdvertisementImageContainer>
         <AdvertisementImage
           src={advertisement.imageUrl || '/default-event.jpg'}
@@ -183,6 +207,9 @@ const AdvertisementDetails = () => {
         <AdvertisementDetailTitleContainer>
           <AdvertisementTitle>{advertisement.title}</AdvertisementTitle>
         </AdvertisementDetailTitleContainer>
+        <MessageButtonContainer>
+          <MessageButton>Send a message</MessageButton>
+        </MessageButtonContainer>
         <Content>
           <div
             dangerouslySetInnerHTML={{ __html: advertisement.description }}

@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
 
@@ -140,6 +141,8 @@ export const MessageButton = styled.div`
 
 const MarketplaceDetails = () => {
   const { id } = useParams();
+  const router = useRouter();
+
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -178,9 +181,30 @@ const MarketplaceDetails = () => {
   if (!product) {
     return <div>Product not found.</div>;
   }
+  const handleBackButton = () => router.back();
 
   return (
     <ProductDetailContainer>
+      <div
+        style={{
+          alignItems: 'center',
+          marginTop: '30px',
+          marginBottom: '10px',
+          cursor: 'pointer',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            fontSize: '30px',
+          }}
+          onClick={handleBackButton}
+        >
+          <IoMdArrowRoundBack />
+        </div>
+      </div>
       <ProductImageContainer>
         <ProductImage
           src={product.imageUrl || '/default-event.jpg'}
