@@ -378,4 +378,11 @@ export const StyledEditorContainer = styled.div`
     font-style: italic;
     color: #555;
   }
+
+  /* Make sure images inside the editor are responsive */
+  .ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain; /* Ensures the image fits within the container */
+  }
 `;

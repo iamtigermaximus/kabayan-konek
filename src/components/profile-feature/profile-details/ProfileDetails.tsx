@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import styled from 'styled-components';
 
 interface KabayanArticle {
   id: string;
@@ -13,6 +14,60 @@ interface KabayanArticle {
   createdAt: string;
   updatedAt: string;
 }
+
+const ArticleContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+`;
+
+const Title = styled.h1`
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+`;
+
+const ImageWrapper = styled.div`
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const Content = styled.div`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  h2,
+  h3 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+  }
+`;
+
+const PublishedDate = styled.small`
+  display: block;
+  margin-top: 20px;
+  color: #777;
+`;
 
 const ProfileDetails = () => {
   const [article, setArticle] = useState<KabayanArticle | null>(null);
@@ -57,23 +112,28 @@ const ProfileDetails = () => {
   }
 
   return (
-    <div>
-      <h1>{article.title}</h1>
+    <ArticleContainer>
+      <Title>{article.title}</Title>
       {article.imageUrl && (
-        <Image
-          src={article.imageUrl}
-          alt={article.title}
-          width={500}
-          height={500}
-        />
+        <ImageWrapper>
+          <Image
+            src={article.imageUrl}
+            alt={article.title}
+            width={800}
+            height={400}
+            objectFit="cover"
+          />
+        </ImageWrapper>
       )}
-      <p>{article.content}</p>
-      <small>
+      <Content>
+        {/* Dynamically render content with HTML */}
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+      </Content>
+      <PublishedDate>
         Published on: {new Date(article.createdAt).toLocaleDateString()}
-      </small>
-    </div>
+      </PublishedDate>
+    </ArticleContainer>
   );
 };
 
 export default ProfileDetails;
-
