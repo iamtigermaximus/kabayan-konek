@@ -7,26 +7,97 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
 
-// Styled-components
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${bp.md}) {
+    flex-direction: row;
+  }
 `;
 
-// const ImageContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   margin-bottom: 1.5rem;
-//   overflow: hidden;
-//   margin-top: 10px;
+const Sidebar = styled.div`
+  flex: 1;
+  padding: 20px;
+  /* background-color: #f9f9f9;
+  border-left: 1px solid #ddd; */
 
-//   img {
-//     /* border-radius: 12px; */
+  @media (min-width: ${bp.md}) {
+    margin-top: 200px;
+  }
+`;
+const OtherArticlesList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const OtherArticleItem = styled.li`
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.8rem;
+    margin-left: 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const ArticleImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+
+  @media (min-width: ${bp.md}) {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+const ArticleContent = styled.div`
+  flex: 3;
+  margin-right: 20px;
+`;
+
+// const Title = styled.h1`
+//   font-size: 1.5rem;
+//   margin-bottom: 20px;
+//   color: #333;
+
+//   @media (min-width: ${bp.md}) {
+//     font-size: 2.5rem;
 //   }
 // `;
+
+const SidebarTitleContainer = styled.div`
+  width: 100%;
+  padding: 10px 0;
+
+  @media (min-width: ${bp.md}) {
+  }
+`;
+
+const SidebarTitle = styled.div`
+  font-weight: 700;
+`;
+
+const SidebarArticleLink = styled.a`
+  font-weight: 700;
+  font-size: 1rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2rem;
+  }
+`;
 
 const EventImageContainer = styled.div`
   display: flex;
@@ -142,6 +213,8 @@ interface EventProps {
   time: string;
   address: string;
   imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const EventDetails = () => {
@@ -149,6 +222,7 @@ const EventDetails = () => {
   const router = useRouter();
   const [event, setEvent] = useState<EventProps | null>(null);
   const [loading, setLoading] = useState(true);
+  const [otherEvents, setOtherEvents] = useState<EventProps[]>([]);
 
   // Fetch the event details from the API
   useEffect(() => {
@@ -168,8 +242,27 @@ const EventDetails = () => {
         setLoading(false);
       }
     };
-
     fetchEventDetails();
+
+    // Fetch other articles
+    fetch('/api/events')
+      .then((res) => res.json())
+      .then((data) => {
+        // Sort articles by createdAt (desc) and limit to 5
+        const sortedEvents = data.sort((a: EventProps, b: EventProps) => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        });
+        // Filter out the current article and take the top 5
+        const filteredEvents = sortedEvents.filter(
+          (article: EventProps) => article.id !== id
+        );
+        setOtherEvents(filteredEvents.slice(0, 5));
+      })
+      .catch((err) => {
+        console.error('Error fetching other articles:', err);
+      });
   }, [id]); // Fetch the data when the `id` changes
 
   // Display loading or error messages if applicable
@@ -180,56 +273,81 @@ const EventDetails = () => {
 
   return (
     <Container>
-      <div
-        style={{
-          alignItems: 'center',
-          marginTop: '30px',
-          marginBottom: '10px',
-          cursor: 'pointer',
-        }}
-      >
+      <ArticleContent>
         <div
           style={{
-            display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            fontSize: '30px',
+            marginTop: '30px',
+            marginBottom: '10px',
+            cursor: 'pointer',
           }}
-          onClick={handleBackButton}
         >
-          <IoMdArrowRoundBack />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              fontSize: '30px',
+            }}
+            onClick={handleBackButton}
+          >
+            <IoMdArrowRoundBack />
+          </div>
         </div>
-      </div>
-      <EventImageContainer>
-        <EventImage
-          src={event.imageUrl || '/default-event.jpg'}
-          alt={event.title}
-          width={250}
-          height={250}
-          className="event-image"
-        />
-      </EventImageContainer>
-      <DetailsContainer>
-        <EventTitleContainer>
-          <Title>{event.title}</Title>
-        </EventTitleContainer>
-        <BasicInfoContainer>
-          <Detail>
-            <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
-          </Detail>
-          <Detail>
-            <strong>Time:</strong> {event.time}
-          </Detail>
-          <Detail>
-            <strong>Address:</strong> {event.address}
-          </Detail>
-        </BasicInfoContainer>
+        <EventImageContainer>
+          <EventImage
+            src={event.imageUrl || '/default-event.jpg'}
+            alt={event.title}
+            width={250}
+            height={250}
+            className="event-image"
+          />
+        </EventImageContainer>
+        <DetailsContainer>
+          <EventTitleContainer>
+            <Title>{event.title}</Title>
+          </EventTitleContainer>
+          <BasicInfoContainer>
+            <Detail>
+              <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
+            </Detail>
+            <Detail>
+              <strong>Time:</strong> {event.time}
+            </Detail>
+            <Detail>
+              <strong>Address:</strong> {event.address}
+            </Detail>
+          </BasicInfoContainer>
 
-        <Description>
-          {' '}
-          <div dangerouslySetInnerHTML={{ __html: event.description }} />
-        </Description>
-      </DetailsContainer>
+          <Description>
+            {' '}
+            <div dangerouslySetInnerHTML={{ __html: event.description }} />
+          </Description>
+        </DetailsContainer>
+      </ArticleContent>
+      <Sidebar>
+        <SidebarTitleContainer>
+          <SidebarTitle>OTHER RELATED EVENTS</SidebarTitle>
+        </SidebarTitleContainer>
+        <OtherArticlesList>
+          {otherEvents.map((otherEvent) => (
+            <OtherArticleItem key={otherEvent.id}>
+              {otherEvent.imageUrl && (
+                <ArticleImage
+                  src={otherEvent.imageUrl}
+                  alt={otherEvent.title}
+                />
+              )}
+              <SidebarArticleLink
+                href={`/events/${otherEvent.id}`}
+                style={{ fontWeight: '700' }}
+              >
+                {otherEvent.title}
+              </SidebarArticleLink>
+            </OtherArticleItem>
+          ))}
+        </OtherArticlesList>
+      </Sidebar>
     </Container>
   );
 };

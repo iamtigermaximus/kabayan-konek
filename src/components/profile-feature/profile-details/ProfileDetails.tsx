@@ -269,7 +269,7 @@ const ProfileDetails = () => {
       </ArticleContent>
       <Sidebar>
         <SidebarTitleContainer>
-          <SidebarTitle>Related Posts</SidebarTitle>
+          <SidebarTitle>RELATED POSTS</SidebarTitle>
         </SidebarTitleContainer>
         <OtherArticlesList>
           {otherArticles.map((otherArticle) => (
