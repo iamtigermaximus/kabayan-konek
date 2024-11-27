@@ -18,9 +18,70 @@ interface LifestyleArticle {
 }
 
 const ArticleContainer = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${bp.md}) {
+    flex-direction: row;
+  }
+`;
+
+const Sidebar = styled.div`
+  flex: 1;
+  padding: 20px;
+  /* background-color: #f9f9f9;
+  border-left: 1px solid #ddd; */
+
+  @media (min-width: ${bp.md}) {
+    margin-top: 200px;
+  }
+`;
+const OtherArticlesList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const OtherArticleItem = styled.li`
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.8rem;
+    margin-left: 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const ArticleImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+
+  @media (min-width: ${bp.md}) {
+    width: 100px;
+    height: 100px;
+  }
+`;
+// const ArticleImage = styled.img`
+//   width: 100%;
+//   max-width: 100%;
+//   height: auto;
+//   margin-bottom: 20px;
+// `;
+
+const ArticleContent = styled.div`
+  flex: 3;
+  margin-right: 20px;
 `;
 
 const ArticleTitleContainer = styled.div`
@@ -80,10 +141,32 @@ const PublishedDate = styled.small`
   color: #777;
 `;
 
+const SidebarTitleContainer = styled.div`
+  width: 100%;
+  padding: 10px 0;
+
+  @media (min-width: ${bp.md}) {
+  }
+`;
+
+const SidebarTitle = styled.div`
+  font-weight: 700;
+`;
+
+const SidebarArticleLink = styled.a`
+  font-weight: 700;
+  font-size: 1rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2rem;
+  }
+`;
+
 const LifestyleDetails = () => {
   const [article, setArticle] = useState<LifestyleArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [otherArticles, setOtherArticles] = useState<LifestyleArticle[]>([]);
 
   const { id } = useParams(); // Use useParams to get the `id`
   const router = useRouter();
@@ -108,6 +191,29 @@ const LifestyleDetails = () => {
           setError(err.message);
           setLoading(false);
         });
+
+      // Fetch other articles
+      fetch('/api/lifestyle')
+        .then((res) => res.json())
+        .then((data) => {
+          // Sort articles by createdAt (desc) and limit to 5
+          const sortedArticles = data.sort(
+            (a: LifestyleArticle, b: LifestyleArticle) => {
+              return (
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+              );
+            }
+          );
+          // Filter out the current article and take the top 5
+          const filteredArticles = sortedArticles.filter(
+            (article: LifestyleArticle) => article.id !== id
+          );
+          setOtherArticles(filteredArticles.slice(0, 5));
+        })
+        .catch((err) => {
+          console.error('Error fetching other articles:', err);
+        });
     }
   }, [id]);
 
@@ -127,30 +233,31 @@ const LifestyleDetails = () => {
 
   return (
     <ArticleContainer>
-      <ArticleTitleContainer>
-        <div
-          style={{
-            alignItems: 'center',
-            marginTop: '30px',
-            marginBottom: '10px',
-            cursor: 'pointer',
-          }}
-        >
+      <ArticleContent>
+        <ArticleTitleContainer>
           <div
             style={{
-              display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-start',
-              fontSize: '30px',
+              marginTop: '30px',
+              marginBottom: '10px',
+              cursor: 'pointer',
             }}
-            onClick={handleBackButton}
           >
-            <IoMdArrowRoundBack />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                fontSize: '30px',
+              }}
+              onClick={handleBackButton}
+            >
+              <IoMdArrowRoundBack />
+            </div>
           </div>
-        </div>
-        <Title>{article.title}</Title>
-      </ArticleTitleContainer>
-      {/* {article.imageUrl && (
+          <Title>{article.title}</Title>
+        </ArticleTitleContainer>
+        {/* {article.imageUrl && (
         <ImageWrapper>
           <Image
             src={article.imageUrl}
@@ -161,13 +268,37 @@ const LifestyleDetails = () => {
           />
         </ImageWrapper>
       )} */}
-      <Content>
-        {/* Dynamically render content with HTML */}
-        <div dangerouslySetInnerHTML={{ __html: article.content }} />
-      </Content>
-      <PublishedDate>
-        Published on: {new Date(article.createdAt).toLocaleDateString()}
-      </PublishedDate>
+        <Content>
+          {/* Dynamically render content with HTML */}
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+        </Content>
+        <PublishedDate>
+          Published on: {new Date(article.createdAt).toLocaleDateString()}
+        </PublishedDate>
+      </ArticleContent>
+      <Sidebar>
+        <SidebarTitleContainer>
+          <SidebarTitle>Related Posts</SidebarTitle>
+        </SidebarTitleContainer>
+        <OtherArticlesList>
+          {otherArticles.map((otherArticle) => (
+            <OtherArticleItem key={otherArticle.id}>
+              {otherArticle.imageUrl && (
+                <ArticleImage
+                  src={otherArticle.imageUrl}
+                  alt={otherArticle.title}
+                />
+              )}
+              <SidebarArticleLink
+                href={`/lifestyle/${otherArticle.id}`}
+                style={{ fontWeight: '700' }}
+              >
+                {otherArticle.title}
+              </SidebarArticleLink>
+            </OtherArticleItem>
+          ))}
+        </OtherArticlesList>
+      </Sidebar>
     </ArticleContainer>
   );
 };
