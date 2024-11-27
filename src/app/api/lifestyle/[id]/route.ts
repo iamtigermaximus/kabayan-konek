@@ -29,3 +29,65 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const url = req.nextUrl;
+  const id = url.pathname.split('/').pop();
+
+  if (!id) {
+    return NextResponse.json({ error: 'Article not found' }, { status: 404 });
+  }
+
+  try {
+    await prisma.lifestyleArticle.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: 'Article deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting article:', error);
+    return NextResponse.json(
+      { error: 'Error deleting article' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const url = req.nextUrl;
+  const id = url.pathname.split('/').pop();
+
+  if (!id) {
+    return NextResponse.json({ error: 'Article not found' }, { status: 404 });
+  }
+
+  try {
+    const body = await req.json();
+
+    const { title, content, image } = body;
+
+    if (!title || !content) {
+      return NextResponse.json(
+        { error: 'Title and content are required' },
+        { status: 400 }
+      );
+    }
+
+    const updatedArticle = await prisma.lifestyleArticle.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        imageUrl: image,
+      },
+    });
+
+    return NextResponse.json(updatedArticle);
+  } catch (error) {
+    console.error('Error updating article:', error);
+    return NextResponse.json(
+      { error: 'Error updating article' },
+      { status: 500 }
+    );
+  }
+}

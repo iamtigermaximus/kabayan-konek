@@ -34,6 +34,14 @@ import {
   ToolbarContainer,
   ToolbarButton,
   StyledEditorContainer,
+  EditButtonsContainer,
+  EditButton,
+  DeleteButton,
+  ConfirmModalContent,
+  ConfirmModalContainer,
+  ConfirmModalButtons,
+  CancelConfirmModalButton,
+  DeleteConfirmModalButton,
 } from './Lifestyle.styles';
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -83,8 +91,13 @@ const Lifestyle = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   const [articles, setArticles] = useState<LifestyleArticle[]>([]);
+  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
+  const [notification, setNotification] = useState<string | null>(null);
 
   const widgetRef = useRef<CloudinaryWidget | null>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 6;
 
   // Initialize Tiptap editor
@@ -220,34 +233,80 @@ const Lifestyle = () => {
     };
 
     try {
-      const response = await fetch('/api/lifestyle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(articleData),
-      });
+      const response = await fetch(
+        editingArticleId
+          ? `/api/lifestyle/${editingArticleId}`
+          : '/api/lifestyle',
+        {
+          method: editingArticleId ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(articleData),
+        }
+      );
 
       const responseBody = await response.json();
 
       if (!response.ok) {
-        console.error(
-          'Error creating article:',
-          responseBody.error || 'Unknown error'
-        );
-        alert(responseBody.error || 'Error creating article');
+        alert(responseBody.error || 'Error saving the article');
         return;
       }
 
-      console.log('Article created!', responseBody);
+      alert(editingArticleId ? 'Article updated!' : 'Article created!');
       setIsModalOpen(false);
+      setEditingArticleId(null); // Reset the editing state
       fetchArticles();
     } catch (error) {
-      console.error('Error creating article:', error);
-      alert('Error creating article. Please try again later.');
+      console.error('Error saving the article:', error);
+      alert('Error saving the article. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
+  };
+  const handleDeleteConfirm = (id: string) => {
+    setArticleToDelete(id);
+    setIsConfirmModalOpen(true);
+  };
+
+  const showNotification = (message: string) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000); // Clear notification after 3 seconds
+  };
+
+  const handleDelete = async () => {
+    if (!articleToDelete) return;
+
+    try {
+      const response = await fetch(`/api/lifestyle/${articleToDelete}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.json();
+        showNotification(errorBody.error || 'Failed to delete the article');
+        return;
+      }
+
+      showNotification('Article deleted successfully');
+      fetchArticles();
+    } catch (error) {
+      console.error('Error deleting article:', error);
+      showNotification('Error deleting the article. Please try again.');
+    } finally {
+      setIsConfirmModalOpen(false);
+      setArticleToDelete(null);
+    }
+  };
+
+  const handleEdit = (article: LifestyleArticle) => {
+    setTitle(article.title);
+    setImageUrl(article.imageUrl || null);
+    editor?.commands.setContent(article.content);
+    setIsModalOpen(true); // Open modal for editing
+
+    // Scroll to the editor section
+    editorRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -266,147 +325,153 @@ const Lifestyle = () => {
         </CreateButtonContainer>
       )}
       {isModalOpen && (
-        <ModalContainer>
-          <ModalContent>
-            <ModalContentTitleContainer>
-              <ModalContentTitle>
-                Create New Lifestyle Article
-              </ModalContentTitle>
-            </ModalContentTitleContainer>
-            <ModalContentForm onSubmit={handleSubmit}>
-              <FormItemContainer>
-                <InputLabel htmlFor="title">Title:</InputLabel>
-                <Input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="content">Content:</InputLabel>
-                <div>
-                  <ToolbarContainer>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleBold().run()}
-                    >
-                      Bold
-                    </ToolbarButton>
+        <div ref={editorRef}>
+          <ModalContainer>
+            <ModalContent>
+              <ModalContentTitleContainer>
+                <ModalContentTitle>
+                  Create New Lifestyle Article
+                </ModalContentTitle>
+              </ModalContentTitleContainer>
+              <ModalContentForm onSubmit={handleSubmit}>
+                <FormItemContainer>
+                  <InputLabel htmlFor="title">Title:</InputLabel>
+                  <Input
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="content">Content:</InputLabel>
+                  <div>
+                    <ToolbarContainer>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleBold().run()
+                        }
+                      >
+                        Bold
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleItalic().run()
-                      }
-                    >
-                      Italic
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleUnderline().run()
-                      }
-                    >
-                      Underline
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('left').run()
-                      }
-                    >
-                      Left Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('right').run()
-                      }
-                    >
-                      Right Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('justify').run()
-                      }
-                    >
-                      Justify Align
-                    </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleItalic().run()
+                        }
+                      >
+                        Italic
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleUnderline().run()
+                        }
+                      >
+                        Underline
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('center').run()
+                        }
+                      >
+                        Center
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('left').run()
+                        }
+                      >
+                        Left Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('center').run()
+                        }
+                      >
+                        Center Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('right').run()
+                        }
+                      >
+                        Right Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('justify').run()
+                        }
+                      >
+                        Justify Align
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleStrike().run()
-                      }
-                    >
-                      Strikethrough
-                    </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleStrike().run()
+                        }
+                      >
+                        Strikethrough
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleCode().run()}
-                    >
-                      Code
-                    </ToolbarButton>
-                  </ToolbarContainer>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleCode().run()
+                        }
+                      >
+                        Code
+                      </ToolbarButton>
+                    </ToolbarContainer>
 
-                  {/* Ensure editor is initialized before rendering the editor */}
-                  <StyledEditorContainer>
-                    {editor && <EditorContent editor={editor} />}
-                  </StyledEditorContainer>
-                </div>
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="imageUrl">Image:</InputLabel>
-                <ImageContainer>
-                  <UploadButtonContainer>
-                    <UploadButton type="button" onClick={handleUploadImage}>
-                      Upload Image
-                    </UploadButton>
-                  </UploadButtonContainer>
+                    {/* Ensure editor is initialized before rendering the editor */}
+                    <StyledEditorContainer>
+                      {editor && <EditorContent editor={editor} />}
+                    </StyledEditorContainer>
+                  </div>
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                  <ImageContainer>
+                    <UploadButtonContainer>
+                      <UploadButton type="button" onClick={handleUploadImage}>
+                        Upload Image
+                      </UploadButton>
+                    </UploadButtonContainer>
 
-                  {imageUrl && (
-                    <UploadedImageContainer>
-                      <Image
-                        src={imageUrl}
-                        alt="Uploaded Image"
-                        width={300}
-                        height={300}
-                      />
-                    </UploadedImageContainer>
-                  )}
-                </ImageContainer>
-              </FormItemContainer>
+                    {imageUrl && (
+                      <UploadedImageContainer>
+                        <Image
+                          src={imageUrl}
+                          alt="Uploaded Image"
+                          width={300}
+                          height={300}
+                        />
+                      </UploadedImageContainer>
+                    )}
+                  </ImageContainer>
+                </FormItemContainer>
 
-              <SubmitButtonContainer>
-                <SubmitButton type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
-                </SubmitButton>
-              </SubmitButtonContainer>
+                <SubmitButtonContainer>
+                  <SubmitButton type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </SubmitButton>
+                </SubmitButtonContainer>
 
-              <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
-            </ModalContentForm>
-          </ModalContent>
-        </ModalContainer>
+                <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
+              </ModalContentForm>
+            </ModalContent>
+          </ModalContainer>
+        </div>
       )}
 
       <FeaturesSectionContainer>
@@ -425,6 +490,16 @@ const Lifestyle = () => {
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
               </Link>
             </FeaturesTitleContainer>
+            {session?.user?.role === 'admin' && (
+              <EditButtonsContainer>
+                <EditButton onClick={() => handleEdit(lifestyle)}>
+                  Edit
+                </EditButton>
+                <DeleteButton onClick={() => handleDeleteConfirm(lifestyle.id)}>
+                  Delete
+                </DeleteButton>
+              </EditButtonsContainer>
+            )}
           </FeaturesCard>
         ))}
       </FeaturesSectionContainer>
@@ -440,6 +515,44 @@ const Lifestyle = () => {
           Next
         </NextButton>
       </PaginationContainer>
+      {isConfirmModalOpen && (
+        <ConfirmModalContainer>
+          <ConfirmModalContent>
+            <p>Are you sure you want to delete this article?</p>
+            <ConfirmModalButtons>
+              <CancelConfirmModalButton
+                onClick={() => setIsConfirmModalOpen(false)}
+              >
+                No
+              </CancelConfirmModalButton>
+              <DeleteConfirmModalButton onClick={handleDelete}>
+                Yes
+              </DeleteConfirmModalButton>
+            </ConfirmModalButtons>
+          </ConfirmModalContent>
+        </ConfirmModalContainer>
+      )}
+      {notification && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            right: '50%',
+            // left: '10px',
+            // bottom: '10px',
+            backgroundColor: 'tomato',
+            color: 'white',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {notification}
+        </div>
+      )}
     </Container>
   );
 };
