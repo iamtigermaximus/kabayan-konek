@@ -174,9 +174,23 @@ const Navbar = () => {
                 >
                   <Link
                     href="/marketplace/myProducts"
-                    style={{ display: 'block', padding: '8px 0' }}
+                    style={{
+                      display: 'block',
+                      padding: '8px 0',
+                      fontSize: '14px',
+                    }}
                   >
                     View My Products
+                  </Link>
+                  <Link
+                    href="/advertisement/myAdvertisements"
+                    style={{
+                      display: 'block',
+                      padding: '8px 0',
+                      fontSize: '14px',
+                    }}
+                  >
+                    View My Advertisements
                   </Link>
                   <button
                     onClick={handleLogoutClick}

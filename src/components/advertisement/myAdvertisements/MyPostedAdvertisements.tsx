@@ -1,25 +1,16 @@
 'use client';
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-
-// Tiptap imports
-import { useEditor, EditorContent } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
-import { Heading } from '@tiptap/extension-heading'; // For headings
-import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
-import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
-import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
-import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
-import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
-import { CodeBlock } from '@tiptap/extension-code-block';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Underline } from '@tiptap/extension-underline';
 import {
-  BasicProductInfoContainer,
+  AdBasicInfoContainer,
+  AdCard,
+  AdDescription,
+  AdImage,
+  AdList,
+  AdTitle,
   Container,
   DividerContainer,
   DividerLabel,
@@ -41,34 +32,42 @@ import {
   PageInfo,
   PaginationContainer,
   PrevButton,
-  ProductCard,
-  ProductDescription,
-  ProductImage,
-  ProductList,
-  ProductPrice,
-  ProductTitle,
   SectionContainer,
   StyledEditorContainer,
   StyledLink,
   SubmitButton,
   ToolbarButton,
   ToolbarContainer,
+  // Textarea,
   UploadButton,
   UploadButtonContainer,
   UploadedImageContainer,
-} from '../Marketplace.styles';
+} from '../Advertisement.styles';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export interface ProductProps {
-  id?: string;
-  name: string;
+// Tiptap imports
+import { useEditor, EditorContent } from '@tiptap/react';
+import { StarterKit } from '@tiptap/starter-kit';
+import { Heading } from '@tiptap/extension-heading'; // For headings
+import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
+import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
+import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
+import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
+import { CodeBlock } from '@tiptap/extension-code-block';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { Underline } from '@tiptap/extension-underline';
+
+interface AdvertisementProps {
+  id: string;
+  title: string;
   description: string;
-  price: number;
   category: string;
-  contactEmail: string;
-  contactPhone: string;
-  imageUrl?: string | null;
-  createdAt?: string;
-  updatedAt?: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface CloudinaryWidgetResult {
@@ -83,32 +82,29 @@ interface CloudinaryWidget {
   close: () => void;
 }
 
-const MyPostedProducts = () => {
+const MyPostedAdvertisements = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [category, setCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
+    []
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   // const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
+  const [category, setCategory] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [products, setProducts] = useState<ProductProps[]>([]);
-  const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
-    null
-  );
-
+  const widgetRef = useRef<CloudinaryWidget | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingAdvertisement, setEditingAdvertisement] =
+    useState<AdvertisementProps | null>(null);
 
-  const widgetRef = useRef<CloudinaryWidget | null>(null);
-  const itemsPerPage = 6;
+  const itemsPerPage = 6; // Number of ads to show per page
 
-  // Initialize Tiptap editor
+  //  Initialize Tiptap editor
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -128,7 +124,7 @@ const MyPostedProducts = () => {
     content: '',
   });
 
-  const fetchProducts = useCallback(async () => {
+  const fetchAdvertisements = useCallback(async () => {
     if (!session?.user?.id) {
       setError('User is not logged in.');
       setIsLoading(false);
@@ -136,7 +132,7 @@ const MyPostedProducts = () => {
     }
 
     try {
-      const response = await fetch('/api/marketplace/myProducts');
+      const response = await fetch('/api/advertisements/myAdvertisements');
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -145,14 +141,14 @@ const MyPostedProducts = () => {
         return;
       }
 
-      const data: ProductProps[] = await response.json();
+      const data: AdvertisementProps[] = await response.json();
       data.sort((a, b) => {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
         return dateB - dateA; // Sort in descending order
       });
 
-      setProducts(data);
+      setAdvertisements(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -164,20 +160,20 @@ const MyPostedProducts = () => {
 
   useEffect(() => {
     if (session) {
-      fetchProducts(); // Fetch products if session is available
+      fetchAdvertisements();
     }
-  }, [session, fetchProducts]);
+  }, [session, fetchAdvertisements]);
 
-  const filteredProducts =
-    category === 'all'
-      ? products
-      : products.filter((product) => product.category === category);
+  const filteredAdvertisements =
+    category === 'all' || category === ''
+      ? advertisements
+      : advertisements.filter(
+          (advertisement) => advertisement.category === category
+        );
 
-  // //  Calculate total number of pages
-  // const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = filteredProducts.slice(startIndex, endIndex);
+  const displayedItems = filteredAdvertisements.slice(startIndex, endIndex);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -215,68 +211,93 @@ const MyPostedProducts = () => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined' && window.cloudinary) {
+  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
+  //       {
+  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  //         uploadPreset: 'kabayankonek',
+  //         multiple: false,
+  //         sources: ['local', 'url', 'camera'],
+  //         debug: true,
+  //       },
+  //       (error: Error | null, result: CloudinaryWidgetResult) => {
+  //         if (result?.event === 'success') {
+  //           setImageUrl(result.info.secure_url); // Save the uploaded image URL
+
+  //           // Insert the image URL into the Tiptap editor at the current cursor position
+  //           if (editor) {
+  //             editor
+  //               .chain()
+  //               .focus()
+  //               .setImage({ src: result.info.secure_url })
+  //               .run();
+  //           }
+  //         } else if (error) {
+  //           console.error('Cloudinary upload error:', error);
+  //         }
+  //       }
+  //     );
+  //     widgetRef.current = cloudinaryWidget;
+  //   } else {
+  //     console.log('Cloudinary script is not loaded');
+  //   }
+  // }, [editor]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (
-      !name ||
-      !editor?.getHTML() ||
-      !price ||
-      !category ||
-      !contactEmail ||
-      !contactPhone
-    ) {
+    if (!title || !editor?.getHTML() || !category) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
       return;
     }
 
-    const productData = {
-      name,
-      description: editor.getHTML(),
-      price: parseFloat(price),
+    const advertisementData = {
+      title,
+      description: editor?.getHTML(),
       category,
-      contactEmail,
-      contactPhone,
       image: imageUrl || null,
     };
 
     try {
-      const endpoint = editingProduct
-        ? `/api/marketplace/${editingProduct.id}` // Edit endpoint
-        : '/api/marketplace'; // Create endpoint
-      const method = editingProduct ? 'PUT' : 'POST'; // Use PUT for edit
+      const endpoint = editingAdvertisement
+        ? `/api/advertisements/${editingAdvertisement.id}` // Edit endpoint
+        : '/api/advertisements'; // Create endpoint
+      const method = editingAdvertisement ? 'PUT' : 'POST'; // Use PUT for edit
 
       const response = await fetch(endpoint, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(productData),
+        body: JSON.stringify(advertisementData),
       });
 
       const responseBody = await response.json();
 
       if (!response.ok) {
         console.error(
-          'Error submitting product:',
+          'Error submitting advertisement',
           responseBody.error || 'Unknown error'
         );
-        alert(responseBody.error || 'Error submitting product');
+        alert(responseBody.error || 'Error submitting advertisement');
         return;
       }
 
       console.log(
-        editingProduct ? 'Product updated!' : 'Product created!',
+        editingAdvertisement
+          ? 'Advertisements updated!'
+          : 'Advertisement created!',
         responseBody
       );
       setIsModalOpen(false);
-      setEditingProduct(null); // Reset editing state
-      fetchProducts(); // Refresh products list
+      setEditingAdvertisement(null);
+      fetchAdvertisements();
     } catch (error) {
-      console.error('Error submitting product:', error);
-      alert('Error submitting product. Please try again later.');
+      console.error('Error creating advertisement:', error);
+      alert('Error creating advertisement. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -286,55 +307,53 @@ const MyPostedProducts = () => {
     router.push('/login');
   };
 
-  const handleEdit = (product: ProductProps) => {
-    setEditingProduct(product);
-    setName(product.name);
-    setPrice(product.price.toString());
-    setCategory(product.category);
-    setContactEmail(product.contactEmail);
-    setContactPhone(product.contactPhone);
-    setImageUrl(product.imageUrl || null);
-    editor?.commands.setContent(product.description); // Load description into Tiptap editor
+  const handleEdit = (advertisement: AdvertisementProps) => {
+    setEditingAdvertisement(advertisement);
+    setTitle(advertisement.title);
+    editor?.commands.setContent(advertisement.description);
+    setCategory(advertisement.category);
+    setImageUrl(advertisement.imageUrl || null);
     setIsModalOpen(true); // Open modal for editing
   };
 
-  const handleDelete = async (productId: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) {
+  const handleDelete = async (advertisementId: string) => {
+    if (!confirm('Are you sure you want to delete this advertisement?')) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/marketplace/${productId}`, {
+      const response = await fetch(`/api/advertisements/${advertisementId}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) {
         const responseBody = await response.json();
         console.error(
-          'Error deleting product:',
+          'Error deleting advertisement:',
           responseBody.error || 'Unknown error'
         );
-        alert(responseBody.error || 'Error deleting product');
+        alert(responseBody.error || 'Error deleting advertisement');
         return;
       }
 
-      console.log('Product deleted successfully!');
-      fetchProducts(); // Refresh product list
+      console.log('Advertisement deleted successfully!');
+      fetchAdvertisements(); // Refresh advertisement list
     } catch (error) {
-      console.error('Error deleting product:', error);
-      alert('Error deleting product. Please try again later.');
+      console.error('Error deleting advertisement:', error);
+      alert('Error deleting advertisement. Please try again later.');
     }
   };
 
   return (
     <Container>
-      <title>MARKETPLACE | kabayankonek</title>
+      <title>ADVERTISEMENTS | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
-        <DividerLabel>MARKETPLACE</DividerLabel>
+        <DividerLabel>ADVERTISEMENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
       {error && <div style={{ color: 'red' }}>{error}</div>}
+
       <div>
         {!session ? (
           <div
@@ -348,11 +367,10 @@ const MyPostedProducts = () => {
             }}
           >
             <h2 style={{ marginBottom: '10px' }}>
-              Want to sell or post your own products?
+              Want to post your own advertisement?
             </h2>
             <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your products. Join our
-              marketplace and start selling today!
+              Log in or sign up to create and manage your advertisements easily.
             </p>
             <button
               onClick={handleLoginClick}
@@ -380,11 +398,12 @@ const MyPostedProducts = () => {
             }}
           >
             <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your products with the marketplace?
+              Ready to share your advertisement with the Filipino community in
+              Finland?
             </h2>
             <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your products easily, and
-              reach more buyers.
+              You are logged in! Create and manage your ads, and reach more
+              potential customers.
             </p>
             <button
               onClick={() => toggleModal()}
@@ -397,37 +416,40 @@ const MyPostedProducts = () => {
                 cursor: 'pointer',
               }}
             >
-              POST PRODUCT
+              CREATE ADVERTISEMENT
             </button>
           </div>
         )}
       </div>
-      {isLoading && <div>Loading products...</div>}
+      {isLoading && <div>Loading advertisements...</div>}
+
       {/* {session && (
         <CreateButtonContainer>
-          <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>
+          <CreateButton onClick={toggleModal}>
+            CREATE ADVERTISEMENT
+          </CreateButton>
         </CreateButtonContainer>
       )} */}
-
       {isModalOpen && (
         <ModalContainer>
           <ModalContent>
+            <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
             <ModalContentTitleContainer>
-              <ModalContentTitle>Create New Product</ModalContentTitle>
+              <ModalContentTitle>Create Advertisement</ModalContentTitle>
             </ModalContentTitleContainer>
 
             <ModalContentForm onSubmit={handleSubmit}>
               <FormItemContainer>
-                <InputLabel htmlFor="name">Product Name:</InputLabel>
+                <InputLabel>Title</InputLabel>
                 <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                   required
                 />
               </FormItemContainer>
               <FormItemContainer>
-                <InputLabel htmlFor="description">Description:</InputLabel>
+                <InputLabel>Description</InputLabel>
                 {/* <Textarea
                   id="description"
                   value={description}
@@ -524,16 +546,6 @@ const MyPostedProducts = () => {
                 </div>
               </FormItemContainer>
               <FormItemContainer>
-                <InputLabel htmlFor="price">Price:</InputLabel>
-                <Input
-                  id="price"
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
                 <InputLabel htmlFor="category">Category:</InputLabel>
                 <FilterSelect
                   id="category"
@@ -542,33 +554,12 @@ const MyPostedProducts = () => {
                   required
                 >
                   <option value="all">All</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="fashion">Fashion</option>
-                  <option value="home">Home</option>
-                  <option value="food">Food</option>
-                  <option value="others">Others</option>
+                  <option value="jobs">Jobs</option>
+                  <option value="services">Services</option>
+                  <option value="real-estate">Real Estate</option>
+                  <option value="events">Events</option>
+                  <option value="community">Community</option>
                 </FilterSelect>
-              </FormItemContainer>
-
-              <FormItemContainer>
-                <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
-                <Input
-                  id="contactEmail"
-                  type="email"
-                  value={contactEmail}
-                  onChange={(e) => setContactEmail(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
-                <Input
-                  id="contactPhone"
-                  type="tel"
-                  value={contactPhone}
-                  onChange={(e) => setContactPhone(e.target.value)}
-                  required
-                />
               </FormItemContainer>
               <FormItemContainer>
                 <InputLabel htmlFor="imageUrl">Image:</InputLabel>
@@ -582,7 +573,7 @@ const MyPostedProducts = () => {
                     <UploadedImageContainer>
                       <Image
                         src={imageUrl}
-                        alt="Product"
+                        alt="Event"
                         width={150}
                         height={150}
                       />
@@ -591,10 +582,9 @@ const MyPostedProducts = () => {
                 </ImageContainer>
               </FormItemContainer>
               <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Create Product'}
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </SubmitButton>
             </ModalContentForm>
-            <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
           </ModalContent>
         </ModalContainer>
       )}
@@ -604,61 +594,60 @@ const MyPostedProducts = () => {
             <FilterLabel>Category:</FilterLabel>
             <FilterSelect
               value={category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-                setCurrentPage(1);
-              }}
+              onChange={(e) => setCategory(e.target.value)}
             >
               <option value="all">All</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home</option>
-              <option value="food">Food</option>
+              <option value="jobs">Jobs</option>
+              <option value="services">Services</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="events">Events</option>
+              <option value="community">Community</option>
             </FilterSelect>
           </div>
         </FilterSection>
-
-        <ProductList>
-          {displayedItems.map((product) => (
-            <ProductCard key={product.id}>
-              <ProductImage
-                src={product.imageUrl || '/default-event.jpg'}
-                alt={product.name}
+        <AdList>
+          {displayedItems.map((ad) => (
+            <AdCard key={ad.id}>
+              <AdImage
+                src={ad.imageUrl || '/default-event.jpg'}
+                alt={ad.title}
                 width={150}
                 height={150}
                 priority
               />
-              <BasicProductInfoContainer>
+
+              <AdBasicInfoContainer>
                 <Link
-                  href={`/marketplace/${product.id}`}
+                  href={`/advertisement/${ad.id}`}
                   style={{ textDecoration: 'none', color: 'black' }}
                 >
-                  <ProductTitle>{product.name}</ProductTitle>
-                </Link>
-                <ProductPrice>€{product.price}</ProductPrice>
-                <ProductDescription>
-                  {product.description.length > 100 ? (
-                    <>
+                  <AdTitle>{ad.title}</AdTitle>
+                  <AdDescription>
+                    {ad.description.length > 200 ? (
+                      <>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: ad.description.slice(0, 100) + '...',
+                          }}
+                        ></div>
+
+                        <div style={{ color: 'blue', cursor: 'pointer' }}>
+                          <StyledLink href={`/advertisement/${ad.id}`}>
+                            Read More
+                          </StyledLink>
+                        </div>
+                      </>
+                    ) : (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: product.description.slice(0, 100) + '...',
+                          __html: ad.description,
                         }}
                       ></div>
-                      <StyledLink href={`/marketplace/${product.id}`}>
-                        <span style={{ color: 'blue', cursor: 'pointer' }}>
-                          Read More
-                        </span>
-                      </StyledLink>
-                    </>
-                  ) : (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    ></div>
-                  )}
-                </ProductDescription>
-              </BasicProductInfoContainer>
+                    )}
+                  </AdDescription>
+                </Link>
+              </AdBasicInfoContainer>
+
               <div
                 style={{
                   display: 'flex',
@@ -676,7 +665,7 @@ const MyPostedProducts = () => {
                     cursor: 'pointer',
                     width: '60px',
                   }}
-                  onClick={() => handleEdit(product)}
+                  onClick={() => handleEdit(ad)}
                 >
                   Edit
                 </button>
@@ -690,17 +679,17 @@ const MyPostedProducts = () => {
                     width: '60px',
                   }}
                   onClick={() => {
-                    if (product.id) {
-                      handleDelete(product.id);
+                    if (ad.id) {
+                      handleDelete(ad.id);
                     }
                   }}
                 >
                   Delete
                 </button>
               </div>
-            </ProductCard>
+            </AdCard>
           ))}
-        </ProductList>
+        </AdList>
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
@@ -721,4 +710,4 @@ const MyPostedProducts = () => {
   );
 };
 
-export default MyPostedProducts;
+export default MyPostedAdvertisements;

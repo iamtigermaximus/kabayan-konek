@@ -11,7 +11,7 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// GET: Fetch all events
+// GET: Fetch all advertisements
 export async function GET() {
   try {
     const advertisements = await prisma.advertisement.findMany({
@@ -28,13 +28,30 @@ export async function GET() {
   }
 }
 
-// POST: Create a new event
+// POST: Create a new advertisement
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // const session = await getServerSession({ req, ...authOptions });
+    // if (!session || session.user.role !== 'admin') {
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // }
+
+    // Get the session (user info)
     const session = await getServerSession({ req, ...authOptions });
-    if (!session || session.user.role !== 'admin') {
+
+    // Check if the user is logged in (session exists)
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in.' },
+        { status: 401 }
+      );
+    }
+
+    // Check if you want only admins to post or allow regular users
+    // Remove this condition to allow all logged-in users to post
+    if (session.user.role !== 'admin' && session.user.role !== 'user') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     const { title, description, category, image } = body;
@@ -42,7 +59,7 @@ export async function POST(req: NextRequest) {
     if (!title || !description || !category) {
       return NextResponse.json(
         {
-          error: 'All fields (title, description,category) are required',
+          error: 'All fields (title, description,category ) are required',
         },
         { status: 400 }
       );
@@ -52,12 +69,12 @@ export async function POST(req: NextRequest) {
     // Handle optional image upload
     if (image) {
       const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'ads_folder',
+        folder: 'advertisements_folder',
       });
       imageUrl = uploadedImage.secure_url;
     }
 
-    // Create article in the database
+    // Create advertisement in the database
     const newAdvertisement = await prisma.advertisement.create({
       data: {
         title,
@@ -68,7 +85,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Return the created article
+    // Return the created advertisement
     return NextResponse.json(newAdvertisement, { status: 201 });
   } catch (error) {
     console.error('Error creating advertisement:', error);

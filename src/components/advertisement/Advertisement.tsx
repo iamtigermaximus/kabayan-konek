@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -97,9 +97,10 @@ const Advertisement = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
-  const [filteredAdvertisements, setFilteredAdvertisements] = useState<
-    AdvertisementProps[]
-  >([]);
+  const [editingAdvertisement, setEditingAdvertisement] =
+    useState<AdvertisementProps | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const itemsPerPage = 6; // Number of ads to show per page
 
@@ -124,46 +125,44 @@ const Advertisement = () => {
   });
 
   const fetchAdvertisements = async () => {
+    setIsLoading(false);
+
     try {
       const response = await fetch('/api/advertisements');
-      const data: AdvertisementProps[] = await response.json();
 
-      data.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to fetch products');
+        setIsLoading(false);
+        return;
+      }
+      const data: AdvertisementProps[] = await response.json();
+      data.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
 
       setAdvertisements(data);
-      setFilteredAdvertisements(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching advertisements:', error);
+      setError('Error fetching advertisements');
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  // Filter advertisements by category
-  // Memoize the filterAdvertisements function using useCallback
-  const filterAdvertisements = useCallback(
-    (category: string) => {
-      if (category === 'all' || !category) {
-        setFilteredAdvertisements(advertisements);
-      } else {
-        const filtered = advertisements.filter(
-          (ad) => ad.category === category
-        );
-        setFilteredAdvertisements(filtered);
-      }
-    },
-    [advertisements]
-  ); // dependencies: advertisements
 
   useEffect(() => {
     fetchAdvertisements();
   }, []);
 
-  useEffect(() => {
-    filterAdvertisements(category);
-  }, [category, filterAdvertisements]);
+  const filteredAdvertisements =
+    category === 'all' || category === ''
+      ? advertisements
+      : advertisements.filter(
+          (advertisement) => advertisement.category === category
+        );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -183,28 +182,6 @@ const Advertisement = () => {
     widgetRef.current?.open();
   };
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && window.cloudinary) {
-  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
-  //       {
-  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-  //         uploadPreset: 'kabayankonek',
-  //         multiple: false,
-  //         sources: ['local', 'url', 'camera'],
-  //         debug: true,
-  //       },
-  //       (error: Error | null, result: CloudinaryWidgetResult) => {
-  //         if (result?.event === 'success') {
-  //           setImageUrl(result.info.secure_url);
-  //         } else if (error) {
-  //           console.error('Cloudinary upload error:', error);
-  //         }
-  //       }
-  //     );
-  //     widgetRef.current = cloudinaryWidget;
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
@@ -217,26 +194,48 @@ const Advertisement = () => {
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
           if (result?.event === 'success') {
-            setImageUrl(result.info.secure_url); // Save the uploaded image URL
-
-            // Insert the image URL into the Tiptap editor at the current cursor position
-            if (editor) {
-              editor
-                .chain()
-                .focus()
-                .setImage({ src: result.info.secure_url })
-                .run();
-            }
+            setImageUrl(result.info.secure_url);
           } else if (error) {
             console.error('Cloudinary upload error:', error);
           }
         }
       );
       widgetRef.current = cloudinaryWidget;
-    } else {
-      console.log('Cloudinary script is not loaded');
     }
-  }, [editor]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined' && window.cloudinary) {
+  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
+  //       {
+  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  //         uploadPreset: 'kabayankonek',
+  //         multiple: false,
+  //         sources: ['local', 'url', 'camera'],
+  //         debug: true,
+  //       },
+  //       (error: Error | null, result: CloudinaryWidgetResult) => {
+  //         if (result?.event === 'success') {
+  //           setImageUrl(result.info.secure_url); // Save the uploaded image URL
+
+  //           // Insert the image URL into the Tiptap editor at the current cursor position
+  //           if (editor) {
+  //             editor
+  //               .chain()
+  //               .focus()
+  //               .setImage({ src: result.info.secure_url })
+  //               .run();
+  //           }
+  //         } else if (error) {
+  //           console.error('Cloudinary upload error:', error);
+  //         }
+  //       }
+  //     );
+  //     widgetRef.current = cloudinaryWidget;
+  //   } else {
+  //     console.log('Cloudinary script is not loaded');
+  //   }
+  // }, [editor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,7 +247,7 @@ const Advertisement = () => {
       return;
     }
 
-    const eventData = {
+    const advertisementData = {
       title,
       description: editor?.getHTML(),
       category,
@@ -256,31 +255,42 @@ const Advertisement = () => {
     };
 
     try {
-      const response = await fetch('/api/advertisements', {
-        method: 'POST',
+      const endpoint = editingAdvertisement
+        ? `/api/advertisements/${editingAdvertisement.id}` // Edit endpoint
+        : '/api/advertisements'; // Create endpoint
+      const method = editingAdvertisement ? 'PUT' : 'POST'; // Use PUT for edit
+
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(eventData),
+        body: JSON.stringify(advertisementData),
       });
 
       const responseBody = await response.json();
 
       if (!response.ok) {
         console.error(
-          'Error creating advertisement:',
+          'Error submitting advertisement:',
           responseBody.error || 'Unknown error'
         );
-        alert(responseBody.error || 'Error creating advertisement');
+        alert(responseBody.error || 'Error submitting advertisement');
         return;
       }
 
-      console.log('Event created!', responseBody);
+      console.log(
+        editingAdvertisement
+          ? 'Advertisement updated!'
+          : 'Advertisement created!',
+        responseBody
+      );
       setIsModalOpen(false);
-      fetchAdvertisements();
+      setEditingAdvertisement(null); // Reset editing state
+      fetchAdvertisements(); // Refresh products list
     } catch (error) {
-      console.error('Error creating advertisement:', error);
-      alert('Error creating advertisement. Please try again later.');
+      console.error('Error submitting advertisement:', error);
+      alert('Error submitting advertisement. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -298,6 +308,8 @@ const Advertisement = () => {
         <DividerLabel>ADVERTISEMENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+
       <div>
         {!session ? (
           <div
@@ -365,6 +377,8 @@ const Advertisement = () => {
           </div>
         )}
       </div>
+      {isLoading && <div>Loading advertisements...</div>}
+
       {/* {session && (
         <CreateButtonContainer>
           <CreateButton onClick={toggleModal}>
@@ -495,7 +509,6 @@ const Advertisement = () => {
                   onChange={(e) => setCategory(e.target.value)}
                   required
                 >
-                  <option value="all">All</option>
                   <option value="jobs">Jobs</option>
                   <option value="services">Services</option>
                   <option value="real-estate">Real Estate</option>
