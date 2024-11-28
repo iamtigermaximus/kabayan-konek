@@ -221,6 +221,32 @@ const Home = () => {
             <FeaturesTitleContainer>
               <FeaturesTitle>{profile.title}</FeaturesTitle>
             </FeaturesTitleContainer>
+            <div
+              style={{
+                padding: '0 5px',
+                color: 'gray',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              {profile.content.length > 100 ? (
+                <>
+                  {/* Only the first 100 characters with HTML rendering */}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: profile.content.slice(0, 200) + '...',
+                    }}
+                  />
+                </>
+              ) : (
+                // Rendering the full content with HTML
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: profile.content,
+                  }}
+                />
+              )}
+            </div>
           </FeaturesCard>
         ))}
       </FeaturesSectionContainer>
