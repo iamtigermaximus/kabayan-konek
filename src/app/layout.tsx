@@ -23,6 +23,10 @@ export default function RootLayout({
           src="https://upload-widget.cloudinary.com/global/all.js"
           async
         ></script>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Georgia&family=Times+New+Roman&family=Playfair+Display:wght@400;700&family=Crimson+Pro:wght@400;700&family=Roboto:wght@400;500;700&family=Lato:wght@400;700&family=Helvetica+Neue&family=Open+Sans:wght@400;700&family=Montserrat:wght@400;700&family=Bebas+Neue&family=Oswald:wght@400;500&family=Cinzel:wght@400;700&family=Raleway:wght@400;500;600&family=Dancing+Script&family=Pacifico&family=Great+Vibes&family=Lobster&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <div>

@@ -72,7 +72,6 @@ export const AdCard = styled.div`
   border-radius: 8px;
   padding: 15px;
   background-color: #f9f9f9;
-  text-align: center;
 `;
 
 export const AdImage = styled(Image)`

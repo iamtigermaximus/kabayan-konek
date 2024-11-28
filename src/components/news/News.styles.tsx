@@ -616,7 +616,7 @@ export const PageLayout = styled.div`
 `;
 
 export const Content = styled.div`
-  font-size: 1rem;
+  /* font-size: 1rem;
   line-height: 1.6;
   color: #555;
 
@@ -642,6 +642,131 @@ export const Content = styled.div`
     background: #f4f4f4;
     padding: 10px 20px;
     border-left: 5px solid #ccc;
+    margin: 20px 0;
+  } */
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700; /* Bold */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem; /* 32px */
+    font-weight: 600; /* Semi-bold */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  h3 {
+    font-size: 1.75rem; /* 28px */
+    font-weight: 500; /* Medium */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  h4 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 400; /* Regular */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .editor-heading h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-heading h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 0.65rem;
+  }
+
+  .editor-heading h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+  }
+
+  .editor-heading h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.55rem;
+  }
+
+  .editor-heading h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .editor-heading h6 {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 0.45rem;
+  }
+
+  /* Paragraph */
+  p {
+    font-size: 1rem; /* 16px */
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #555;
+  }
+
+  /* Blockquote */
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+    font-style: italic;
+  }
+
+  /* Links */
+  a {
+    text-decoration: none;
+    color: #007bff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Additional Styles */
+  code {
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+
+  pre {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
     margin: 20px 0;
   }
 `;

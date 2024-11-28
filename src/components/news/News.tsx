@@ -53,6 +53,7 @@ import {
   ArticleImage,
 } from './News.styles';
 import { useSession } from 'next-auth/react';
+
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -65,6 +66,7 @@ import { TextAlign } from '@tiptap/extension-text-align';
 import { CodeBlock } from '@tiptap/extension-code-block';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
+import { FontFamily } from '@tiptap/extension-font-family';
 
 interface NewsArticleProps {
   id: string;
@@ -129,7 +131,12 @@ const News = () => {
         types: ['paragraph', 'heading'],
       }),
       Underline,
-      Heading.configure({ levels: [1, 2, 3] }),
+      Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6], // Supports all levels of headings
+        HTMLAttributes: {
+          class: 'editor-heading', // Apply a class for custom styles
+        },
+      }),
       TiptapLink,
       TiptapImage,
       Blockquote,
@@ -137,9 +144,19 @@ const News = () => {
       TextAlign.configure({ types: ['paragraph', 'heading'] }),
       CodeBlock,
       TextStyle,
+      FontFamily.configure({
+        types: ['textStyle'], // Apply font family to textStyle (or any other type you need)
+      }),
     ],
     content: '',
   });
+
+  // Font Change Handler
+  const handleFontChange = (fontFamily: string) => {
+    if (editor) {
+      editor.chain().focus().setFontFamily(fontFamily).run();
+    }
+  };
 
   const fetchNewsArticles = async () => {
     try {
@@ -464,6 +481,51 @@ const News = () => {
                           >
                             Code
                           </ToolbarButton>
+                          {/* Font Family Dropdown */}
+                          <div>
+                            <select
+                              onChange={(e) => handleFontChange(e.target.value)}
+                              defaultValue=""
+                            >
+                              <option value="">Select Font</option>
+                              <option value="Arial">Arial</option>
+                              <option value="Courier New">Courier New</option>
+                              <option value="Georgia">Georgia</option>
+                              <option value="Times New Roman">
+                                Times New Roman
+                              </option>
+                              <option value="Verdana">Verdana</option>
+                            </select>
+                          </div>
+                          <div>
+                            <select
+                              onChange={(e) => {
+                                const level = parseInt(e.target.value, 10) as
+                                  | 1
+                                  | 2
+                                  | 3
+                                  | 4
+                                  | 5
+                                  | 6; // Explicit type assertion
+                                if (editor) {
+                                  editor
+                                    .chain()
+                                    .focus()
+                                    .toggleHeading({ level })
+                                    .run();
+                                }
+                              }}
+                              defaultValue=""
+                            >
+                              <option value="">Normal Text</option>
+                              <option value="1">Heading 1</option>
+                              <option value="2">Heading 2</option>
+                              <option value="3">Heading 3</option>
+                              <option value="4">Heading 4</option>
+                              <option value="5">Heading 5</option>
+                              <option value="6">Heading 6</option>
+                            </select>
+                          </div>
                         </ToolbarContainer>
 
                         {/* Ensure editor is initialized before rendering the editor */}
