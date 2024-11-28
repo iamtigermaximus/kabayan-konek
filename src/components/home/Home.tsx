@@ -219,7 +219,9 @@ const Home = () => {
               priority
             />
             <FeaturesTitleContainer>
-              <FeaturesTitle>{profile.title}</FeaturesTitle>
+              <Link href={`/profile/${profile.id}`} passHref>
+                <FeaturesTitle>{profile.title}</FeaturesTitle>
+              </Link>
             </FeaturesTitleContainer>
             <div
               style={{
@@ -227,6 +229,7 @@ const Home = () => {
                 color: 'gray',
                 display: 'flex',
                 justifyContent: 'center',
+                fontWeight: 'normal',
               }}
             >
               {profile.content.length > 100 ? (
