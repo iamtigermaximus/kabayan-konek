@@ -1,47 +1,6 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  Container,
-  DividerContainer,
-  DividerLine,
-  DividerLabel,
-  SectionContainer,
-  FilterSection,
-  FilterLabel,
-  FilterSelect,
-  ProductList,
-  ProductCard,
-  ProductImage,
-  ProductTitle,
-  ProductPrice,
-  ProductDescription,
-  // CreateButtonContainer,
-  // CreateButton,
-  ModalContainer,
-  ModalContent,
-  ModalContentTitle,
-  ModalContentForm,
-  FormItemContainer,
-  InputLabel,
-  Input,
-  // Textarea,
-  UploadedImageContainer,
-  SubmitButton,
-  ModalCloseButton,
-  PaginationContainer,
-  PrevButton,
-  PageInfo,
-  NextButton,
-  ModalContentTitleContainer,
-  ImageContainer,
-  UploadButtonContainer,
-  UploadButton,
-  ToolbarButton,
-  ToolbarContainer,
-  StyledEditorContainer,
-  StyledLink,
-  BasicProductInfoContainer,
-} from './Marketplace.styles';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -59,6 +18,45 @@ import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
 import { CodeBlock } from '@tiptap/extension-code-block';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
+import {
+  BasicProductInfoContainer,
+  Container,
+  DividerContainer,
+  DividerLabel,
+  DividerLine,
+  FilterLabel,
+  FilterSection,
+  FilterSelect,
+  FormItemContainer,
+  ImageContainer,
+  Input,
+  InputLabel,
+  ModalCloseButton,
+  ModalContainer,
+  ModalContent,
+  ModalContentForm,
+  ModalContentTitle,
+  ModalContentTitleContainer,
+  NextButton,
+  PageInfo,
+  PaginationContainer,
+  PrevButton,
+  ProductCard,
+  ProductDescription,
+  ProductImage,
+  ProductList,
+  ProductPrice,
+  ProductTitle,
+  SectionContainer,
+  StyledEditorContainer,
+  StyledLink,
+  SubmitButton,
+  ToolbarButton,
+  ToolbarContainer,
+  UploadButton,
+  UploadButtonContainer,
+  UploadedImageContainer,
+} from '../Marketplace.styles';
 
 export interface ProductProps {
   id?: string;
@@ -85,7 +83,7 @@ interface CloudinaryWidget {
   close: () => void;
 }
 
-const MarketPlace = () => {
+const MyPostedProducts = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [category, setCategory] = useState('all');
@@ -103,6 +101,9 @@ const MarketPlace = () => {
   const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
     null
   );
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
@@ -127,26 +128,45 @@ const MarketPlace = () => {
     content: '',
   });
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('/api/marketplace');
-      const data: ProductProps[] = await response.json();
+  const fetchProducts = useCallback(async () => {
+    if (!session?.user?.id) {
+      setError('User is not logged in.');
+      setIsLoading(false);
+      return;
+    }
 
+    try {
+      const response = await fetch('/api/marketplace/myProducts');
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to fetch products');
+        setIsLoading(false);
+        return;
+      }
+
+      const data: ProductProps[] = await response.json();
       data.sort((a, b) => {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return dateB - dateA;
+        return dateB - dateA; // Sort in descending order
       });
 
       setProducts(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
       console.error('Error fetching products:', error);
+      setError('Error fetching products');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [session?.user?.id, itemsPerPage]);
+
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    if (session) {
+      fetchProducts(); // Fetch products if session is available
+    }
+  }, [session, fetchProducts]);
 
   const filteredProducts =
     category === 'all'
@@ -194,64 +214,6 @@ const MarketPlace = () => {
       widgetRef.current = cloudinaryWidget;
     }
   }, []);
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
-
-  //   if (
-  //     !name ||
-  //     !editor?.getHTML() ||
-  //     !price ||
-  //     !category ||
-  //     !contactEmail ||
-  //     !contactPhone
-  //   ) {
-  //     alert('Please fill out all required fields.');
-  //     setIsSubmitting(false);
-  //     return;
-  //   }
-
-  //   const productData = {
-  //     name,
-  //     description: editor.getHTML(),
-  //     price: parseFloat(price),
-  //     category,
-  //     contactEmail,
-  //     contactPhone,
-  //     image: imageUrl || null,
-  //   };
-
-  //   try {
-  //     const response = await fetch('/api/marketplace', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(productData),
-  //     });
-
-  //     const responseBody = await response.json();
-
-  //     if (!response.ok) {
-  //       console.error(
-  //         'Error creating product:',
-  //         responseBody.error || 'Unknown error'
-  //       );
-  //       alert(responseBody.error || 'Error creating event');
-  //       return;
-  //     }
-
-  //     console.log('Event created!', responseBody);
-  //     setIsModalOpen(false);
-  //     fetchProducts();
-  //   } catch (error) {
-  //     console.error('Error creating product:', error);
-  //     alert('Error creating product. Please try again later.');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -324,44 +286,44 @@ const MarketPlace = () => {
     router.push('/login');
   };
 
-  // const handleEdit = (product: ProductProps) => {
-  //   setEditingProduct(product);
-  //   setName(product.name);
-  //   setPrice(product.price.toString());
-  //   setContactEmail(product.contactEmail);
-  //   setContactPhone(product.contactPhone);
-  //   setImageUrl(product.imageUrl || null);
-  //   editor?.commands.setContent(product.description); // Load description into Tiptap editor
-  //   setIsModalOpen(true); // Open modal for editing
-  // };
+  const handleEdit = (product: ProductProps) => {
+    setEditingProduct(product);
+    setName(product.name);
+    setPrice(product.price.toString());
+    setContactEmail(product.contactEmail);
+    setContactPhone(product.contactPhone);
+    setImageUrl(product.imageUrl || null);
+    editor?.commands.setContent(product.description); // Load description into Tiptap editor
+    setIsModalOpen(true); // Open modal for editing
+  };
 
-  // const handleDelete = async (productId: string) => {
-  //   if (!confirm('Are you sure you want to delete this product?')) {
-  //     return;
-  //   }
+  const handleDelete = async (productId: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
 
-  //   try {
-  //     const response = await fetch(`/api/marketplace/${productId}`, {
-  //       method: 'DELETE',
-  //     });
+    try {
+      const response = await fetch(`/api/marketplace/${productId}`, {
+        method: 'DELETE',
+      });
 
-  //     if (!response.ok) {
-  //       const responseBody = await response.json();
-  //       console.error(
-  //         'Error deleting product:',
-  //         responseBody.error || 'Unknown error'
-  //       );
-  //       alert(responseBody.error || 'Error deleting product');
-  //       return;
-  //     }
+      if (!response.ok) {
+        const responseBody = await response.json();
+        console.error(
+          'Error deleting product:',
+          responseBody.error || 'Unknown error'
+        );
+        alert(responseBody.error || 'Error deleting product');
+        return;
+      }
 
-  //     console.log('Product deleted successfully!');
-  //     fetchProducts(); // Refresh product list
-  //   } catch (error) {
-  //     console.error('Error deleting product:', error);
-  //     alert('Error deleting product. Please try again later.');
-  //   }
-  // };
+      console.log('Product deleted successfully!');
+      fetchProducts(); // Refresh product list
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Error deleting product. Please try again later.');
+    }
+  };
 
   return (
     <Container>
@@ -371,6 +333,7 @@ const MarketPlace = () => {
         <DividerLabel>MARKETPLACE</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <div>
         {!session ? (
           <div
@@ -438,6 +401,7 @@ const MarketPlace = () => {
           </div>
         )}
       </div>
+      {isLoading && <div>Loading products...</div>}
       {/* {session && (
         <CreateButtonContainer>
           <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>
@@ -693,6 +657,45 @@ const MarketPlace = () => {
                   )}
                 </ProductDescription>
               </BasicProductInfoContainer>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '5px',
+                  marginTop: '10px',
+                }}
+              >
+                <button
+                  style={{
+                    background: 'gray',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => handleEdit(product)}
+                >
+                  Edit
+                </button>
+                <button
+                  style={{
+                    background: 'tomato',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => {
+                    if (product.id) {
+                      handleDelete(product.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </ProductCard>
           ))}
         </ProductList>
@@ -716,4 +719,4 @@ const MarketPlace = () => {
   );
 };
 
-export default MarketPlace;
+export default MyPostedProducts;

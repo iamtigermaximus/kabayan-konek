@@ -27,6 +27,7 @@ const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const { data: session } = useSession();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -42,6 +43,10 @@ const Navbar = () => {
 
   const handleLogoutClick = () => {
     signOut({ callbackUrl: '/' });
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev); // Toggle the dropdown visibility
   };
 
   return (
@@ -124,21 +129,76 @@ const Navbar = () => {
       </TextOverlayContainer>
       <LoginButtonContainer>
         {session ? (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {/* Display the user's name and logout button */}
-            <div
-              style={{
-                width: '100%',
-              }}
-            >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+            }}
+          >
+            {/* User's Name */}
+            <div style={{ width: '100%' }}>
               Logged in as {session.user?.name}.
             </div>
-            <LoginButton onClick={handleLogoutClick}>LOGOUT</LoginButton>
+
+            {/* Dropdown for logged-in user */}
+            <div>
+              <LoginButton
+                onClick={toggleDropdown}
+                // style={{
+                //   padding: '10px 20px',
+                //   backgroundColor: 'purple',
+                //   color: 'white',
+                //   border: 'none',
+                //   borderRadius: '4px',
+                //   cursor: 'pointer',
+                //   width: '200px',
+                //   whiteSpace: 'nowrap',
+                // }}
+              >
+                My account
+              </LoginButton>
+              {dropdownOpen && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '40px',
+                    right: '0',
+                    left: '50',
+                    backgroundColor: 'white',
+                    zIndex: 10,
+                    padding: '10px',
+                    marginRight: '20px',
+                    border: '.5px solid gray',
+                  }}
+                >
+                  <Link
+                    href="/marketplace/myProducts"
+                    style={{ display: 'block', padding: '8px 0' }}
+                  >
+                    View My Products
+                  </Link>
+                  <button
+                    onClick={handleLogoutClick}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      color: 'black',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '8px',
+                    }}
+                  >
+                    LOG OUT
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           // If not authenticated, show login button
           <LoginButton onClick={handleLoginClick}>LOGIN</LoginButton>
-        )}{' '}
+        )}
       </LoginButtonContainer>
     </HeroSection>
   );

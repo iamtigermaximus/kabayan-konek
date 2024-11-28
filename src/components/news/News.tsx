@@ -610,7 +610,7 @@ const News = () => {
         </ArticleContent>
         <Sidebar>
           <SidebarTitleContainer>
-            <SidebarTitle>FEATURE</SidebarTitle>
+            <SidebarTitle>FEATURES</SidebarTitle>
           </SidebarTitleContainer>
           <OtherArticlesList>
             {lifestyleArticles.map((article) => (

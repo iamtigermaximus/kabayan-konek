@@ -381,7 +381,9 @@ const Home = () => {
                     {news.title}
                   </a>
                 </NewsHeadline>
-                <NewsSummary>{news.newsSummary}</NewsSummary>
+                <NewsSummary
+                  dangerouslySetInnerHTML={{ __html: news.newsSummary }}
+                ></NewsSummary>
                 <NewsDate>
                   Published: {new Date(news.date).toLocaleDateString()}
                 </NewsDate>

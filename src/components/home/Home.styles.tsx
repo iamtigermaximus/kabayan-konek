@@ -267,3 +267,34 @@ export const StyledLink = styled(Link)`
 export const EventsSectionBannerContainer = styled.div`
   flex: 1;
 `;
+
+export const Content = styled.div`
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  h2,
+  h3 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+  }
+`;

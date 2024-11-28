@@ -99,9 +99,10 @@ export const ProductImage = styled(Image)`
   margin-bottom: 15px;
 `;
 
-export const ProductTitle = styled.h3`
+export const ProductTitle = styled.div`
   font-size: 1.25rem;
   margin-bottom: 10px;
+  height: 60px;
 `;
 
 export const ProductPrice = styled.p`
@@ -110,9 +111,10 @@ export const ProductPrice = styled.p`
   color: #2c3e50;
 `;
 
-export const ProductDescription = styled.p`
+export const ProductDescription = styled.div`
   font-size: 0.9rem;
   color: #7f8c8d;
+  height: 60px;
 `;
 
 export const Pagination = styled.div`

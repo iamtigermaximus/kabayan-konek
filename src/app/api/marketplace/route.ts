@@ -33,8 +33,25 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // const session = await getServerSession({ req, ...authOptions });
+    // if (!session || session.user.role !== 'admin') {
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // }
+
+    // Get the session (user info)
     const session = await getServerSession({ req, ...authOptions });
-    if (!session || session.user.role !== 'admin') {
+
+    // Check if the user is logged in (session exists)
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in.' },
+        { status: 401 }
+      );
+    }
+
+    // Check if you want only admins to post or allow regular users
+    // Remove this condition to allow all logged-in users to post
+    if (session.user.role !== 'admin' && session.user.role !== 'user') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     const {
