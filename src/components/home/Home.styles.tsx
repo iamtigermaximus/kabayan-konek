@@ -120,8 +120,14 @@ export const FeaturesImage = styled(Image)`
 export const FeaturesTitleContainer = styled.div`
   width: 100%;
   padding: 5px;
-  height: 100px;
-  /* border: 1px solid black; */
+  height: 60px;
+
+  @media (min-width: ${bp.md}) {
+    height: 100px;
+  }
+  @media (min-width: ${bp.lg}) {
+    height: 80px;
+  }
 `;
 
 export const FeaturesTitle = styled.h3`
@@ -131,6 +137,10 @@ export const FeaturesTitle = styled.h3`
 
   @media (min-width: ${bp.md}) {
     font-size: 1.25rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 1rem;
   }
 `;
 
@@ -260,7 +270,6 @@ export const StyledLink = styled(Link)`
 
   &:hover {
     text-decoration: underline;
-    color: blue;
   }
 `;
 

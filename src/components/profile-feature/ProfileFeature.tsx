@@ -43,6 +43,7 @@ import {
   ConfirmModalButtons,
   CancelConfirmModalButton,
   DeleteConfirmModalButton,
+  StyledLink,
 } from './ProfileFeature.styles';
 
 // Tiptap imports
@@ -59,7 +60,6 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { FontFamily } from '@tiptap/extension-font-family';
 
 interface KabayanArticle {
@@ -332,6 +332,7 @@ const ProfileFeature = () => {
     setTitle(article.title);
     setImageUrl(article.imageUrl || null);
     editor?.commands.setContent(article.content);
+    setEditingArticleId(article.id);
     setIsModalOpen(true); // Open modal for editing
 
     // Scroll to the editor section
@@ -561,11 +562,11 @@ const ProfileFeature = () => {
               height={300} // Replace with appropriate height
               priority
             />
-            <Link href={`/profile/${profile.id}`}>
+            <StyledLink href={`/profile/${profile.id}`}>
               <FeaturesTitleContainer>
                 <FeaturesTitle>{profile.title}</FeaturesTitle>
               </FeaturesTitleContainer>
-            </Link>
+            </StyledLink>
             {session?.user?.role === 'admin' && (
               <EditButtonsContainer>
                 <EditButton onClick={() => handleEdit(profile)}>

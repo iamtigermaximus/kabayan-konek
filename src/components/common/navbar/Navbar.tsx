@@ -173,6 +173,16 @@ const Navbar = () => {
                   }}
                 >
                   <Link
+                    href="/events/myEvents"
+                    style={{
+                      display: 'block',
+                      padding: '8px 0',
+                      fontSize: '14px',
+                    }}
+                  >
+                    View My Events
+                  </Link>
+                  <Link
                     href="/marketplace/myProducts"
                     style={{
                       display: 'block',

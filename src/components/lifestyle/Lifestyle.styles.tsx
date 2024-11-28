@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { breakpoints as bp } from '../../utils/layout';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const Container = styled.div`
   padding: 10px;
@@ -45,9 +46,15 @@ export const FeaturesImage = styled(Image)`
 export const FeaturesTitleContainer = styled.div`
   width: 100%;
   padding: 5px;
-  height: 100px;
-  /* border: 1px solid black; */
-  /* background-color: #faf9f6; */
+  height: 60px;
+  border: 1px solid red;
+
+  @media (min-width: ${bp.md}) {
+    height: 100px;
+  }
+  @media (min-width: ${bp.lg}) {
+    height: 80px;
+  }
 `;
 
 export const FeaturesTitle = styled.h3`
@@ -57,6 +64,10 @@ export const FeaturesTitle = styled.h3`
 
   @media (min-width: ${bp.md}) {
     font-size: 1.25rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 1rem;
   }
 `;
 
@@ -486,5 +497,14 @@ export const DeleteConfirmModalButton = styled.button`
 
   &:hover {
     background-color: red;
+  }
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    text-decoration: underline;
   }
 `;

@@ -42,6 +42,7 @@ import {
   ConfirmModalButtons,
   CancelConfirmModalButton,
   DeleteConfirmModalButton,
+  StyledLink,
 } from './Lifestyle.styles';
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -59,7 +60,6 @@ import { FontFamily } from '@tiptap/extension-font-family';
 
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 
 interface LifestyleArticle {
   id: string;
@@ -319,6 +319,7 @@ const Lifestyle = () => {
     setTitle(article.title);
     setImageUrl(article.imageUrl || null);
     editor?.commands.setContent(article.content);
+    setEditingArticleId(article.id);
     setIsModalOpen(true); // Open modal for editing
 
     // Scroll to the editor section
@@ -549,9 +550,9 @@ const Lifestyle = () => {
             />
 
             <FeaturesTitleContainer>
-              <Link href={`/lifestyle/${lifestyle.id}`} passHref>
+              <StyledLink href={`/lifestyle/${lifestyle.id}`} passHref>
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
-              </Link>
+              </StyledLink>
             </FeaturesTitleContainer>
             {session?.user?.role === 'admin' && (
               <EditButtonsContainer>

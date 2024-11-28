@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Container,
   DividerContainer,
@@ -38,7 +38,7 @@ import {
   ToolbarButton,
   ToolbarContainer,
   StyledEditorContainer,
-} from './Events.styles';
+} from '../Events.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -81,7 +81,7 @@ interface CloudinaryWidget {
   close: () => void;
 }
 
-const Events = () => {
+const MyPostedEvents = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,6 +97,8 @@ const Events = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingEvent, setEditingEvent] = useState<EventProps | null>(null);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const itemsPerPage = 10;
 
@@ -120,27 +122,45 @@ const Events = () => {
     content: '',
   });
 
-  const fetchEvents = async () => {
-    try {
-      const response = await fetch('/api/events');
-      const data: EventProps[] = await response.json();
+  const fetchEvents = useCallback(async () => {
+    if (!session?.user?.id) {
+      setError('User is not logged in.');
+      setIsLoading(false);
+      return;
+    }
 
+    try {
+      const response = await fetch('/api/events/myEvents');
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to fetch events');
+        setIsLoading(false);
+        return;
+      }
+
+      const data: EventProps[] = await response.json();
       data.sort((a, b) => {
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return dateB - dateA;
+        return dateB - dateA; // Sort in descending order
       });
 
       setEvents(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
       console.error('Error fetching events:', error);
+      setError('Error fetching events');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [session?.user?.id, itemsPerPage]);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    if (session) {
+      fetchEvents(); // Fetch products if session is available
+    }
+  }, [session, fetchEvents]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -253,6 +273,51 @@ const Events = () => {
     router.push('/login');
   };
 
+  const handleEdit = (event: EventProps) => {
+    setEditingEvent(event);
+    setTitle(event.title);
+    editor?.commands.setContent(event.description);
+
+    // Parse event.date only if it's not already a Date object
+    const formattedDate =
+      typeof event.date === 'string'
+        ? new Date(event.date).toISOString().split('T')[0]
+        : event.date.toISOString().split('T')[0];
+    setDate(formattedDate);
+    setTime(event.time);
+    setAddress(event.address);
+    setImageUrl(event.imageUrl || null);
+    setIsModalOpen(true); // Open modal for editing
+  };
+
+  const handleDelete = async (eventId: string) => {
+    if (!confirm('Are you sure you want to delete this event?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/events/${eventId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const responseBody = await response.json();
+        console.error(
+          'Error deleting event:',
+          responseBody.error || 'Unknown error'
+        );
+        alert(responseBody.error || 'Error deleting event');
+        return;
+      }
+
+      console.log('Event deleted successfully!');
+      fetchEvents(); // Refresh advertisement list
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert('Error deleting event. Please try again later.');
+    }
+  };
+
   return (
     <Container>
       <DividerContainer>
@@ -260,6 +325,8 @@ const Events = () => {
         <DividerLabel>EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+
       <div>
         {!session ? (
           <div
@@ -327,6 +394,7 @@ const Events = () => {
           </div>
         )}
       </div>
+      {isLoading && <div>Loading products...</div>}
 
       {/* {session && (
         <CreateButtonContainer>
@@ -563,6 +631,45 @@ const Events = () => {
               <EventInfo>
                 <span>Address:</span> {event.address}
               </EventInfo>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '5px',
+                  marginTop: '10px',
+                }}
+              >
+                <button
+                  style={{
+                    background: 'gray',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => handleEdit(event)}
+                >
+                  Edit
+                </button>
+                <button
+                  style={{
+                    background: 'tomato',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => {
+                    if (event.id) {
+                      handleDelete(event.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </EventDetails>
           </EventCard>
         ))}
@@ -583,4 +690,4 @@ const Events = () => {
   );
 };
 
-export default Events;
+export default MyPostedEvents;

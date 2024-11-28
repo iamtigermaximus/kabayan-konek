@@ -33,10 +33,24 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // const session = await getServerSession({ req, ...authOptions });
+    // if (!session || session.user.role !== 'admin') {
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // }
+
     const session = await getServerSession({ req, ...authOptions });
-    if (!session || session.user.role !== 'admin') {
+
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in.' },
+        { status: 401 }
+      );
+    }
+
+    if (session.user.role !== 'admin' && session.user.role !== 'user') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
     const { title, description, date, time, address, image } = body;
 
     if (!title || !description || !date || !time || !address) {

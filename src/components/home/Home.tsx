@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import {
   Container,
   DividerContainer,
@@ -191,9 +190,9 @@ const Home = () => {
               priority
             />
             <FeaturesTitleContainer>
-              <Link href={`/lifestyle/${lifestyle.id}`} passHref>
+              <StyledLink href={`/lifestyle/${lifestyle.id}`} passHref>
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
-              </Link>
+              </StyledLink>
             </FeaturesTitleContainer>
           </FeaturesCard>
         ))}
@@ -219,9 +218,9 @@ const Home = () => {
               priority
             />
             <FeaturesTitleContainer>
-              <Link href={`/profile/${profile.id}`} passHref>
+              <StyledLink href={`/profile/${profile.id}`} passHref>
                 <FeaturesTitle>{profile.title}</FeaturesTitle>
-              </Link>
+              </StyledLink>
             </FeaturesTitleContainer>
             <div
               style={{
@@ -229,7 +228,7 @@ const Home = () => {
                 color: 'gray',
                 display: 'flex',
                 justifyContent: 'center',
-                fontWeight: 'normal',
+                alignItems: 'center',
               }}
             >
               {profile.content.length > 100 ? (
@@ -343,13 +342,9 @@ const Home = () => {
               priority
             />
             <EventDetails>
-              <Link
-                href={`/events/${event.id}`}
-                key={event.id}
-                style={{ textDecoration: 'none' }}
-              >
+              <StyledLink href={`/events/${event.id}`} key={event.id}>
                 <EventName>{event.title}</EventName>
-              </Link>
+              </StyledLink>
 
               <EventDescription>
                 {event.description.length > 100 ? (
