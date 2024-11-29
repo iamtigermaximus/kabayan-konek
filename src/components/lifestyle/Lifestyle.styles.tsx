@@ -506,3 +506,9 @@ export const StyledLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+export const PublishedDate = styled.small`
+  display: block;
+  margin-top: 5px;
+  color: #777;
+`;

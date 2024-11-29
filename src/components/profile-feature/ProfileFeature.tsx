@@ -44,6 +44,7 @@ import {
   CancelConfirmModalButton,
   DeleteConfirmModalButton,
   StyledLink,
+  PublishedDate,
 } from './ProfileFeature.styles';
 
 // Tiptap imports
@@ -567,6 +568,9 @@ const ProfileFeature = () => {
                 <FeaturesTitle>{profile.title}</FeaturesTitle>
               </FeaturesTitleContainer>
             </StyledLink>
+            <PublishedDate>
+              Published on {new Date(profile.createdAt).toLocaleDateString()}
+            </PublishedDate>
             {session?.user?.role === 'admin' && (
               <EditButtonsContainer>
                 <EditButton onClick={() => handleEdit(profile)}>

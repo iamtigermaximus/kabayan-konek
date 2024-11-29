@@ -43,6 +43,7 @@ import {
   CancelConfirmModalButton,
   DeleteConfirmModalButton,
   StyledLink,
+  PublishedDate,
 } from './Lifestyle.styles';
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -554,6 +555,9 @@ const Lifestyle = () => {
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
               </StyledLink>
             </FeaturesTitleContainer>
+            <PublishedDate>
+              Published on {new Date(lifestyle.createdAt).toLocaleDateString()}
+            </PublishedDate>
             {session?.user?.role === 'admin' && (
               <EditButtonsContainer>
                 <EditButton onClick={() => handleEdit(lifestyle)}>

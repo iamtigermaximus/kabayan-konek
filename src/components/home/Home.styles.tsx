@@ -124,8 +124,9 @@ export const FeaturesTitleContainer = styled.div`
   padding: 5px;
   height: 60px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  /* align-items: center; */
+  flex-direction: column;
 
   @media (min-width: ${bp.md}) {
     height: 100px;
@@ -499,4 +500,10 @@ export const Content = styled.div`
     height: auto;
     margin: 20px 0;
   }
+`;
+
+export const PublishedDate = styled.small`
+  display: block;
+  margin-top: 5px;
+  color: #777;
 `;

@@ -32,6 +32,7 @@ import {
   EventsSectionBannerContainer,
   EventDescriptionSpan,
   BasicEventInfoContainer,
+  PublishedDate,
 } from './Home.styles';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -195,6 +196,10 @@ const Home = () => {
               <StyledLink href={`/lifestyle/${lifestyle.id}`} passHref>
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
               </StyledLink>
+              <PublishedDate>
+                Published on{' '}
+                {new Date(lifestyle.createdAt).toLocaleDateString()}
+              </PublishedDate>
             </FeaturesTitleContainer>
           </FeaturesCard>
         ))}
@@ -223,6 +228,9 @@ const Home = () => {
               <StyledLink href={`/profile/${profile.id}`} passHref>
                 <FeaturesTitle>{profile.title}</FeaturesTitle>
               </StyledLink>
+              <PublishedDate>
+                Published on {new Date(profile.createdAt).toLocaleDateString()}
+              </PublishedDate>
             </FeaturesTitleContainer>
             <div
               style={{
