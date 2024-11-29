@@ -493,10 +493,10 @@ export const Content = styled.div`
     overflow: auto;
   }
 
-  /* img {
+  img {
     width: 100%;
     max-width: 100%;
     height: auto;
     margin: 20px 0;
-  } */
+  }
 `;

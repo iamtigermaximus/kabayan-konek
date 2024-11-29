@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { breakpoints as bp } from '../../../utils/layout';
-import LogoImage from '../../../assets/kabayan-konek-logo.png';
+import LogoImage from '../../../assets/kabayankonek.png';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const FooterContainer = styled.footer`

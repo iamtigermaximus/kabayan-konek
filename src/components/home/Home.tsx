@@ -235,7 +235,6 @@ const Home = () => {
             >
               {profile.content.length > 100 ? (
                 <>
-                  {/* Only the first 100 characters with HTML rendering */}
                   <div
                     dangerouslySetInnerHTML={{
                       __html: profile.content.slice(0, 200) + '...',
@@ -243,7 +242,6 @@ const Home = () => {
                   />
                 </>
               ) : (
-                // Rendering the full content with HTML
                 <div
                   dangerouslySetInnerHTML={{
                     __html: profile.content,
