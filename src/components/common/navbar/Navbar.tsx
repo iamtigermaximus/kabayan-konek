@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image1 from '../../../assets/PhiliFin.webp';
-import LogoImage from '../../../assets/kabayan-konek-logo.png';
+import LogoImage from '../../../assets/kabayankonek.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import {

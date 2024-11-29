@@ -177,7 +177,7 @@ export const LogoContainer = styled.div`
   /* z-index: 99; */
   top: 20px;
   margin-bottom: 100px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -188,7 +188,7 @@ export const LogoContainer = styled.div`
 
 export const SidebarLogoContainer = styled.div`
   margin-bottom: 10px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
 
   @media (min-width: ${bp.md}) {
     top: 100px;
