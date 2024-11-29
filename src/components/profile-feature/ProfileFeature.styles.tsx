@@ -35,7 +35,6 @@ export const FeaturesCard = styled.div`
 export const FeaturesImage = styled(Image)`
   width: 100%;
   /* height: auto; */
-  border-radius: 8px;
   margin-bottom: 15px;
   height: 100%;
   object-fit: cover;

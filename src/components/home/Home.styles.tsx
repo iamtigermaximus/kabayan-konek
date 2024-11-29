@@ -109,7 +109,6 @@ export const FeaturesCard = styled.div`
 export const FeaturesImage = styled(Image)`
   width: 100%;
   /* height: auto; */
-  border-radius: 8px;
   margin-bottom: 15px;
   height: 100%;
   object-fit: cover;
@@ -121,6 +120,9 @@ export const FeaturesTitleContainer = styled.div`
   width: 100%;
   padding: 5px;
   height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (min-width: ${bp.md}) {
     height: 100px;
@@ -152,6 +154,10 @@ export const EventsSectionContainer = styled.section`
   flex-direction: column;
 
   @media (min-width: ${bp.md}) {
+    /* grid-template-columns: 1fr 1fr; */
+  }
+
+  @media (min-width: ${bp.lg}) {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -175,7 +181,6 @@ export const EventImage = styled(Image)`
   width: 100%;
   max-width: 150px;
   height: auto;
-  border-radius: 8px;
   margin-bottom: 15px;
 
   @media (min-width: ${bp.md}) {
@@ -188,25 +193,69 @@ export const EventDetails = styled.div`
   flex: 1;
 `;
 
-export const EventName = styled.h2`
+export const EventName = styled.div`
   margin: 0 0 10px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 2rem;
+  }
 `;
 
-export const EventDescription = styled.p`
-  margin: 10px 0;
-  font-size: 1rem;
+export const EventDescription = styled.div`
+  margin: 5px 0;
+  font-size: 0.75rem;
   color: #666;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+    margin: 10px 0;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+  @media (min-width: ${bp.xl}) {
+    font-size: 1rem;
+  }
+`;
+
+export const BasicEventsInfo = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 `;
 
 export const EventInfo = styled.div`
   margin: 10px 0;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #444;
 
   span {
     font-weight: bold;
+  }
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1rem;
   }
 `;
 
@@ -425,10 +474,10 @@ export const Content = styled.div`
     overflow: auto;
   }
 
-  img {
+  /* img {
     width: 100%;
     max-width: 100%;
     height: auto;
     margin: 20px 0;
-  }
+  } */
 `;

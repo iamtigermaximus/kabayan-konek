@@ -43,7 +43,7 @@ export const EventCard = styled.div`
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  @media (min-width: 768px) {
+  @media (min-width: ${bp.md}) {
     flex-direction: row;
   }
 `;
@@ -55,15 +55,13 @@ export const EventImage = styled(Image)`
   /* border-radius: 8px; */
   margin-bottom: 15px;
 
-  @media (min-width: 768px) {
+  @media (min-width: ${bp.md}) {
     margin-bottom: 0;
     margin-right: 20px;
   }
 `;
 
-export const EventDetails = styled.div`
-  flex: 1;
-`;
+export const EventDetails = styled.div``;
 
 export const EventName = styled.h2`
   margin: 0 0 10px;

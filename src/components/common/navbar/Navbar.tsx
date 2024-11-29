@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image1 from '../../../assets/pinoy-konek.jpg';
+import Image1 from '../../../assets/PhiliFin.webp';
 import LogoImage from '../../../assets/kabayan-konek-logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,6 +19,9 @@ import {
   TextOverlay,
   LoginButtonContainer,
   LoginButton,
+  AccountDropdownContainer,
+  AccountStyledLink,
+  AccountLogoutButton,
 } from './Navbar.styles';
 import { useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
@@ -49,6 +52,8 @@ const Navbar = () => {
     setDropdownOpen((prev) => !prev); // Toggle the dropdown visibility
   };
 
+  const firstName = session?.user?.name?.split(' ')[0];
+
   return (
     <HeroSection>
       <Image
@@ -59,7 +64,7 @@ const Navbar = () => {
         style={{ objectFit: 'cover' }}
       />
 
-      <MenuContainer>
+      {/* <MenuContainer>
         <MenuLink href="/">Home</MenuLink>
         <MenuLink href="/lifestyle">Lifestyle</MenuLink>
         <MenuLink href="/profile">Kabayan</MenuLink>
@@ -67,7 +72,7 @@ const Navbar = () => {
         <MenuLink href="/events">Events</MenuLink>
         <MenuLink href="/marketplace">Marketplace</MenuLink>
         <MenuLink href="/advertisement">Advertisement</MenuLink>
-      </MenuContainer>
+      </MenuContainer> */}
 
       <BurgerMenu onClick={toggleSidebar}>
         <span />
@@ -127,6 +132,15 @@ const Navbar = () => {
         </LogoContainer>
         <TextOverlay>Connecting Filipinos in Finland</TextOverlay>
       </TextOverlayContainer>
+      <MenuContainer>
+        <MenuLink href="/">Home</MenuLink>
+        <MenuLink href="/lifestyle">Lifestyle</MenuLink>
+        <MenuLink href="/profile">Kabayan</MenuLink>
+        <MenuLink href="/news">News</MenuLink>
+        <MenuLink href="/events">Events</MenuLink>
+        <MenuLink href="/marketplace">Marketplace</MenuLink>
+        <MenuLink href="/advertisement">Advertisement</MenuLink>
+      </MenuContainer>
       <LoginButtonContainer>
         {session ? (
           <div
@@ -137,8 +151,14 @@ const Navbar = () => {
             }}
           >
             {/* User's Name */}
-            <div style={{ width: '100%' }}>
-              Logged in as {session.user?.name}.
+            <div
+              style={{
+                width: '100%',
+                paddingRight: '5px',
+                textDecoration: 'underline',
+              }}
+            >
+              Logged in as {firstName}.
             </div>
 
             {/* Dropdown for logged-in user */}
@@ -159,7 +179,7 @@ const Navbar = () => {
                 My account
               </LoginButton>
               {dropdownOpen && (
-                <div
+                <AccountDropdownContainer
                   style={{
                     position: 'absolute',
                     top: '40px',
@@ -172,50 +192,34 @@ const Navbar = () => {
                     border: '.5px solid gray',
                   }}
                 >
-                  <Link
+                  <AccountStyledLink
                     href="/events/myEvents"
-                    style={{
-                      display: 'block',
-                      padding: '8px 0',
-                      fontSize: '14px',
+                    onClick={() => {
+                      setDropdownOpen(false);
                     }}
                   >
                     View My Events
-                  </Link>
-                  <Link
+                  </AccountStyledLink>
+                  <AccountStyledLink
                     href="/marketplace/myProducts"
-                    style={{
-                      display: 'block',
-                      padding: '8px 0',
-                      fontSize: '14px',
+                    onClick={() => {
+                      setDropdownOpen(false);
                     }}
                   >
                     View My Products
-                  </Link>
-                  <Link
+                  </AccountStyledLink>
+                  <AccountStyledLink
                     href="/advertisement/myAdvertisements"
-                    style={{
-                      display: 'block',
-                      padding: '8px 0',
-                      fontSize: '14px',
+                    onClick={() => {
+                      setDropdownOpen(false);
                     }}
                   >
                     View My Advertisements
-                  </Link>
-                  <button
-                    onClick={handleLogoutClick}
-                    style={{
-                      display: 'block',
-                      width: '100%',
-                      color: 'black',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '8px',
-                    }}
-                  >
+                  </AccountStyledLink>
+                  <AccountLogoutButton onClick={handleLogoutClick}>
                     LOG OUT
-                  </button>
-                </div>
+                  </AccountLogoutButton>
+                </AccountDropdownContainer>
               )}
             </div>
           </div>

@@ -33,7 +33,7 @@ export const TextOverlay = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
   white-space: nowrap;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
   z-index: 99;
 
   @media (min-width: ${bp.sm}) {
@@ -56,6 +56,8 @@ export const MenuContainer = styled.div`
   transform: translateX(-50%);
   display: flex;
   gap: 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 8px 16px;
 
   @media (max-width: ${bp.md}) {
     display: none;
@@ -63,16 +65,16 @@ export const MenuContainer = styled.div`
 `;
 
 export const MenuLink = styled(Link)`
-  color: white;
+  color: #101010;
   text-decoration: none;
   font-size: 1rem;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
   font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 
   &:hover {
-    color: lightblue;
+    color: tomato;
   }
 
   @media (min-width: ${bp.md}) {
@@ -172,6 +174,7 @@ export const LogoContainer = styled.div`
   /* z-index: 99; */
   top: 20px;
   margin-bottom: 100px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -182,6 +185,7 @@ export const LogoContainer = styled.div`
 
 export const SidebarLogoContainer = styled.div`
   margin-bottom: 10px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -211,4 +215,28 @@ export const LoginButton = styled.button`
   @media (min-width: ${bp.md}) {
     margin-right: 20px;
   }
+`;
+
+export const AccountStyledLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+  display: block;
+  padding: 8px 0;
+  font-size: 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const AccountDropdownContainer = styled.div``;
+
+export const AccountLogoutButton = styled.button`
+  display: block;
+  width: 100%;
+  color: black;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  /* background-color: tomato; */
 `;
