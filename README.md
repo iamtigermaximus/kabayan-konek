@@ -1,4 +1,4 @@
-![Logo](assets/kabayankonek.png)
+![Logo](src/assets/kabayankonek.png)
 
 # Kabayan Konek
 
