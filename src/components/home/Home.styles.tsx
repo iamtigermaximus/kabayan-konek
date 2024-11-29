@@ -17,6 +17,9 @@ export const Container = styled.div`
 
 export const SectionContainer = styled.section`
   padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
 
   @media (min-width: ${bp.md}) {
     padding: 20px 50px;
@@ -190,7 +193,7 @@ export const EventImage = styled(Image)`
 `;
 
 export const EventDetails = styled.div`
-  flex: 1;
+  /* flex: 1; */
 `;
 
 export const EventName = styled.div`
@@ -199,7 +202,7 @@ export const EventName = styled.div`
   color: #333;
 
   @media (min-width: ${bp.md}) {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   @media (min-width: ${bp.lg}) {
@@ -207,35 +210,51 @@ export const EventName = styled.div`
   }
 
   @media (min-width: ${bp.xl}) {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 `;
 
 export const EventDescription = styled.div`
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 0.75rem;
   color: #666;
 
   @media (min-width: ${bp.md}) {
     font-size: 1rem;
-    margin: 10px 0;
   }
 
   @media (min-width: ${bp.lg}) {
     font-size: 0.75rem;
   }
   @media (min-width: ${bp.xl}) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 `;
 
-export const BasicEventsInfo = styled.div`
-  width: 100%;
+export const EventDescriptionSpan = styled.span`
+  color: tomato;
+  cursor: 'pointer';
+  font-size: 0.75rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const BasicEventInfoContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 `;
 
 export const EventInfo = styled.div`
@@ -255,7 +274,7 @@ export const EventInfo = styled.div`
   }
 
   @media (min-width: ${bp.xl}) {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 `;
 

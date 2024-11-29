@@ -30,6 +30,8 @@ import {
   NewsSource,
   StyledLink,
   EventsSectionBannerContainer,
+  EventDescriptionSpan,
+  BasicEventInfoContainer,
 } from './Home.styles';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -314,19 +316,6 @@ const Home = () => {
                 You are logged in! Create and manage your events easily, and
                 engage with your audience.
               </p>
-              {/* <button
-                onClick={() => toggleModal()}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
-              >
-                CREATE AN EVENT
-              </button> */}
             </div>
           )}
         </div>
@@ -355,9 +344,7 @@ const Home = () => {
                       }}
                     ></div>
                     <StyledLink href={`/events/${event.id}`}>
-                      <span style={{ color: 'blue', cursor: 'pointer' }}>
-                        Read More
-                      </span>
+                      <EventDescriptionSpan>Read More</EventDescriptionSpan>
                     </StyledLink>
                   </>
                 ) : (
@@ -368,12 +355,14 @@ const Home = () => {
                   ></div>
                 )}
               </EventDescription>
-              <EventInfo>
-                <span>Date:</span> {new Date(event.date).toLocaleDateString()}
-              </EventInfo>
-              <EventInfo>
-                <span>Time:</span> {event.time}
-              </EventInfo>
+              <BasicEventInfoContainer>
+                <EventInfo>
+                  <span>Date:</span> {new Date(event.date).toLocaleDateString()}
+                </EventInfo>
+                <EventInfo>
+                  <span>Time:</span> {event.time}
+                </EventInfo>
+              </BasicEventInfoContainer>
               <EventInfo>
                 <span>Address:</span> {event.address}
               </EventInfo>

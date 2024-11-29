@@ -38,6 +38,8 @@ import {
   ToolbarButton,
   ToolbarContainer,
   StyledEditorContainer,
+  EventDescriptionSpan,
+  BasicEventInfoContainer,
 } from './Events.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -125,10 +127,24 @@ const Events = () => {
       const response = await fetch('/api/events');
       const data: EventProps[] = await response.json();
 
+      // // sort by latest
+
+      const now = Date.now();
+
+      // Sort by nearest date to now, pushing past events to the end
       data.sort((a, b) => {
-        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return dateB - dateA;
+        const dateA = a.date ? new Date(a.date).getTime() : Infinity;
+        const dateB = b.date ? new Date(b.date).getTime() : Infinity;
+
+        const isPastA = dateA < now;
+        const isPastB = dateB < now;
+
+        // Handle past events: Push them to the end
+        if (isPastA && !isPastB) return 1;
+        if (!isPastA && isPastB) return -1;
+
+        // For future dates, sort by proximity to 'now'
+        return dateA - dateB;
       });
 
       setEvents(data);
@@ -533,9 +549,7 @@ const Events = () => {
                       }}
                     ></div>
                     <StyledLink href={`/events/${event.id}`}>
-                      <span style={{ color: 'blue', cursor: 'pointer' }}>
-                        Read More
-                      </span>
+                      <EventDescriptionSpan>Read More</EventDescriptionSpan>
                     </StyledLink>
                   </>
                 ) : (
@@ -546,20 +560,23 @@ const Events = () => {
                   ></div>
                 )}
               </EventDescription>
-              <EventInfo>
-                <span>Date:</span>{' '}
-                {event.date
-                  ? new Date(event.date).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })
-                  : 'N/A'}
-              </EventInfo>
+              <BasicEventInfoContainer>
+                <EventInfo>
+                  <span>Date:</span>{' '}
+                  {event.date
+                    ? new Date(event.date).toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })
+                    : 'N/A'}
+                </EventInfo>
 
-              <EventInfo>
-                <span>Time:</span> {event.time}
-              </EventInfo>
+                <EventInfo>
+                  <span>Time:</span> {event.time}
+                </EventInfo>
+              </BasicEventInfoContainer>
+
               <EventInfo>
                 <span>Address:</span> {event.address}
               </EventInfo>

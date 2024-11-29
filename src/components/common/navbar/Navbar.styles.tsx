@@ -94,12 +94,15 @@ export const BurgerMenu = styled.div`
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 5px;
 
   span {
     width: 25px;
     height: 3px;
-    background-color: white;
+    background-color: black;
     border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
   z-index: 100;
 

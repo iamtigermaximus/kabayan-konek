@@ -29,7 +29,7 @@ export const SectionContainer = styled.section`
   grid-template-columns: 1fr;
   gap: 20px;
 
-  @media (min-width: ${bp.md}) {
+  @media (min-width: ${bp.lg}) {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -65,23 +65,85 @@ export const EventDetails = styled.div``;
 
 export const EventName = styled.h2`
   margin: 0 0 10px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const EventDescription = styled.p`
   margin: 10px 0;
-  font-size: 1rem;
+  font-size: 0.75rem;
   color: #666;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const EventDescriptionSpan = styled.span`
+  color: tomato;
+  cursor: 'pointer';
+  font-size: 0.75rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const BasicEventInfoContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const EventInfo = styled.div`
-  margin: 10px 0;
-  font-size: 0.9rem;
+  margin: 5px 0;
+  font-size: 0.75rem;
   color: #444;
 
   span {
     font-weight: bold;
+  }
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1rem;
+  }
+
+  @media (min-width: ${bp.lg}) {
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: ${bp.xl}) {
+    font-size: 1.25rem;
   }
 `;
 
