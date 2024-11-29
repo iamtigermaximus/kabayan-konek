@@ -52,6 +52,10 @@ const Navbar = () => {
     setDropdownOpen((prev) => !prev); // Toggle the dropdown visibility
   };
 
+  const handleCloseDropdown = () => {
+    setDropdownOpen(false); // Close the dropdown
+  };
+
   const firstName = session?.user?.name?.split(' ')[0];
 
   return (
@@ -194,25 +198,19 @@ const Navbar = () => {
                 >
                   <AccountStyledLink
                     href="/events/myEvents"
-                    onClick={() => {
-                      setDropdownOpen(false);
-                    }}
+                    onClick={handleCloseDropdown}
                   >
                     View My Events
                   </AccountStyledLink>
                   <AccountStyledLink
                     href="/marketplace/myProducts"
-                    onClick={() => {
-                      setDropdownOpen(false);
-                    }}
+                    onClick={handleCloseDropdown}
                   >
                     View My Products
                   </AccountStyledLink>
                   <AccountStyledLink
                     href="/advertisement/myAdvertisements"
-                    onClick={() => {
-                      setDropdownOpen(false);
-                    }}
+                    onClick={handleCloseDropdown}
                   >
                     View My Advertisements
                   </AccountStyledLink>
