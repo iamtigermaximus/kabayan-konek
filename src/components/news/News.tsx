@@ -244,7 +244,7 @@ const News = () => {
       title,
       contentUrl,
       newsSummary: editor.getHTML(),
-      date,
+      date: new Date(date),
       source,
     };
 
@@ -329,6 +329,11 @@ const News = () => {
 
     // Scroll to the editor section
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDate = e.target.value ? new Date(e.target.value) : null; // Convert to Date or null
+    setDate(newDate);
   };
 
   return (
@@ -539,17 +544,8 @@ const News = () => {
                       <Input
                         id="date"
                         type="date"
-                        value={
-                          date instanceof Date && !isNaN(date.getTime())
-                            ? date.toISOString().split('T')[0]
-                            : ''
-                        }
-                        onChange={(e) => {
-                          const newDate = e.target.value
-                            ? new Date(e.target.value)
-                            : null;
-                          setDate(newDate);
-                        }}
+                        value={date ? date.toISOString().split('T')[0] : ''}
+                        onChange={handleDateChange}
                         required
                       />
                     </FormItemContainer>
@@ -595,8 +591,15 @@ const News = () => {
                     </Content>{' '}
                     <NewsDate>
                       Published:{' '}
-                      {date instanceof Date && !isNaN(date.getTime())
+                      {/* {date instanceof Date && !isNaN(date.getTime())
                         ? date.toLocaleDateString()
+                        : 'N/A'} */}
+                      {news.date
+                        ? new Date(news.date).toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })
                         : 'N/A'}
                     </NewsDate>
                     <NewsSource>Source: {news.source}</NewsSource>
