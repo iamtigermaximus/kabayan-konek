@@ -220,7 +220,7 @@ const Home = () => {
         {kabayanArticles.slice(0, 6).map((profile) => (
           <FeaturesCard key={profile.id}>
             <FeaturesImage
-              src={profile.imageUrl || '/default-image.jpg'}
+              src={profile.imageUrl || DefaultImage}
               alt={profile.title}
               width={500}
               height={300}
@@ -333,7 +333,7 @@ const Home = () => {
           <EventCard key={event.id}>
             <EventImageContainer>
               <EventImage
-                src={event.imageUrl || '/default-event.jpg'}
+                src={event.imageUrl || DefaultImage}
                 alt={event.title}
                 width={150}
                 height={150}
