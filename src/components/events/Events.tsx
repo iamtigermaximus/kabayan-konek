@@ -41,6 +41,15 @@ import {
   // EventDescriptionSpan,
   BasicEventInfoContainer,
   EventImageContainer,
+  PageLayout,
+  EventsContent,
+  Sidebar,
+  SidebarTitleContainer,
+  SidebarTitle,
+  OtherArticlesList,
+  OtherArticleItem,
+  ArticleImage,
+  SidebarArticleLink,
 } from './Events.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -72,6 +81,26 @@ interface EventProps {
   updatedAt?: Date;
 }
 
+interface LifestyleArticle {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface KabayanArticle {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface CloudinaryWidgetResult {
   event: string;
   info: {
@@ -99,6 +128,10 @@ const Events = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingEvent, setEditingEvent] = useState<EventProps | null>(null);
+  const [lifestyleArticles, setLifestyleArticles] = useState<
+    LifestyleArticle[]
+  >([]);
+  const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
 
   const itemsPerPage = 10;
@@ -122,6 +155,46 @@ const Events = () => {
     ],
     content: '',
   });
+
+  const fetchLifestyleArticles = async () => {
+    try {
+      const response = await fetch('/api/lifestyle');
+      const data: LifestyleArticle[] = await response.json();
+      // Sort articles by createdAt (desc) and filter out the current article
+      const sortedArticles = data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      // Take top 5 other articles (exclude current article if necessary)
+      setLifestyleArticles(sortedArticles.slice(0, 3));
+    } catch (error) {
+      console.error('Error fetching other articles:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLifestyleArticles();
+  }, []);
+
+  const fetchKabayanArticles = async () => {
+    try {
+      const response = await fetch('/api/profile');
+      const data: KabayanArticle[] = await response.json();
+      // Sort articles by createdAt (desc) and filter out the current article
+      const sortedArticles = data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      // Take top 5 other articles (exclude current article if necessary)
+      setKabayanArticles(sortedArticles.slice(0, 3));
+    } catch (error) {
+      console.error('Error fetching other articles:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchKabayanArticles();
+  }, []);
 
   const fetchEvents = async () => {
     try {
@@ -350,213 +423,224 @@ const Events = () => {
           <CreateButton onClick={toggleModal}>CREATE EVENT</CreateButton>
         </CreateButtonContainer>
       )} */}
-
-      {isModalOpen && (
-        <ModalContainer>
-          <ModalContent>
-            <ModalContentTitleContainer>
-              <ModalContentTitle>Create New Event</ModalContentTitle>
-            </ModalContentTitleContainer>
-            <ModalContentForm onSubmit={handleSubmit}>
-              <FormItemContainer>
-                <InputLabel htmlFor="title">Event Name:</InputLabel>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="description">Description:</InputLabel>
-                {/* <Textarea
+      <PageLayout>
+        <EventsContent>
+          {isModalOpen && (
+            <ModalContainer>
+              <ModalContent>
+                <ModalContentTitleContainer>
+                  <ModalContentTitle>Create New Event</ModalContentTitle>
+                </ModalContentTitleContainer>
+                <ModalContentForm onSubmit={handleSubmit}>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="title">Event Name:</InputLabel>
+                    <Input
+                      id="title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="description">Description:</InputLabel>
+                    {/* <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 /> */}
-                <div>
-                  <ToolbarContainer>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleBold().run()}
-                    >
-                      Bold
-                    </ToolbarButton>
+                    <div>
+                      <ToolbarContainer>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBold().run()
+                          }
+                        >
+                          Bold
+                        </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleItalic().run()
-                      }
-                    >
-                      Italic
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleUnderline().run()
-                      }
-                    >
-                      Underline
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('left').run()
-                      }
-                    >
-                      Left Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('right').run()
-                      }
-                    >
-                      Right Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('justify').run()
-                      }
-                    >
-                      Justify Align
-                    </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleItalic().run()
+                          }
+                        >
+                          Italic
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleUnderline().run()
+                          }
+                        >
+                          Underline
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('center').run()
+                          }
+                        >
+                          Center
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('left').run()
+                          }
+                        >
+                          Left Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('center').run()
+                          }
+                        >
+                          Center Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('right').run()
+                          }
+                        >
+                          Right Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .setTextAlign('justify')
+                              .run()
+                          }
+                        >
+                          Justify Align
+                        </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleStrike().run()
-                      }
-                    >
-                      Strikethrough
-                    </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleStrike().run()
+                          }
+                        >
+                          Strikethrough
+                        </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleCode().run()}
-                    >
-                      Code
-                    </ToolbarButton>
-                  </ToolbarContainer>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleCode().run()
+                          }
+                        >
+                          Code
+                        </ToolbarButton>
+                      </ToolbarContainer>
 
-                  {/* Ensure editor is initialized before rendering the editor */}
-                  <StyledEditorContainer>
-                    {editor && <EditorContent editor={editor} />}
-                  </StyledEditorContainer>
-                </div>
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="date">Date:</InputLabel>
-                <Input
-                  id="date"
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="time">Time:</InputLabel>
-                <Input
-                  id="time"
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="address">Address:</InputLabel>
-                <Input
-                  id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="imageUrl">Image:</InputLabel>
-                <ImageContainer>
-                  <UploadButtonContainer>
-                    <UploadButton type="button" onClick={handleUploadImage}>
-                      Upload Image
-                    </UploadButton>
-                  </UploadButtonContainer>
-                  {imageUrl && (
-                    <UploadedImageContainer>
-                      <Image
-                        src={imageUrl}
-                        alt="Event"
-                        width={150}
-                        height={150}
-                      />
-                    </UploadedImageContainer>
-                  )}
-                </ImageContainer>
-              </FormItemContainer>
-              <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Submit'}
-              </SubmitButton>
-              <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
-            </ModalContentForm>
-          </ModalContent>
-        </ModalContainer>
-      )}
+                      {/* Ensure editor is initialized before rendering the editor */}
+                      <StyledEditorContainer>
+                        {editor && <EditorContent editor={editor} />}
+                      </StyledEditorContainer>
+                    </div>
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="date">Date:</InputLabel>
+                    <Input
+                      id="date"
+                      type="date"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      required
+                    />
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="time">Time:</InputLabel>
+                    <Input
+                      id="time"
+                      type="time"
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      required
+                    />
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="address">Address:</InputLabel>
+                    <Input
+                      id="address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                    />
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                    <ImageContainer>
+                      <UploadButtonContainer>
+                        <UploadButton type="button" onClick={handleUploadImage}>
+                          Upload Image
+                        </UploadButton>
+                      </UploadButtonContainer>
+                      {imageUrl && (
+                        <UploadedImageContainer>
+                          <Image
+                            src={imageUrl}
+                            alt="Event"
+                            width={150}
+                            height={150}
+                          />
+                        </UploadedImageContainer>
+                      )}
+                    </ImageContainer>
+                  </FormItemContainer>
+                  <SubmitButton type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                  </SubmitButton>
+                  <ModalCloseButton onClick={toggleModal}>
+                    Close
+                  </ModalCloseButton>
+                </ModalContentForm>
+              </ModalContent>
+            </ModalContainer>
+          )}
 
-      <SectionContainer>
-        {displayedItems.map((event) => (
-          <EventCard key={event.id}>
-            <EventImageContainer>
-              <EventImage
-                src={event.imageUrl || '/default-event.jpg'}
-                alt={event.title}
-                width={150}
-                height={150}
-                priority
-              />
-            </EventImageContainer>
+          <SectionContainer>
+            {displayedItems.map((event) => (
+              <EventCard key={event.id}>
+                <EventImageContainer>
+                  <EventImage
+                    src={event.imageUrl || '/default-event.jpg'}
+                    alt={event.title}
+                    width={150}
+                    height={150}
+                    priority
+                  />
+                </EventImageContainer>
 
-            <EventDetails>
-              <BasicEventInfoContainer>
-                <EventInfo>
-                  {event.date
-                    ? new Date(event.date).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                      })
-                    : 'N/A'}
-                </EventInfo>
+                <EventDetails>
+                  <BasicEventInfoContainer>
+                    <EventInfo>
+                      {event.date
+                        ? new Date(event.date).toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                          })
+                        : 'N/A'}
+                    </EventInfo>
 
-                <EventInfo>{event.time}</EventInfo>
-              </BasicEventInfoContainer>
-              <Link
-                href={`/events/${event.id}`}
-                key={event.id}
-                style={{ textDecoration: 'none' }}
-              >
-                <EventName>{event.title}</EventName>
-              </Link>
-              {/* <EventDescription>
+                    <EventInfo>{event.time}</EventInfo>
+                  </BasicEventInfoContainer>
+                  <Link
+                    href={`/events/${event.id}`}
+                    key={event.id}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <EventName>{event.title}</EventName>
+                  </Link>
+                  {/* <EventDescription>
                 {event.description.length > 100 ? (
                   <>
                     <div
@@ -577,23 +661,66 @@ const Events = () => {
                 )}
               </EventDescription> */}
 
-              <EventInfo>{event.address}</EventInfo>
-            </EventDetails>
-          </EventCard>
-        ))}
-      </SectionContainer>
+                  <EventInfo>{event.address}</EventInfo>
+                </EventDetails>
+              </EventCard>
+            ))}
+          </SectionContainer>
 
-      <PaginationContainer>
-        <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
-          Previous
-        </PrevButton>
-        <PageInfo>
-          Page {currentPage} of {totalPages}
-        </PageInfo>
-        <NextButton onClick={handleNext} disabled={currentPage === totalPages}>
-          Next
-        </NextButton>
-      </PaginationContainer>
+          <PaginationContainer>
+            <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
+              Previous
+            </PrevButton>
+            <PageInfo>
+              Page {currentPage} of {totalPages}
+            </PageInfo>
+            <NextButton
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </NextButton>
+          </PaginationContainer>
+        </EventsContent>
+        <Sidebar>
+          <SidebarTitleContainer>
+            <SidebarTitle>FEATURES</SidebarTitle>
+          </SidebarTitleContainer>
+          <OtherArticlesList>
+            {lifestyleArticles.map((article) => (
+              <OtherArticleItem key={article.id}>
+                {article.imageUrl && (
+                  <ArticleImage src={article.imageUrl} alt={article.title} />
+                )}
+                <SidebarArticleLink
+                  href={`/lifestyle/${article.id}`}
+                  style={{ fontWeight: '700' }}
+                >
+                  {article.title}
+                </SidebarArticleLink>
+              </OtherArticleItem>
+            ))}
+          </OtherArticlesList>
+          <SidebarTitleContainer>
+            <SidebarTitle>KABAYAN SPOTLIGHT</SidebarTitle>
+          </SidebarTitleContainer>
+          <OtherArticlesList>
+            {kabayanArticles.map((article) => (
+              <OtherArticleItem key={article.id}>
+                {article.imageUrl && (
+                  <ArticleImage src={article.imageUrl} alt={article.title} />
+                )}
+                <SidebarArticleLink
+                  href={`/profile/${article.id}`}
+                  style={{ fontWeight: '700' }}
+                >
+                  {article.title}
+                </SidebarArticleLink>
+              </OtherArticleItem>
+            ))}
+          </OtherArticlesList>
+        </Sidebar>
+      </PageLayout>
     </Container>
   );
 };

@@ -24,17 +24,115 @@ export const Container = styled.div`
 //   }
 // `;
 
-export const SectionContainer = styled.section`
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
+export const EventsContent = styled.div`
+  flex: 3;
+  margin-right: 20px;
+`;
 
-  @media (min-width: ${bp.lg}) {
-    /* grid-template-columns: 1fr 1fr; */
-    padding: 10px 100px;
+export const Sidebar = styled.div`
+  flex: 1;
+  padding: 20px;
+  /* background-color: #f9f9f9;
+  border-left: 1px solid #ddd; */
+
+  @media (min-width: ${bp.md}) {
+    /* margin-top: 20px; */
   }
 `;
+export const OtherArticlesList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+export const OtherArticleItem = styled.li`
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.8rem;
+    margin-left: 10px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+export const ArticleImage = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+
+  @media (min-width: ${bp.md}) {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+export const ArticleContent = styled.div`
+  flex: 3;
+  margin-right: 20px;
+`;
+
+export const ArticleTitleContainer = styled.div`
+  max-width: 800px;
+  margin-top: 30px;
+`;
+
+export const Title = styled.h1`
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2.5rem;
+  }
+`;
+
+export const SidebarTitleContainer = styled.div`
+  width: 100%;
+  padding: 10px 0;
+
+  @media (min-width: ${bp.md}) {
+  }
+`;
+
+export const SidebarTitle = styled.div`
+  font-weight: 700;
+`;
+
+export const SidebarArticleLink = styled.a`
+  font-weight: 700;
+  font-size: 1rem;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 2rem;
+  }
+`;
+
+export const PageLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${bp.lg}) {
+    flex-direction: row;
+    padding: 20px 100px;
+  }
+`;
+
+export const SectionContainer = styled.section`
+  padding: 10px;
+
+  @media (min-width: ${bp.lg}) {
+    /* padding: 20px 100px; */
+  }
+`;
+
 export const EventCard = styled.div`
   display: flex;
   flex-direction: row;
@@ -114,9 +212,9 @@ export const EventName = styled.h2`
     font-size: 1.5rem;
   }
 
-  @media (min-width: ${bp.xl}) {
+  /* @media (min-width: ${bp.xl}) {
     font-size: 1.75rem;
-  }
+  } */
 `;
 
 export const EventDescription = styled.p`
