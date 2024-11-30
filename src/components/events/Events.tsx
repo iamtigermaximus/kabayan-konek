@@ -26,10 +26,6 @@ import {
   SubmitButton,
   ModalCloseButton,
   UploadedImageContainer,
-  PaginationContainer,
-  PrevButton,
-  PageInfo,
-  NextButton,
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
@@ -116,12 +112,9 @@ interface CloudinaryWidget {
 const Events = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [events, setEvents] = useState<EventProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [address, setAddress] = useState('');
@@ -134,7 +127,11 @@ const Events = () => {
   const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
 
-  const itemsPerPage = 10;
+  const [displayLimit, setDisplayLimit] = useState(6);
+  const displayedItems = events.slice(0, displayLimit);
+  const handleLoadMore = () => {
+    setDisplayLimit(displayLimit + 6); // Increase the limit by 6
+  };
 
   // Initialize Tiptap editor
   const editor = useEditor({
@@ -222,7 +219,6 @@ const Events = () => {
       });
 
       setEvents(data);
-      setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -231,18 +227,6 @@ const Events = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedItems = events.slice(startIndex, endIndex);
-
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -607,7 +591,7 @@ const Events = () => {
           )}
 
           <SectionContainer>
-            {displayedItems.map((event) => (
+            {displayedItems.slice(0, displayLimit).map((event) => (
               <EventCard key={event.id}>
                 <EventImageContainer>
                   <EventImage
@@ -666,21 +650,23 @@ const Events = () => {
               </EventCard>
             ))}
           </SectionContainer>
-
-          <PaginationContainer>
-            <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
-              Previous
-            </PrevButton>
-            <PageInfo>
-              Page {currentPage} of {totalPages}
-            </PageInfo>
-            <NextButton
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
+          {displayLimit < events.length && (
+            <button
+              onClick={handleLoadMore}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: 'tomato',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                margin: '20px auto',
+                display: 'block',
+              }}
             >
-              Next
-            </NextButton>
-          </PaginationContainer>
+              Load More
+            </button>
+          )}
         </EventsContent>
         <Sidebar>
           <SidebarTitleContainer>
