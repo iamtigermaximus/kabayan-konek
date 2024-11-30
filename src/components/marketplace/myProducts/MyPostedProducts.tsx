@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -187,7 +188,10 @@ const MyPostedProducts = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) resetForm();
+  };
 
   const handleUploadImage = () => {
     widgetRef.current?.open();
@@ -214,6 +218,17 @@ const MyPostedProducts = () => {
       widgetRef.current = cloudinaryWidget;
     }
   }, []);
+
+  const resetForm = () => {
+    setName('');
+    editor?.commands.clearContent(); // Clear Tiptap editor content
+    setPrice('');
+    setCategory('all');
+    setContactEmail('');
+    setContactPhone('');
+    setImageUrl(null);
+    setEditingProduct(null); // Ensure it resets to "create" mode
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -272,7 +287,7 @@ const MyPostedProducts = () => {
         responseBody
       );
       setIsModalOpen(false);
-      setEditingProduct(null); // Reset editing state
+      resetForm(); // Clear the form
       fetchProducts(); // Refresh products list
     } catch (error) {
       console.error('Error submitting product:', error);
@@ -413,7 +428,9 @@ const MyPostedProducts = () => {
         <ModalContainer>
           <ModalContent>
             <ModalContentTitleContainer>
-              <ModalContentTitle>Create New Product</ModalContentTitle>
+              <ModalContentTitle>
+                {editingProduct ? 'Edit Product' : 'Create New Product'}
+              </ModalContentTitle>
             </ModalContentTitleContainer>
 
             <ModalContentForm onSubmit={handleSubmit}>
@@ -591,7 +608,11 @@ const MyPostedProducts = () => {
                 </ImageContainer>
               </FormItemContainer>
               <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Create Product'}
+                {isSubmitting
+                  ? 'Submitting...'
+                  : editingProduct
+                  ? 'Update Product'
+                  : 'Create Product'}{' '}
               </SubmitButton>
             </ModalContentForm>
             <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
@@ -622,7 +643,7 @@ const MyPostedProducts = () => {
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
               <ProductImage
-                src={product.imageUrl || '/default-event.jpg'}
+                src={product.imageUrl || DefaultImage}
                 alt={product.name}
                 width={150}
                 height={150}

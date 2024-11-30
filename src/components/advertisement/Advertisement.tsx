@@ -45,6 +45,7 @@ import {
 } from './Advertisement.styles';
 import Link from 'next/link';
 import Image from 'next/image';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -569,7 +570,7 @@ const Advertisement = () => {
             >
               <AdCard>
                 <AdImage
-                  src={ad.imageUrl || '/default-event.jpg'}
+                  src={ad.imageUrl || DefaultImage}
                   alt={ad.title}
                   width={150}
                   height={150}

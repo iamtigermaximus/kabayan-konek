@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 interface ProductProps {
   id: string;
@@ -207,7 +208,7 @@ const MarketplaceDetails = () => {
       </div>
       <ProductImageContainer>
         <ProductImage
-          src={product.imageUrl || '/default-event.jpg'}
+          src={product.imageUrl || DefaultImage}
           alt={product.name}
           width={500} // Replace with appropriate width
           height={300} // Replace with appropriate height

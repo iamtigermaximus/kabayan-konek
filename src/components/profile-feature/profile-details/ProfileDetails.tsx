@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { IoMdArrowRoundBack } from 'react-icons/io'; // import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
+
 interface KabayanArticle {
   id: string;
   title: string;

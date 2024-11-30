@@ -46,6 +46,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -656,7 +657,7 @@ const MarketPlace = () => {
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
               <ProductImage
-                src={product.imageUrl || '/default-event.jpg'}
+                src={product.imageUrl || DefaultImage}
                 alt={product.name}
                 width={150}
                 height={150}

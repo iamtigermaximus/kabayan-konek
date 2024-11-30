@@ -51,6 +51,8 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import DefaultImage from '@/assets/NoImage2.jpg';
+
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -595,7 +597,7 @@ const Events = () => {
               <EventCard key={event.id}>
                 <EventImageContainer>
                   <EventImage
-                    src={event.imageUrl || '/default-event.jpg'}
+                    src={event.imageUrl || DefaultImage}
                     alt={event.title}
                     width={150}
                     height={150}

@@ -6,6 +6,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 interface AdvertisementProps {
   id: string;
@@ -196,7 +197,7 @@ const AdvertisementDetails = () => {
       </div>
       <AdvertisementImageContainer>
         <AdvertisementImage
-          src={advertisement.imageUrl || '/default-event.jpg'}
+          src={advertisement.imageUrl || DefaultImage}
           alt={advertisement.title}
           width={500} // Replace with appropriate width
           height={300} // Replace with appropriate height

@@ -46,6 +46,7 @@ import {
   StyledLink,
   PublishedDate,
 } from './ProfileFeature.styles';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -170,8 +171,10 @@ const ProfileFeature = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) resetForm();
+  };
   const handleUploadImage = () => {
     widgetRef.current?.open();
   };
@@ -234,6 +237,13 @@ const ProfileFeature = () => {
     }
   }, [editor]);
 
+  const resetForm = () => {
+    setTitle('');
+    editor?.commands.clearContent(); // Clear Tiptap editor content
+    setImageUrl(null);
+    setEditingArticleId(null); // Ensure it resets to "create" mode
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -282,7 +292,7 @@ const ProfileFeature = () => {
 
       alert(editingArticleId ? 'Article updated!' : 'Article created!');
       setIsModalOpen(false);
-      setEditingArticleId(null); // Reset the editing state
+      resetForm(); // Clear the form
       fetchArticles();
     } catch (error) {
       console.error('Error saving the article:', error);
@@ -359,7 +369,7 @@ const ProfileFeature = () => {
             <ModalContent>
               <ModalContentTitleContainer>
                 <ModalContentTitle>
-                  Create New Kabayan Article
+                  {editingArticleId ? 'Edit Article' : 'Create New Article'}
                 </ModalContentTitle>
               </ModalContentTitleContainer>
               <ModalContentForm onSubmit={handleSubmit}>
@@ -543,7 +553,11 @@ const ProfileFeature = () => {
 
                 <SubmitButtonContainer>
                   <SubmitButton type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                    {isSubmitting
+                      ? 'Submitting...'
+                      : editingArticleId
+                      ? 'Update Article'
+                      : 'Create Article'}{' '}
                   </SubmitButton>
                 </SubmitButtonContainer>
 
@@ -557,7 +571,7 @@ const ProfileFeature = () => {
         {displayedItems.map((profile) => (
           <FeaturesCard key={profile.id}>
             <FeaturesImage
-              src={profile.imageUrl || '/default-image.jpg'}
+              src={profile.imageUrl || DefaultImage}
               alt={profile.title}
               width={500} // Replace with appropriate width
               height={300} // Replace with appropriate height

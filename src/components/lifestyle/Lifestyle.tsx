@@ -45,6 +45,8 @@ import {
   StyledLink,
   PublishedDate,
 } from './Lifestyle.styles';
+import DefaultImage from '@/assets/NoImage2.jpg';
+
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -169,7 +171,10 @@ const Lifestyle = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) resetForm();
+  };
 
   const handleUploadImage = () => {
     widgetRef.current?.open();
@@ -232,6 +237,13 @@ const Lifestyle = () => {
     }
   }, [editor]);
 
+  const resetForm = () => {
+    setTitle('');
+    editor?.commands.clearContent(); // Clear Tiptap editor content
+    setImageUrl(null);
+    setEditingArticleId(null); // Ensure it resets to "create" mode
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -270,7 +282,7 @@ const Lifestyle = () => {
 
       alert(editingArticleId ? 'Article updated!' : 'Article created!');
       setIsModalOpen(false);
-      setEditingArticleId(null); // Reset the editing state
+      resetForm(); // Clear the form
       fetchArticles();
     } catch (error) {
       console.error('Error saving the article:', error);
@@ -348,7 +360,7 @@ const Lifestyle = () => {
             <ModalContent>
               <ModalContentTitleContainer>
                 <ModalContentTitle>
-                  Create New Lifestyle Article
+                  {editingArticleId ? 'Edit Article' : 'Create New Article'}
                 </ModalContentTitle>
               </ModalContentTitleContainer>
               <ModalContentForm onSubmit={handleSubmit}>
@@ -528,7 +540,11 @@ const Lifestyle = () => {
 
                 <SubmitButtonContainer>
                   <SubmitButton type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                    {isSubmitting
+                      ? 'Submitting...'
+                      : editingArticleId
+                      ? 'Update Article'
+                      : 'Create Article'}{' '}
                   </SubmitButton>
                 </SubmitButtonContainer>
 
@@ -543,7 +559,7 @@ const Lifestyle = () => {
         {displayedItems.map((lifestyle) => (
           <FeaturesCard key={lifestyle.id}>
             <FeaturesImage
-              src={lifestyle.imageUrl || '/default-image.jpg'}
+              src={lifestyle.imageUrl || DefaultImage}
               alt={lifestyle.title}
               width={500} // Replace with appropriate width
               height={300} // Replace with appropriate height

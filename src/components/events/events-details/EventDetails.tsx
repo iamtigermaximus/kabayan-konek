@@ -6,6 +6,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -112,6 +113,7 @@ export const EventImage = styled(Image)`
   object-fit: cover;
   min-height: 300px;
   max-height: 350px;
+  object-fit: cover;
 `;
 
 const DetailsContainer = styled.div`
@@ -296,7 +298,7 @@ const EventDetails = () => {
         </div>
         <EventImageContainer>
           <EventImage
-            src={event.imageUrl || '/default-event.jpg'}
+            src={event.imageUrl || DefaultImage}
             alt={event.title}
             width={250}
             height={250}

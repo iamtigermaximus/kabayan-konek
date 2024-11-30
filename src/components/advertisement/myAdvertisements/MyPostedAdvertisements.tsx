@@ -45,6 +45,7 @@ import {
 } from '../Advertisement.styles';
 import Link from 'next/link';
 import Image from 'next/image';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -183,8 +184,10 @@ const MyPostedAdvertisements = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) resetForm();
+  };
   const handleUploadImage = () => {
     widgetRef.current?.open();
   };
@@ -244,6 +247,13 @@ const MyPostedAdvertisements = () => {
   //   }
   // }, [editor]);
 
+  const resetForm = () => {
+    setTitle('');
+    editor?.commands.clearContent(); // Clear Tiptap editor content
+    setCategory('all');
+    setImageUrl(null);
+    setEditingAdvertisement(null); // Ensure it resets to "create" mode
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -293,7 +303,7 @@ const MyPostedAdvertisements = () => {
         responseBody
       );
       setIsModalOpen(false);
-      setEditingAdvertisement(null);
+      resetForm(); // Clear the form
       fetchAdvertisements();
     } catch (error) {
       console.error('Error creating advertisement:', error);
@@ -435,7 +445,11 @@ const MyPostedAdvertisements = () => {
           <ModalContent>
             <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
             <ModalContentTitleContainer>
-              <ModalContentTitle>Create Advertisement</ModalContentTitle>
+              <ModalContentTitle>
+                {editingAdvertisement
+                  ? 'Edit Advertisement'
+                  : ' Create New Advertisement'}
+              </ModalContentTitle>
             </ModalContentTitleContainer>
 
             <ModalContentForm onSubmit={handleSubmit}>
@@ -582,7 +596,11 @@ const MyPostedAdvertisements = () => {
                 </ImageContainer>
               </FormItemContainer>
               <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                {isSubmitting
+                  ? 'Submitting...'
+                  : editingAdvertisement
+                  ? 'Update Advertisement'
+                  : 'Create Advertisement'}{' '}
               </SubmitButton>
             </ModalContentForm>
           </ModalContent>
@@ -609,7 +627,7 @@ const MyPostedAdvertisements = () => {
           {displayedItems.map((ad) => (
             <AdCard key={ad.id}>
               <AdImage
-                src={ad.imageUrl || '/default-event.jpg'}
+                src={ad.imageUrl || DefaultImage}
                 alt={ad.title}
                 width={150}
                 height={150}

@@ -38,6 +38,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import DefaultImage from '@/assets/NoImage2.jpg';
 
 interface LifestyleArticle {
   id: string;
@@ -187,7 +188,7 @@ const Home = () => {
         {lifestyleArticles.slice(0, 6).map((lifestyle) => (
           <FeaturesCard key={lifestyle.id}>
             <FeaturesImage
-              src={lifestyle.imageUrl || '/default-image.jpg'}
+              src={lifestyle.imageUrl || DefaultImage}
               alt={lifestyle.title}
               width={500} // Replace with appropriate width
               height={300} // Replace with appropriate height
