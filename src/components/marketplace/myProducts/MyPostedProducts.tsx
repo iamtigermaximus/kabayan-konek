@@ -639,7 +639,6 @@ const MyPostedProducts = () => {
             </FilterSelect>
           </div>
         </FilterSection>
-
         <ProductList>
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
