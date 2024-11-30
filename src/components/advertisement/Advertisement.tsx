@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   AdBasicInfoContainer,
+  AdItemContainer,
   AdCard,
   AdDescription,
   AdImage,
@@ -577,30 +578,35 @@ const Advertisement = () => {
                   priority
                 />
                 <AdBasicInfoContainer>
-                  <AdTitle>{ad.title}</AdTitle>
-                  <AdDescription>
-                    {ad.description.length > 200 ? (
-                      <>
+                  <AdItemContainer>
+                    <AdTitle>{ad.title}</AdTitle>
+                  </AdItemContainer>
+                  <AdItemContainer>
+                    {' '}
+                    <AdDescription>
+                      {ad.description.length > 200 ? (
+                        <>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: ad.description.slice(0, 100) + '...',
+                            }}
+                          ></div>
+
+                          <div style={{ color: 'blue', cursor: 'pointer' }}>
+                            <StyledLink href={`/advertisement/${ad.id}`}>
+                              Read More
+                            </StyledLink>
+                          </div>
+                        </>
+                      ) : (
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: ad.description.slice(0, 100) + '...',
+                            __html: ad.description,
                           }}
                         ></div>
-
-                        <div style={{ color: 'blue', cursor: 'pointer' }}>
-                          <StyledLink href={`/advertisement/${ad.id}`}>
-                            Read More
-                          </StyledLink>
-                        </div>
-                      </>
-                    ) : (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: ad.description,
-                        }}
-                      ></div>
-                    )}
-                  </AdDescription>
+                      )}
+                    </AdDescription>
+                  </AdItemContainer>
                 </AdBasicInfoContainer>
               </AdCard>
             </Link>

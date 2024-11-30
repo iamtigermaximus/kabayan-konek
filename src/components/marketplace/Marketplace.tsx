@@ -12,6 +12,7 @@ import {
   ProductList,
   ProductCard,
   ProductImage,
+  ProductItemContainer,
   ProductTitle,
   ProductPrice,
   ProductDescription,
@@ -664,35 +665,41 @@ const MarketPlace = () => {
                 priority
               />
               <BasicProductInfoContainer>
-                <Link
-                  href={`/marketplace/${product.id}`}
-                  style={{ textDecoration: 'none', color: 'black' }}
-                >
-                  <ProductTitle>{product.name}</ProductTitle>
-                </Link>
-                <ProductPrice>€{product.price}</ProductPrice>
-                <ProductDescription>
-                  {product.description.length > 100 ? (
-                    <>
+                <ProductItemContainer>
+                  <ProductPrice>€{product.price}</ProductPrice>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  <Link
+                    href={`/marketplace/${product.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <ProductTitle>{product.name}</ProductTitle>
+                  </Link>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  <ProductDescription>
+                    {product.description.length > 100 ? (
+                      <>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: product.description.slice(0, 100) + '...',
+                          }}
+                        ></div>
+                        <StyledLink href={`/marketplace/${product.id}`}>
+                          <span style={{ color: 'tomato', cursor: 'pointer' }}>
+                            Read More
+                          </span>
+                        </StyledLink>
+                      </>
+                    ) : (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: product.description.slice(0, 100) + '...',
+                          __html: product.description,
                         }}
                       ></div>
-                      <StyledLink href={`/marketplace/${product.id}`}>
-                        <span style={{ color: 'blue', cursor: 'pointer' }}>
-                          Read More
-                        </span>
-                      </StyledLink>
-                    </>
-                  ) : (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    ></div>
-                  )}
-                </ProductDescription>
+                    )}
+                  </ProductDescription>
+                </ProductItemContainer>
               </BasicProductInfoContainer>
             </ProductCard>
           ))}

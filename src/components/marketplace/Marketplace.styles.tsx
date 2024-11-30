@@ -72,36 +72,50 @@ export const FilterSelect = styled.select`
 
 export const ProductList = styled.div`
   display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+  @media (min-width: ${bp.md}) {
+    gap: 20px;
   }
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr 1fr 1fr;
+  @media (min-width: ${bp.lg}) {
+    gap: 30px;
   }
 `;
 
 export const ProductCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
+  padding: 10px;
   background-color: #f9f9f9;
+  text-align: center;
+
+  @media (min-width: ${bp.md}) {
+    padding: 20px;
+  }
 `;
 
 export const ProductImage = styled(Image)`
-  width: 100%;
-  height: 200px;
+  width: 100%; /* Fills the card width */
   object-fit: cover;
-  margin-bottom: 15px;
+`;
+
+export const ProductItemContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: wrap;
+  padding: 5px 0;
+  min-height: 30px;
+  max-height: 60px;
 `;
 
 export const ProductTitle = styled.div`
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-  height: 60px;
+  font-size: 0.75rem;
 `;
 
 export const ProductPrice = styled.p`
@@ -110,10 +124,10 @@ export const ProductPrice = styled.p`
   color: #2c3e50;
 `;
 
-export const ProductDescription = styled.div`
-  font-size: 0.9rem;
+export const ProductDescription = styled.p`
+  font-size: 0.7rem;
   color: #7f8c8d;
-  height: 60px;
+  width: 100%;
 `;
 
 export const Pagination = styled.div`
@@ -456,6 +470,5 @@ export const BasicProductInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-  gap: 10px;
   justify-content: flex-start;
 `;

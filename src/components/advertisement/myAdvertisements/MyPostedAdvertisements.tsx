@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   AdBasicInfoContainer,
+  AdItemContainer,
   AdCard,
   AdDescription,
   AdImage,
@@ -625,6 +626,96 @@ const MyPostedAdvertisements = () => {
         </FilterSection>
         <AdList>
           {displayedItems.map((ad) => (
+            <Link
+              href={`/advertisement/${ad.id}`}
+              key={ad.id}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              <AdCard>
+                <AdImage
+                  src={ad.imageUrl || DefaultImage}
+                  alt={ad.title}
+                  width={150}
+                  height={150}
+                  priority
+                />
+                <AdBasicInfoContainer>
+                  <AdItemContainer>
+                    <AdTitle>{ad.title}</AdTitle>
+                  </AdItemContainer>
+                  <AdItemContainer>
+                    {' '}
+                    <AdDescription>
+                      {ad.description.length > 200 ? (
+                        <>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: ad.description.slice(0, 100) + '...',
+                            }}
+                          ></div>
+
+                          <div style={{ color: 'blue', cursor: 'pointer' }}>
+                            <StyledLink href={`/advertisement/${ad.id}`}>
+                              Read More
+                            </StyledLink>
+                          </div>
+                        </>
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: ad.description,
+                          }}
+                        ></div>
+                      )}
+                    </AdDescription>
+                  </AdItemContainer>
+                </AdBasicInfoContainer>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: '5px',
+                    marginTop: '10px',
+                  }}
+                >
+                  <button
+                    style={{
+                      background: 'gray',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '5px 10px',
+                      cursor: 'pointer',
+                      width: '60px',
+                    }}
+                    onClick={() => handleEdit(ad)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    style={{
+                      background: 'tomato',
+                      color: '#fff',
+                      border: 'none',
+                      padding: '5px 10px',
+                      cursor: 'pointer',
+                      width: '60px',
+                    }}
+                    onClick={() => {
+                      if (ad.id) {
+                        handleDelete(ad.id);
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </AdCard>
+            </Link>
+          ))}
+        </AdList>
+        {/* <AdList>
+          {displayedItems.map((ad) => (
             <AdCard key={ad.id}>
               <AdImage
                 src={ad.imageUrl || DefaultImage}
@@ -707,7 +798,7 @@ const MyPostedAdvertisements = () => {
               </div>
             </AdCard>
           ))}
-        </AdList>
+        </AdList> */}
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>

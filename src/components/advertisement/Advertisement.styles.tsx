@@ -55,40 +55,56 @@ export const DividerLabel = styled.span`
 
 export const AdList = styled.div`
   display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+  @media (min-width: ${bp.md}) {
+    gap: 20px;
   }
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr 1fr 1fr;
+  @media (min-width: ${bp.lg}) {
+    gap: 30px;
   }
 `;
 
 export const AdCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
+  padding: 10px;
   background-color: #f9f9f9;
+  text-align: center;
+
+  @media (min-width: ${bp.md}) {
+    padding: 20px;
+  }
 `;
 
 export const AdImage = styled(Image)`
-  width: 100%;
-  height: 200px;
+  width: 100%; /* Fills the card width */
   object-fit: cover;
-  margin-bottom: 15px;
+`;
+
+export const AdItemContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: wrap;
+  padding: 5px 0;
+  min-height: 30px;
+  max-height: 60px;
 `;
 
 export const AdTitle = styled.h3`
-  font-size: 1.25rem;
-  margin-bottom: 10px;
+  font-size: 0.75rem;
 `;
 
 export const AdDescription = styled.div`
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #7f8c8d;
+  width: 100%;
 `;
 
 export const PaginationContainer = styled.div`

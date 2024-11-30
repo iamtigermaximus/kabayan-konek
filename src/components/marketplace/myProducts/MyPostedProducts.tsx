@@ -45,6 +45,7 @@ import {
   ProductCard,
   ProductDescription,
   ProductImage,
+  ProductItemContainer,
   ProductList,
   ProductPrice,
   ProductTitle,
@@ -650,6 +651,96 @@ const MyPostedProducts = () => {
                 priority
               />
               <BasicProductInfoContainer>
+                <ProductItemContainer>
+                  <ProductPrice>€{product.price}</ProductPrice>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  <Link
+                    href={`/marketplace/${product.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <ProductTitle>{product.name}</ProductTitle>
+                  </Link>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  <ProductDescription>
+                    {product.description.length > 100 ? (
+                      <>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: product.description.slice(0, 100) + '...',
+                          }}
+                        ></div>
+                        <StyledLink href={`/marketplace/${product.id}`}>
+                          <span style={{ color: 'tomato', cursor: 'pointer' }}>
+                            Read More
+                          </span>
+                        </StyledLink>
+                      </>
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: product.description,
+                        }}
+                      ></div>
+                    )}
+                  </ProductDescription>
+                </ProductItemContainer>
+              </BasicProductInfoContainer>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '5px',
+                  marginTop: '10px',
+                }}
+              >
+                <button
+                  style={{
+                    background: 'gray',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => handleEdit(product)}
+                >
+                  Edit
+                </button>
+                <button
+                  style={{
+                    background: 'tomato',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => {
+                    if (product.id) {
+                      handleDelete(product.id);
+                    }
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </ProductCard>
+          ))}
+        </ProductList>
+
+        {/* <ProductList>
+          {displayedItems.map((product) => (
+            <ProductCard key={product.id}>
+              <ProductImage
+                src={product.imageUrl || DefaultImage}
+                alt={product.name}
+                width={150}
+                height={150}
+                priority
+              />
+              <BasicProductInfoContainer>
                 <Link
                   href={`/marketplace/${product.id}`}
                   style={{ textDecoration: 'none', color: 'black' }}
@@ -721,7 +812,7 @@ const MyPostedProducts = () => {
               </div>
             </ProductCard>
           ))}
-        </ProductList>
+        </ProductList> */}
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
