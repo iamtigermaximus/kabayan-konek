@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const HeroSection = styled.div`
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 200px;
   z-index: 0;
 
@@ -177,7 +177,7 @@ export const LogoContainer = styled.div`
   /* z-index: 99; */
   top: 20px;
   margin-bottom: 100px;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
 
   @media (min-width: ${bp.md}) {
     top: 100px;

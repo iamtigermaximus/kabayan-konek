@@ -155,70 +155,103 @@ export const EventsSectionContainer = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
-  flex-direction: column;
-
-  @media (min-width: ${bp.md}) {
-    /* grid-template-columns: 1fr 1fr; */
-  }
 
   @media (min-width: ${bp.lg}) {
-    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr; */
+    padding: 10px 100px;
   }
 `;
 
 export const EventCard = styled.div`
   display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
+  flex-direction: row;
+  /* border: 1px solid #ccc; */
   /* border-radius: 8px; */
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* padding: 0 0 15px; */
+  /* margin-bottom: 20px; */
+  /* background-color: #f9f9f9; */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  gap: 10px;
 
   @media (min-width: ${bp.md}) {
     flex-direction: row;
   }
 `;
-
-export const EventImage = styled(Image)`
-  width: 100%;
+export const EventImageContainer = styled.div`
+  /* border: 1px solid red; */
+  width: 100px;
+  height: 100px;
   max-width: 150px;
-  height: auto;
-  margin-bottom: 15px;
+  max-height: 150px;
+  margin-bottom: 5px;
 
   @media (min-width: ${bp.md}) {
-    margin-bottom: 0;
     margin-right: 20px;
+    width: 150px;
+    height: 150px;
+  }
+`;
+
+export const EventImage = styled(Image)`
+  width: 100px;
+  height: 100px;
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  /* height: auto; */
+  /* border-radius: 8px; */
+
+  @media (min-width: ${bp.md}) {
+    /* margin-bottom: 0;
+    margin-right: 20px; */
+    width: 150px;
+    height: 150px;
   }
 `;
 
 export const EventDetails = styled.div`
-  /* flex: 1; */
-`;
-
-export const EventName = styled.div`
-  margin: 0 0 10px;
-  font-size: 1rem;
-  color: #333;
+  display: flex;
+  flex-direction: column;
 
   @media (min-width: ${bp.md}) {
+    padding-top: 10px;
+  }
+`;
+
+export const EventName = styled.h2`
+  // margin: 0 0 10px;
+  font-size: 0.85rem;
+  color: #333;
+  /* max-height: 40px; */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  /* border: 1px solid green; */
+
+  @media (min-width: ${bp.sm}) {
     font-size: 1.25rem;
+    /* max-height: 50px; */
+  }
+
+  @media (min-width: ${bp.md}) {
+    font-size: 1.5rem;
+    /* max-height: 60px; */
   }
 
   @media (min-width: ${bp.lg}) {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   @media (min-width: ${bp.xl}) {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 `;
 
-export const EventDescription = styled.div`
+export const EventDescription = styled.p`
   margin: 10px 0;
   font-size: 0.75rem;
   color: #666;
+  height: 40px;
+  border: 1px solid blue;
 
   @media (min-width: ${bp.md}) {
     font-size: 1rem;
@@ -227,8 +260,9 @@ export const EventDescription = styled.div`
   @media (min-width: ${bp.lg}) {
     font-size: 0.75rem;
   }
+
   @media (min-width: ${bp.xl}) {
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
   }
 `;
 
@@ -236,6 +270,7 @@ export const EventDescriptionSpan = styled.span`
   color: tomato;
   cursor: 'pointer';
   font-size: 0.75rem;
+  overflow-y: hidden;
 
   @media (min-width: ${bp.md}) {
     font-size: 1rem;
@@ -246,7 +281,7 @@ export const EventDescriptionSpan = styled.span`
   }
 
   @media (min-width: ${bp.xl}) {
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
   }
 `;
 
@@ -259,23 +294,28 @@ export const BasicEventInfoContainer = styled.div`
 `;
 
 export const EventInfo = styled.div`
-  margin: 10px 0;
+  margin: 5px 0;
   font-size: 0.75rem;
   color: #444;
 
   span {
     font-weight: bold;
   }
+
+  @media (min-width: ${bp.sm}) {
+    font-size: 1rem;
+  }
+
   @media (min-width: ${bp.md}) {
     font-size: 1rem;
   }
 
   @media (min-width: ${bp.lg}) {
-    font-size: 0.75rem;
+    /* font-size: 0.75rem; */
   }
 
   @media (min-width: ${bp.xl}) {
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
   }
 `;
 

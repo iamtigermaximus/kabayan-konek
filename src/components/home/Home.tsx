@@ -18,7 +18,7 @@ import {
   EventImage,
   EventDetails,
   EventName,
-  EventDescription,
+  // EventDescription,
   EventInfo,
   SectionContainer,
   NewsList,
@@ -30,9 +30,10 @@ import {
   NewsSource,
   StyledLink,
   EventsSectionBannerContainer,
-  EventDescriptionSpan,
+  // EventDescriptionSpan,
   BasicEventInfoContainer,
   PublishedDate,
+  EventImageContainer,
 } from './Home.styles';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -232,7 +233,7 @@ const Home = () => {
                 Published on {new Date(profile.createdAt).toLocaleDateString()}
               </PublishedDate>
             </FeaturesTitleContainer>
-            <div
+            {/* <div
               style={{
                 padding: '0 5px',
                 color: 'gray',
@@ -256,7 +257,7 @@ const Home = () => {
                   }}
                 />
               )}
-            </div>
+            </div> */}
           </FeaturesCard>
         ))}
       </FeaturesSectionContainer>
@@ -329,19 +330,38 @@ const Home = () => {
       <EventsSectionContainer>
         {events.slice(0, 6).map((event) => (
           <EventCard key={event.id}>
-            <EventImage
-              src={event.imageUrl || '/default-event.jpg'}
-              alt={event.title}
-              width={150}
-              height={150}
-              priority
-            />
+            <EventImageContainer>
+              <EventImage
+                src={event.imageUrl || '/default-event.jpg'}
+                alt={event.title}
+                width={150}
+                height={150}
+                priority
+              />
+            </EventImageContainer>
+
             <EventDetails>
-              <StyledLink href={`/events/${event.id}`} key={event.id}>
+              <BasicEventInfoContainer>
+                <EventInfo>
+                  {event.date
+                    ? new Date(event.date).toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                      })
+                    : 'N/A'}
+                </EventInfo>
+
+                <EventInfo>{event.time}</EventInfo>
+              </BasicEventInfoContainer>
+              <StyledLink
+                href={`/events/${event.id}`}
+                key={event.id}
+                style={{ textDecoration: 'none' }}
+              >
                 <EventName>{event.title}</EventName>
               </StyledLink>
-
-              <EventDescription>
+              {/* <EventDescription>
                 {event.description.length > 100 ? (
                   <>
                     <div
@@ -360,18 +380,9 @@ const Home = () => {
                     }}
                   ></div>
                 )}
-              </EventDescription>
-              <BasicEventInfoContainer>
-                <EventInfo>
-                  <span>Date:</span> {new Date(event.date).toLocaleDateString()}
-                </EventInfo>
-                <EventInfo>
-                  <span>Time:</span> {event.time}
-                </EventInfo>
-              </BasicEventInfoContainer>
-              <EventInfo>
-                <span>Address:</span> {event.address}
-              </EventInfo>
+              </EventDescription> */}
+
+              <EventInfo>{event.address}</EventInfo>
             </EventDetails>
           </EventCard>
         ))}

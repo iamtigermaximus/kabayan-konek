@@ -11,7 +11,7 @@ import {
   EventImage,
   EventDetails,
   EventName,
-  EventDescription,
+  // EventDescription,
   EventInfo,
   // CreateButtonContainer,
   // CreateButton,
@@ -34,12 +34,13 @@ import {
   UploadButtonContainer,
   UploadButton,
   ModalContentTitleContainer,
-  StyledLink,
+  // StyledLink,
   ToolbarButton,
   ToolbarContainer,
   StyledEditorContainer,
-  EventDescriptionSpan,
+  // EventDescriptionSpan,
   BasicEventInfoContainer,
+  EventImageContainer,
 } from './Events.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -524,14 +525,30 @@ const Events = () => {
       <SectionContainer>
         {displayedItems.map((event) => (
           <EventCard key={event.id}>
-            <EventImage
-              src={event.imageUrl || '/default-event.jpg'}
-              alt={event.title}
-              width={150}
-              height={150}
-              priority
-            />
+            <EventImageContainer>
+              <EventImage
+                src={event.imageUrl || '/default-event.jpg'}
+                alt={event.title}
+                width={150}
+                height={150}
+                priority
+              />
+            </EventImageContainer>
+
             <EventDetails>
+              <BasicEventInfoContainer>
+                <EventInfo>
+                  {event.date
+                    ? new Date(event.date).toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                      })
+                    : 'N/A'}
+                </EventInfo>
+
+                <EventInfo>{event.time}</EventInfo>
+              </BasicEventInfoContainer>
               <Link
                 href={`/events/${event.id}`}
                 key={event.id}
@@ -539,8 +556,7 @@ const Events = () => {
               >
                 <EventName>{event.title}</EventName>
               </Link>
-
-              <EventDescription>
+              {/* <EventDescription>
                 {event.description.length > 100 ? (
                   <>
                     <div
@@ -559,27 +575,9 @@ const Events = () => {
                     }}
                   ></div>
                 )}
-              </EventDescription>
-              <BasicEventInfoContainer>
-                <EventInfo>
-                  <span>Date:</span>{' '}
-                  {event.date
-                    ? new Date(event.date).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })
-                    : 'N/A'}
-                </EventInfo>
+              </EventDescription> */}
 
-                <EventInfo>
-                  <span>Time:</span> {event.time}
-                </EventInfo>
-              </BasicEventInfoContainer>
-
-              <EventInfo>
-                <span>Address:</span> {event.address}
-              </EventInfo>
+              <EventInfo>{event.address}</EventInfo>
             </EventDetails>
           </EventCard>
         ))}
