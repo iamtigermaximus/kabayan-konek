@@ -35,6 +35,9 @@ export const metadata: Metadata = {
     ],
     card: 'summary_large_image',
   },
+  alternates: {
+    canonical: 'https://kabayankonek.com/profile',
+  },
 };
 
 const ProfileFeaturePage = () => {

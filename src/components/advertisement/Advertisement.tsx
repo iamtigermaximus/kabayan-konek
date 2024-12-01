@@ -48,6 +48,23 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import DefaultImage from '@/assets/NoImage2.jpg';
+import {
+  FaBold,
+  FaItalic,
+  FaUnderline,
+  FaAlignLeft,
+  FaAlignCenter,
+  FaAlignRight,
+  FaAlignJustify,
+  FaCode,
+  FaQuoteRight,
+  FaImage,
+  FaStrikethrough,
+  FaSubscript,
+  FaSuperscript,
+  FaHighlighter,
+  FaLink,
+} from 'react-icons/fa';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -61,6 +78,10 @@ import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
 import { CodeBlock } from '@tiptap/extension-code-block';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
+import { FontFamily } from '@tiptap/extension-font-family';
+import { Subscript } from '@tiptap/extension-subscript';
+import { Superscript } from '@tiptap/extension-superscript';
+import { Highlight } from '@tiptap/extension-highlight';
 
 interface AdvertisementProps {
   id: string;
@@ -107,7 +128,7 @@ const Advertisement = () => {
 
   const itemsPerPage = 6; // Number of ads to show per page
 
-  //  Initialize Tiptap editor
+  // Initialize Tiptap editor
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -115,7 +136,12 @@ const Advertisement = () => {
         types: ['paragraph', 'heading'],
       }),
       Underline,
-      Heading.configure({ levels: [1, 2, 3] }),
+      Heading.configure({
+        levels: [1, 2, 3, 4, 5, 6], // Supports all levels of headings
+        HTMLAttributes: {
+          class: 'editor-heading', // Apply a class for custom styles
+        },
+      }),
       TiptapLink,
       TiptapImage,
       Blockquote,
@@ -123,9 +149,22 @@ const Advertisement = () => {
       TextAlign.configure({ types: ['paragraph', 'heading'] }),
       CodeBlock,
       TextStyle,
+      FontFamily.configure({
+        types: ['textStyle'], // Apply font family to textStyle
+      }),
+      Subscript,
+      Superscript,
+      Highlight,
     ],
     content: '',
   });
+
+  // Font Change Handler
+  const handleFontChange = (fontFamily: string) => {
+    if (editor) {
+      editor.chain().focus().setFontFamily(fontFamily).run();
+    }
+  };
 
   const fetchAdvertisements = async () => {
     setIsLoading(false);
@@ -407,30 +446,54 @@ const Advertisement = () => {
                 </FormItemContainer>
                 <FormItemContainer>
                   <InputLabel>Description</InputLabel>
-                  {/* <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                /> */}
                   <div>
                     <ToolbarContainer>
+                      {/* Font Family Dropdown */}
+                      <div>
+                        <select
+                          onChange={(e) => handleFontChange(e.target.value)}
+                          defaultValue=""
+                          style={{ padding: '5px 10px' }}
+                        >
+                          <option value="">Select Font</option>
+                          <option value="Arial">Arial</option>
+                          <option value="Courier New">Courier New</option>
+                          <option value="Georgia">Georgia</option>
+                          <option value="Times New Roman">
+                            Times New Roman
+                          </option>
+                          <option value="Verdana">Verdana</option>
+                        </select>
+                      </div>
+                      {/* <div>
+                          <select
+                            onChange={handleFontSizeChange}
+                            defaultValue="16px"
+                          >
+                            <option value="12px">12px</option>
+                            <option value="14px">14px</option>
+                            <option value="16px">16px</option>
+                            <option value="18px">18px</option>
+                            <option value="20px">20px</option>
+                            <option value="24px">24px</option>
+                          </select>
+                        </div> */}
+
                       <ToolbarButton
                         type="button"
                         onClick={() =>
                           editor?.chain().focus().toggleBold().run()
                         }
                       >
-                        Bold
+                        <FaBold />
                       </ToolbarButton>
-
                       <ToolbarButton
                         type="button"
                         onClick={() =>
                           editor?.chain().focus().toggleItalic().run()
                         }
                       >
-                        Italic
+                        <FaItalic />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
@@ -438,15 +501,39 @@ const Advertisement = () => {
                           editor?.chain().focus().toggleUnderline().run()
                         }
                       >
-                        Underline
+                        <FaUnderline />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
                         onClick={() =>
-                          editor?.chain().focus().setTextAlign('center').run()
+                          editor?.chain().focus().toggleStrike().run()
                         }
                       >
-                        Center
+                        <FaStrikethrough />
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleSubscript().run()
+                        }
+                      >
+                        <FaSubscript />{' '}
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleSuperscript().run()
+                        }
+                      >
+                        <FaSuperscript />
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleHighlight().run()
+                        }
+                      >
+                        <FaHighlighter />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
@@ -454,7 +541,7 @@ const Advertisement = () => {
                           editor?.chain().focus().setTextAlign('left').run()
                         }
                       >
-                        Left Align
+                        <FaAlignLeft />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
@@ -462,7 +549,7 @@ const Advertisement = () => {
                           editor?.chain().focus().setTextAlign('center').run()
                         }
                       >
-                        Center Align
+                        <FaAlignCenter />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
@@ -470,7 +557,7 @@ const Advertisement = () => {
                           editor?.chain().focus().setTextAlign('right').run()
                         }
                       >
-                        Right Align
+                        <FaAlignRight />
                       </ToolbarButton>
                       <ToolbarButton
                         type="button"
@@ -478,25 +565,46 @@ const Advertisement = () => {
                           editor?.chain().focus().setTextAlign('justify').run()
                         }
                       >
-                        Justify Align
+                        <FaAlignJustify />
                       </ToolbarButton>
-
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleStrike().run()
-                        }
-                      >
-                        Strikethrough
-                      </ToolbarButton>
-
                       <ToolbarButton
                         type="button"
                         onClick={() =>
                           editor?.chain().focus().toggleCode().run()
                         }
                       >
-                        Code
+                        <FaCode />
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() => {
+                          const url = prompt('Enter the URL');
+                          if (url) {
+                            editor
+                              ?.chain()
+                              .focus()
+                              .setLink({ href: url })
+                              .run();
+                          }
+                        }}
+                      >
+                        <FaLink />
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleBlockquote().run()
+                        }
+                      >
+                        <FaQuoteRight />
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setImage({ src: '' }).run()
+                        }
+                      >
+                        <FaImage />
                       </ToolbarButton>
                     </ToolbarContainer>
 
@@ -506,6 +614,7 @@ const Advertisement = () => {
                     </StyledEditorContainer>
                   </div>
                 </FormItemContainer>
+
                 <FormItemContainer>
                   <InputLabel htmlFor="category">Category:</InputLabel>
                   <FilterSelect

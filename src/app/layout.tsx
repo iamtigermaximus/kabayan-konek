@@ -2,6 +2,24 @@ import './globals.css';
 import Navbar from '@/components/common/navbar/Navbar';
 import Footer from '@/components/common/footer/Footer';
 import { NextAuthProvider } from './providers/sessionProviders';
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Kabayan Konek',
+  description: 'A platform connecting Filipinos in Finland.',
+  openGraph: {
+    title: 'Kabayan Konek',
+    description: 'A platform connecting Filipinos in Finland.',
+    url: 'https://kabayankonek.com',
+    images: [
+      {
+        url: 'https://example.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Kabayan Konek Logo',
+      },
+    ],
+  },
+};
 
 export default function RootLayout({
   children,
@@ -10,48 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <head>
-        {/* Add Cloudinary's upload widget script */}
-        <script
-          type="text/javascript"
-          src="https://upload-widget.cloudinary.com/global/all.js"
-          async
-        ></script>
-        {/* Global Metadata */}
-        <meta
-          name="description"
-          content="Kabayan Konek is a community hub for Filipinos in Finland, offering lifestyle content, events, marketplace, and advertisements."
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta charSet="utf-8" />
-
-        {/* Open Graph */}
-        <meta property="og:title" content="Kabayan Konek" />
-        <meta
-          property="og:description"
-          content="Connecting Filipinos in Finland through local events, marketplace, and more."
-        />
-        <meta
-          property="og:image"
-          content="https://kabayankonek.com/default-image.jpg"
-        />
-        <meta property="og:url" content="https://kabayankonek.com" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Kabayan Konek" />
-        <meta
-          name="twitter:description"
-          content="Kabayan Konek is a community hub for Filipinos in Finland."
-        />
-        <meta
-          name="twitter:image"
-          content="https://kabayankonek.com/default-image.jpg"
-        />
-
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-      </head>
       <body>
         <div>
           <link

@@ -327,7 +327,7 @@ export const ToolbarButton = styled.button`
   font-weight: bold;
   color: #333;
   transition: all 0.3s ease;
-  width: 100px;
+  width: 50px;
   white-space: nowrap;
 
   &:hover {
@@ -366,6 +366,14 @@ export const StyledEditorContainer = styled.div`
   .ProseMirror-focused {
     border-color: #3e7e7e;
     outline: none;
+  }
+
+  .ProseMirror {
+    font-size: inherit; /* Let it inherit the font size dynamically */
+  }
+
+  .ProseMirror span {
+    font-size: inherit !important; /* Force font size changes */
   }
 
   /* Add some visual improvements to headers */

@@ -48,6 +48,23 @@ import {
   ModalOverlay,
 } from './ProfileFeature.styles';
 import DefaultImage from '@/assets/NoImage2.jpg';
+import {
+  FaBold,
+  FaItalic,
+  FaUnderline,
+  FaAlignLeft,
+  FaAlignCenter,
+  FaAlignRight,
+  FaAlignJustify,
+  FaCode,
+  FaQuoteRight,
+  FaImage,
+  FaStrikethrough,
+  FaSubscript,
+  FaSuperscript,
+  FaHighlighter,
+  FaLink,
+} from 'react-icons/fa';
 
 // Tiptap imports
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -64,6 +81,9 @@ import { Underline } from '@tiptap/extension-underline';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { FontFamily } from '@tiptap/extension-font-family';
+import { Subscript } from '@tiptap/extension-subscript';
+import { Superscript } from '@tiptap/extension-superscript';
+import { Highlight } from '@tiptap/extension-highlight';
 
 interface KabayanArticle {
   id: string;
@@ -129,6 +149,9 @@ const ProfileFeature = () => {
       FontFamily.configure({
         types: ['textStyle'], // Apply font family to textStyle (or any other type you need)
       }),
+      Subscript,
+      Superscript,
+      Highlight,
     ],
     content: '',
   });
@@ -385,106 +408,14 @@ const ProfileFeature = () => {
                   </FormItemContainer>
                   <FormItemContainer>
                     <InputLabel htmlFor="content">Content:</InputLabel>
-                    {/* <Textarea
-                  id="content"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  required
-                /> */}
                     <div>
                       <ToolbarContainer>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().toggleBold().run()
-                          }
-                        >
-                          Bold
-                        </ToolbarButton>
-
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().toggleItalic().run()
-                          }
-                        >
-                          Italic
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().toggleUnderline().run()
-                          }
-                        >
-                          Underline
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().setTextAlign('center').run()
-                          }
-                        >
-                          Center
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().setTextAlign('left').run()
-                          }
-                        >
-                          Left Align
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().setTextAlign('center').run()
-                          }
-                        >
-                          Center Align
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().setTextAlign('right').run()
-                          }
-                        >
-                          Right Align
-                        </ToolbarButton>
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor
-                              ?.chain()
-                              .focus()
-                              .setTextAlign('justify')
-                              .run()
-                          }
-                        >
-                          Justify Align
-                        </ToolbarButton>
-
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().toggleStrike().run()
-                          }
-                        >
-                          Strikethrough
-                        </ToolbarButton>
-
-                        <ToolbarButton
-                          type="button"
-                          onClick={() =>
-                            editor?.chain().focus().toggleCode().run()
-                          }
-                        >
-                          Code
-                        </ToolbarButton>
                         {/* Font Family Dropdown */}
                         <div>
                           <select
                             onChange={(e) => handleFontChange(e.target.value)}
                             defaultValue=""
+                            style={{ padding: '5px 10px' }}
                           >
                             <option value="">Select Font</option>
                             <option value="Arial">Arial</option>
@@ -496,35 +427,151 @@ const ProfileFeature = () => {
                             <option value="Verdana">Verdana</option>
                           </select>
                         </div>
-                        <div>
+                        {/* <div>
                           <select
-                            onChange={(e) => {
-                              const level = parseInt(e.target.value, 10) as
-                                | 1
-                                | 2
-                                | 3
-                                | 4
-                                | 5
-                                | 6; // Explicit type assertion
-                              if (editor) {
-                                editor
-                                  .chain()
-                                  .focus()
-                                  .toggleHeading({ level })
-                                  .run();
-                              }
-                            }}
-                            defaultValue=""
+                            onChange={handleFontSizeChange}
+                            defaultValue="16px"
                           >
-                            <option value="">Normal Text</option>
-                            <option value="1">Heading 1</option>
-                            <option value="2">Heading 2</option>
-                            <option value="3">Heading 3</option>
-                            <option value="4">Heading 4</option>
-                            <option value="5">Heading 5</option>
-                            <option value="6">Heading 6</option>
+                            <option value="12px">12px</option>
+                            <option value="14px">14px</option>
+                            <option value="16px">16px</option>
+                            <option value="18px">18px</option>
+                            <option value="20px">20px</option>
+                            <option value="24px">24px</option>
                           </select>
-                        </div>
+                        </div> */}
+
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBold().run()
+                          }
+                        >
+                          <FaBold />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleItalic().run()
+                          }
+                        >
+                          <FaItalic />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleUnderline().run()
+                          }
+                        >
+                          <FaUnderline />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleStrike().run()
+                          }
+                        >
+                          <FaStrikethrough />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleSubscript().run()
+                          }
+                        >
+                          <FaSubscript />{' '}
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleSuperscript().run()
+                          }
+                        >
+                          <FaSuperscript />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleHighlight().run()
+                          }
+                        >
+                          <FaHighlighter />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('left').run()
+                          }
+                        >
+                          <FaAlignLeft />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('center').run()
+                          }
+                        >
+                          <FaAlignCenter />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('right').run()
+                          }
+                        >
+                          <FaAlignRight />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .setTextAlign('justify')
+                              .run()
+                          }
+                        >
+                          <FaAlignJustify />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleCode().run()
+                          }
+                        >
+                          <FaCode />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() => {
+                            const url = prompt('Enter the URL');
+                            if (url) {
+                              editor
+                                ?.chain()
+                                .focus()
+                                .setLink({ href: url })
+                                .run();
+                            }
+                          }}
+                        >
+                          <FaLink />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBlockquote().run()
+                          }
+                        >
+                          <FaQuoteRight />
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setImage({ src: '' }).run()
+                          }
+                        >
+                          <FaImage />
+                        </ToolbarButton>
                       </ToolbarContainer>
 
                       {/* Ensure editor is initialized before rendering the editor */}
