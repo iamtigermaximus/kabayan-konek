@@ -60,7 +60,6 @@ import { CodeBlock } from '@tiptap/extension-code-block';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Underline } from '@tiptap/extension-underline';
 import { FontFamily } from '@tiptap/extension-font-family';
-
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
@@ -341,8 +340,6 @@ const Lifestyle = () => {
 
   return (
     <Container>
-      <title>LIFESTYLE | kabayankonek</title>
-
       <DividerContainer>
         <DividerLine />
         <DividerLabel>LIFESTYLE</DividerLabel>

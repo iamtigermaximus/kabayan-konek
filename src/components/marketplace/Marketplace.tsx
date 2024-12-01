@@ -367,7 +367,6 @@ const MarketPlace = () => {
 
   return (
     <Container>
-      <title>MARKETPLACE | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>MARKETPLACE</DividerLabel>
@@ -445,7 +444,6 @@ const MarketPlace = () => {
           <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>
         </CreateButtonContainer>
       )} */}
-
       {isModalOpen && (
         <ModalContainer>
           <ModalContent>

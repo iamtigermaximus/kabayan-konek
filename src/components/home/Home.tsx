@@ -178,7 +178,7 @@ const Home = () => {
 
   return (
     <Container>
-      <title>HOME | kabayankonek</title>
+      <title>HOME | KABAYAN KONEK</title>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>FEATURE</DividerLabel>

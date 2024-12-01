@@ -88,8 +88,6 @@ const List = styled.ul`
 const About = () => {
   return (
     <Container>
-      <title>ABOUT US | kabayankonek</title>
-
       <DividerContainer>
         <DividerLine />
         <DividerLabel>ABOUT US</DividerLabel>

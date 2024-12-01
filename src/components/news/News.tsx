@@ -338,8 +338,6 @@ const News = () => {
 
   return (
     <ArticleContainer>
-      <title>NEWS | kabayankonek</title>
-
       <DividerContainer>
         <DividerLine />
         <DividerLabel>NEWS</DividerLabel>

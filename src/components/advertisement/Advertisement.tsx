@@ -304,14 +304,12 @@ const Advertisement = () => {
 
   return (
     <Container>
-      <title>ADVERTISEMENTS | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
         <DividerLabel>ADVERTISEMENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
       {error && <div style={{ color: 'red' }}>{error}</div>}
-
       <div>
         {!session ? (
           <div
@@ -380,7 +378,6 @@ const Advertisement = () => {
         )}
       </div>
       {isLoading && <div>Loading advertisements...</div>}
-
       {/* {session && (
         <CreateButtonContainer>
           <CreateButton onClick={toggleModal}>
