@@ -176,8 +176,6 @@ const Footer = () => {
         <strong style={{ color: 'tomato' }}>kabayankonek</strong>. All Rights
         Reserved.
       </Copyright>
-      [Privacy Policy](https://www.kabayankonek.com/privacy-policy) | [Terms and
-      Conditions](https://www.kabayankonek.com/terms) | Contact Us
     </FooterContainer>
   );
 };
