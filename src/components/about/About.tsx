@@ -168,8 +168,12 @@ const About = () => {
             reach out to us. We’re here to help and connect with you!
           </Paragraph>
           <Paragraph>
-            Email: support@website.com <br />
-            Phone: (123) 456-7890
+            <strong>Email:</strong>{' '}
+            <a href="mailto:contact@kabayankonek.com?subject=Inquiry%20from%20About%20Page&body=Hello,%20I%20have%20a%20question...">
+              contact@kabayankonek.com
+            </a>
+            <br />
+            {/* Phone: (123) 456-7890 */}
           </Paragraph>
         </Section>
       </SectionContainer>

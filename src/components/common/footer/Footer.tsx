@@ -126,6 +126,9 @@ const Footer = () => {
             <li>
               <Link href="/advertise">Advertisement</Link>
             </li>
+            <li>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+            </li>
           </NavLinks>
         </Section>
         <Section>
@@ -153,6 +156,19 @@ const Footer = () => {
               <FaInstagram />
             </a>
           </SocialMedia>
+          <div style={{ color: 'white', cursor: 'pointer', padding: '5px 0' }}>
+            <strong>Email:</strong>{' '}
+            <a
+              href="mailto:contact@kabayankonek.com?subject=Inquiry%20from%20About%20Page&body=Hello,%20I%20have%20a%20question..."
+              style={{
+                color: 'white',
+                cursor: 'pointer',
+                textDecoration: 'none',
+              }}
+            >
+              contact@kabayankonek.com
+            </a>
+          </div>
         </Section>
       </FooterContent>
       <Copyright>
@@ -160,6 +176,8 @@ const Footer = () => {
         <strong style={{ color: 'tomato' }}>kabayankonek</strong>. All Rights
         Reserved.
       </Copyright>
+      [Privacy Policy](https://www.kabayankonek.com/privacy-policy) | [Terms and
+      Conditions](https://www.kabayankonek.com/terms) | Contact Us
     </FooterContainer>
   );
 };
