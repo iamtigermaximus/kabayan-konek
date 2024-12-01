@@ -51,6 +51,7 @@ import {
   PageLayout,
   Content,
   ArticleImage,
+  ModalOverlay,
 } from './News.styles';
 import { useSession } from 'next-auth/react';
 
@@ -351,221 +352,231 @@ const News = () => {
       <PageLayout>
         <ArticleContent>
           {isModalOpen && (
-            <div ref={editorRef}>
-              <ModalContainer>
-                <ModalContent>
-                  <ModalContentTitle>Create News Article</ModalContentTitle>
-                  <ModalContentForm onSubmit={handleSubmit}>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="title">Title:</InputLabel>
-                      <Input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="contentUrl">Content URL:</InputLabel>
-                      <Input
-                        id="contentUrl"
-                        type="url"
-                        value={contentUrl}
-                        onChange={(e) => setContentUrl(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="newsSummary">Summary:</InputLabel>
-                      {/* <Textarea
+            <ModalOverlay>
+              <div ref={editorRef}>
+                <ModalContainer>
+                  <ModalContent>
+                    <ModalContentTitle>Create News Article</ModalContentTitle>
+                    <ModalContentForm onSubmit={handleSubmit}>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="title">Title:</InputLabel>
+                        <Input
+                          id="title"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="contentUrl">
+                          Content URL:
+                        </InputLabel>
+                        <Input
+                          id="contentUrl"
+                          type="url"
+                          value={contentUrl}
+                          onChange={(e) => setContentUrl(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="newsSummary">Summary:</InputLabel>
+                        {/* <Textarea
                   id="newsSummary"
                   value={newsSummary}
                   onChange={(e) => setNewsSummary(e.target.value)}
                   required
                 /> */}
-                      <div>
-                        <ToolbarContainer>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleBold().run()
-                            }
-                          >
-                            Bold
-                          </ToolbarButton>
-
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleItalic().run()
-                            }
-                          >
-                            Italic
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleUnderline().run()
-                            }
-                          >
-                            Underline
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('center')
-                                .run()
-                            }
-                          >
-                            Center
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().setTextAlign('left').run()
-                            }
-                          >
-                            Left Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('center')
-                                .run()
-                            }
-                          >
-                            Center Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('right')
-                                .run()
-                            }
-                          >
-                            Right Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('justify')
-                                .run()
-                            }
-                          >
-                            Justify Align
-                          </ToolbarButton>
-
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleStrike().run()
-                            }
-                          >
-                            Strikethrough
-                          </ToolbarButton>
-
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleCode().run()
-                            }
-                          >
-                            Code
-                          </ToolbarButton>
-                          {/* Font Family Dropdown */}
-                          <div>
-                            <select
-                              onChange={(e) => handleFontChange(e.target.value)}
-                              defaultValue=""
+                        <div>
+                          <ToolbarContainer>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleBold().run()
+                              }
                             >
-                              <option value="">Select Font</option>
-                              <option value="Arial">Arial</option>
-                              <option value="Courier New">Courier New</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Times New Roman">
-                                Times New Roman
-                              </option>
-                              <option value="Verdana">Verdana</option>
-                            </select>
-                          </div>
-                          <div>
-                            <select
-                              onChange={(e) => {
-                                const level = parseInt(e.target.value, 10) as
-                                  | 1
-                                  | 2
-                                  | 3
-                                  | 4
-                                  | 5
-                                  | 6; // Explicit type assertion
-                                if (editor) {
-                                  editor
-                                    .chain()
-                                    .focus()
-                                    .toggleHeading({ level })
-                                    .run();
+                              Bold
+                            </ToolbarButton>
+
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleItalic().run()
+                              }
+                            >
+                              Italic
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleUnderline().run()
+                              }
+                            >
+                              Underline
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('center')
+                                  .run()
+                              }
+                            >
+                              Center
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('left')
+                                  .run()
+                              }
+                            >
+                              Left Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('center')
+                                  .run()
+                              }
+                            >
+                              Center Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('right')
+                                  .run()
+                              }
+                            >
+                              Right Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('justify')
+                                  .run()
+                              }
+                            >
+                              Justify Align
+                            </ToolbarButton>
+
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleStrike().run()
+                              }
+                            >
+                              Strikethrough
+                            </ToolbarButton>
+
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleCode().run()
+                              }
+                            >
+                              Code
+                            </ToolbarButton>
+                            {/* Font Family Dropdown */}
+                            <div>
+                              <select
+                                onChange={(e) =>
+                                  handleFontChange(e.target.value)
                                 }
-                              }}
-                              defaultValue=""
-                            >
-                              <option value="">Normal Text</option>
-                              <option value="1">Heading 1</option>
-                              <option value="2">Heading 2</option>
-                              <option value="3">Heading 3</option>
-                              <option value="4">Heading 4</option>
-                              <option value="5">Heading 5</option>
-                              <option value="6">Heading 6</option>
-                            </select>
-                          </div>
-                        </ToolbarContainer>
+                                defaultValue=""
+                              >
+                                <option value="">Select Font</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Times New Roman">
+                                  Times New Roman
+                                </option>
+                                <option value="Verdana">Verdana</option>
+                              </select>
+                            </div>
+                            <div>
+                              <select
+                                onChange={(e) => {
+                                  const level = parseInt(e.target.value, 10) as
+                                    | 1
+                                    | 2
+                                    | 3
+                                    | 4
+                                    | 5
+                                    | 6; // Explicit type assertion
+                                  if (editor) {
+                                    editor
+                                      .chain()
+                                      .focus()
+                                      .toggleHeading({ level })
+                                      .run();
+                                  }
+                                }}
+                                defaultValue=""
+                              >
+                                <option value="">Normal Text</option>
+                                <option value="1">Heading 1</option>
+                                <option value="2">Heading 2</option>
+                                <option value="3">Heading 3</option>
+                                <option value="4">Heading 4</option>
+                                <option value="5">Heading 5</option>
+                                <option value="6">Heading 6</option>
+                              </select>
+                            </div>
+                          </ToolbarContainer>
 
-                        {/* Ensure editor is initialized before rendering the editor */}
-                        <StyledEditorContainer>
-                          {editor && <EditorContent editor={editor} />}
-                        </StyledEditorContainer>
-                      </div>
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="date">Date:</InputLabel>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={date ? date.toISOString().split('T')[0] : ''}
-                        onChange={handleDateChange}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="source">Source:</InputLabel>
-                      <Input
-                        id="source"
-                        value={source}
-                        onChange={(e) => setSource(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <SubmitButton type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? 'Submitting...' : 'Submit'}
-                    </SubmitButton>
-                    <ModalCloseButton onClick={toggleModal}>
-                      Close
-                    </ModalCloseButton>
-                  </ModalContentForm>
-                </ModalContent>
-              </ModalContainer>
-            </div>
+                          {/* Ensure editor is initialized before rendering the editor */}
+                          <StyledEditorContainer>
+                            {editor && <EditorContent editor={editor} />}
+                          </StyledEditorContainer>
+                        </div>
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="date">Date:</InputLabel>
+                        <Input
+                          id="date"
+                          type="date"
+                          value={date ? date.toISOString().split('T')[0] : ''}
+                          onChange={handleDateChange}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="source">Source:</InputLabel>
+                        <Input
+                          id="source"
+                          value={source}
+                          onChange={(e) => setSource(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <SubmitButton type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
+                      </SubmitButton>
+                      <ModalCloseButton onClick={toggleModal}>
+                        Close
+                      </ModalCloseButton>
+                    </ModalContentForm>
+                  </ModalContent>
+                </ModalContainer>
+              </div>
+            </ModalOverlay>
           )}
           <SectionContainer>
             <NewsList>

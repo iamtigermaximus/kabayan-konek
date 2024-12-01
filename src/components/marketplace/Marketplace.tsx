@@ -42,6 +42,7 @@ import {
   StyledEditorContainer,
   StyledLink,
   BasicProductInfoContainer,
+  ModalOverlay,
 } from './Marketplace.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -445,192 +446,198 @@ const MarketPlace = () => {
         </CreateButtonContainer>
       )} */}
       {isModalOpen && (
-        <ModalContainer>
-          <ModalContent>
-            <ModalContentTitleContainer>
-              <ModalContentTitle>Create New Product</ModalContentTitle>
-            </ModalContentTitleContainer>
+        <ModalOverlay>
+          <ModalContainer>
+            <ModalContent>
+              <ModalContentTitleContainer>
+                <ModalContentTitle>Create New Product</ModalContentTitle>
+              </ModalContentTitleContainer>
 
-            <ModalContentForm onSubmit={handleSubmit}>
-              <FormItemContainer>
-                <InputLabel htmlFor="name">Product Name:</InputLabel>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="description">Description:</InputLabel>
-                {/* <Textarea
+              <ModalContentForm onSubmit={handleSubmit}>
+                <FormItemContainer>
+                  <InputLabel htmlFor="name">Product Name:</InputLabel>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="description">Description:</InputLabel>
+                  {/* <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 /> */}
-                <div>
-                  <ToolbarContainer>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleBold().run()}
-                    >
-                      Bold
-                    </ToolbarButton>
+                  <div>
+                    <ToolbarContainer>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleBold().run()
+                        }
+                      >
+                        Bold
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleItalic().run()
-                      }
-                    >
-                      Italic
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleUnderline().run()
-                      }
-                    >
-                      Underline
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('left').run()
-                      }
-                    >
-                      Left Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('center').run()
-                      }
-                    >
-                      Center Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('right').run()
-                      }
-                    >
-                      Right Align
-                    </ToolbarButton>
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().setTextAlign('justify').run()
-                      }
-                    >
-                      Justify Align
-                    </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleItalic().run()
+                        }
+                      >
+                        Italic
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleUnderline().run()
+                        }
+                      >
+                        Underline
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('center').run()
+                        }
+                      >
+                        Center
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('left').run()
+                        }
+                      >
+                        Left Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('center').run()
+                        }
+                      >
+                        Center Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('right').run()
+                        }
+                      >
+                        Right Align
+                      </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().setTextAlign('justify').run()
+                        }
+                      >
+                        Justify Align
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() =>
-                        editor?.chain().focus().toggleStrike().run()
-                      }
-                    >
-                      Strikethrough
-                    </ToolbarButton>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleStrike().run()
+                        }
+                      >
+                        Strikethrough
+                      </ToolbarButton>
 
-                    <ToolbarButton
-                      type="button"
-                      onClick={() => editor?.chain().focus().toggleCode().run()}
-                    >
-                      Code
-                    </ToolbarButton>
-                  </ToolbarContainer>
+                      <ToolbarButton
+                        type="button"
+                        onClick={() =>
+                          editor?.chain().focus().toggleCode().run()
+                        }
+                      >
+                        Code
+                      </ToolbarButton>
+                    </ToolbarContainer>
 
-                  {/* Ensure editor is initialized before rendering the editor */}
-                  <StyledEditorContainer>
-                    {editor && <EditorContent editor={editor} />}
-                  </StyledEditorContainer>
-                </div>
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="price">Price:</InputLabel>
-                <Input
-                  id="price"
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="category">Category:</InputLabel>
-                <FilterSelect
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
-                >
-                  <option value="electronics">Electronics</option>
-                  <option value="fashion">Fashion</option>
-                  <option value="home">Home</option>
-                  <option value="food">Food</option>
-                  <option value="others">Others</option>
-                </FilterSelect>
-              </FormItemContainer>
+                    {/* Ensure editor is initialized before rendering the editor */}
+                    <StyledEditorContainer>
+                      {editor && <EditorContent editor={editor} />}
+                    </StyledEditorContainer>
+                  </div>
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="price">Price:</InputLabel>
+                  <Input
+                    id="price"
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="category">Category:</InputLabel>
+                  <FilterSelect
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    required
+                  >
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="home">Home</option>
+                    <option value="food">Food</option>
+                    <option value="others">Others</option>
+                  </FilterSelect>
+                </FormItemContainer>
 
-              <FormItemContainer>
-                <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
-                <Input
-                  id="contactEmail"
-                  type="email"
-                  value={contactEmail}
-                  onChange={(e) => setContactEmail(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
-                <Input
-                  id="contactPhone"
-                  type="tel"
-                  value={contactPhone}
-                  onChange={(e) => setContactPhone(e.target.value)}
-                  required
-                />
-              </FormItemContainer>
-              <FormItemContainer>
-                <InputLabel htmlFor="imageUrl">Image:</InputLabel>
-                <ImageContainer>
-                  <UploadButtonContainer>
-                    <UploadButton type="button" onClick={handleUploadImage}>
-                      Upload Image
-                    </UploadButton>
-                  </UploadButtonContainer>
-                  {imageUrl && (
-                    <UploadedImageContainer>
-                      <Image
-                        src={imageUrl}
-                        alt="Product"
-                        width={150}
-                        height={150}
-                      />
-                    </UploadedImageContainer>
-                  )}
-                </ImageContainer>
-              </FormItemContainer>
-              <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 'Create Product'}
-              </SubmitButton>
-            </ModalContentForm>
-            <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
-          </ModalContent>
-        </ModalContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
+                  <Input
+                    id="contactEmail"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
+                  <Input
+                    id="contactPhone"
+                    type="tel"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                  <ImageContainer>
+                    <UploadButtonContainer>
+                      <UploadButton type="button" onClick={handleUploadImage}>
+                        Upload Image
+                      </UploadButton>
+                    </UploadButtonContainer>
+                    {imageUrl && (
+                      <UploadedImageContainer>
+                        <Image
+                          src={imageUrl}
+                          alt="Product"
+                          width={150}
+                          height={150}
+                        />
+                      </UploadedImageContainer>
+                    )}
+                  </ImageContainer>
+                </FormItemContainer>
+                <SubmitButton type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? 'Submitting...' : 'Create Product'}
+                </SubmitButton>
+              </ModalContentForm>
+              <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
+            </ModalContent>
+          </ModalContainer>
+        </ModalOverlay>
       )}
       <SectionContainer>
         <FilterSection>

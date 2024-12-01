@@ -156,38 +156,43 @@ export const PageButton = styled.button<PageButtonProps>`
   }
 `;
 
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Blur effect */
+  backdrop-filter: blur(4px); /* Add a blur to the overlay */
+  z-index: 999;
+`;
+
 export const ModalContainer = styled.div`
-  /* position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0; */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* background: rgba(0, 0, 0, 0.5); */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1000;
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
+  width: 90%;
+  max-width: 600px;
+  height: auto;
+  max-height: 90%;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 `;
 
 export const ModalContent = styled.div`
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 100%;
+  border-radius: 10px;
+  padding: 30px 20px;
+  /* max-width: 500px; */
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
-  border: 0.5px solid rgba(0, 0, 0, 0.5);
-
-  @media (min-width: ${bp.md}) {
-    width: 600px;
-  }
+  z-index: 800;
+  overflow-y: auto;
 `;
 
 export const ModalContentTitleContainer = styled.div`
@@ -217,10 +222,14 @@ export const ModalCloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 16px;
+  background: none;
   border: none;
-  background: transparent;
+  font-size: 1rem;
   cursor: pointer;
+  color: #333;
+  &:hover {
+    color: #000;
+  }
 `;
 
 // export const CreateButtonContainer = styled.div`

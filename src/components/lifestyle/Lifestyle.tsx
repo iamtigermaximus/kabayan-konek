@@ -44,6 +44,7 @@ import {
   DeleteConfirmModalButton,
   StyledLink,
   PublishedDate,
+  ModalOverlay,
 } from './Lifestyle.styles';
 import DefaultImage from '@/assets/NoImage2.jpg';
 
@@ -352,204 +353,212 @@ const Lifestyle = () => {
         </CreateButtonContainer>
       )}
       {isModalOpen && (
-        <div ref={editorRef}>
-          <ModalContainer>
-            <ModalContent>
-              <ModalContentTitleContainer>
-                <ModalContentTitle>
-                  {editingArticleId ? 'Edit Article' : 'Create New Article'}
-                </ModalContentTitle>
-              </ModalContentTitleContainer>
-              <ModalContentForm onSubmit={handleSubmit}>
-                <FormItemContainer>
-                  <InputLabel htmlFor="title">Title:</InputLabel>
-                  <Input
-                    id="title"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                  />
-                </FormItemContainer>
-                <FormItemContainer>
-                  <InputLabel htmlFor="content">Content:</InputLabel>
-                  <div>
-                    <ToolbarContainer>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleBold().run()
-                        }
-                      >
-                        Bold
-                      </ToolbarButton>
-
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleItalic().run()
-                        }
-                      >
-                        Italic
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleUnderline().run()
-                        }
-                      >
-                        Underline
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('center').run()
-                        }
-                      >
-                        Center
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('left').run()
-                        }
-                      >
-                        Left Align
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('center').run()
-                        }
-                      >
-                        Center Align
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('right').run()
-                        }
-                      >
-                        Right Align
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('justify').run()
-                        }
-                      >
-                        Justify Align
-                      </ToolbarButton>
-
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleStrike().run()
-                        }
-                      >
-                        Strikethrough
-                      </ToolbarButton>
-
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleCode().run()
-                        }
-                      >
-                        Code
-                      </ToolbarButton>
-                    </ToolbarContainer>
-                    <ToolbarContainer>
-                      {/* Font Family Dropdown */}
-                      <div>
-                        <select
-                          onChange={(e) => handleFontChange(e.target.value)}
-                          defaultValue=""
+        <ModalOverlay>
+          <div ref={editorRef}>
+            <ModalContainer>
+              <ModalContent>
+                <ModalContentTitleContainer>
+                  <ModalContentTitle>
+                    {editingArticleId ? 'Edit Article' : 'Create New Article'}
+                  </ModalContentTitle>
+                </ModalContentTitleContainer>
+                <ModalContentForm onSubmit={handleSubmit}>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="title">Title:</InputLabel>
+                    <Input
+                      id="title"
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      required
+                    />
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="content">Content:</InputLabel>
+                    <div>
+                      <ToolbarContainer>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleBold().run()
+                          }
                         >
-                          <option value="">Select Font</option>
-                          <option value="Arial">Arial</option>
-                          <option value="Courier New">Courier New</option>
-                          <option value="Georgia">Georgia</option>
-                          <option value="Times New Roman">
-                            Times New Roman
-                          </option>
-                          <option value="Verdana">Verdana</option>
-                        </select>
-                      </div>
-                      <div>
-                        <select
-                          onChange={(e) => {
-                            const level = parseInt(e.target.value, 10) as
-                              | 1
-                              | 2
-                              | 3
-                              | 4
-                              | 5
-                              | 6; // Explicit type assertion
-                            if (editor) {
-                              editor
-                                .chain()
-                                .focus()
-                                .toggleHeading({ level })
-                                .run();
-                            }
-                          }}
-                          defaultValue=""
+                          Bold
+                        </ToolbarButton>
+
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleItalic().run()
+                          }
                         >
-                          <option value="">Normal Text</option>
-                          <option value="1">Heading 1</option>
-                          <option value="2">Heading 2</option>
-                          <option value="3">Heading 3</option>
-                          <option value="4">Heading 4</option>
-                          <option value="5">Heading 5</option>
-                          <option value="6">Heading 6</option>
-                        </select>
-                      </div>
-                    </ToolbarContainer>
+                          Italic
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleUnderline().run()
+                          }
+                        >
+                          Underline
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('center').run()
+                          }
+                        >
+                          Center
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('left').run()
+                          }
+                        >
+                          Left Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('center').run()
+                          }
+                        >
+                          Center Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().setTextAlign('right').run()
+                          }
+                        >
+                          Right Align
+                        </ToolbarButton>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor
+                              ?.chain()
+                              .focus()
+                              .setTextAlign('justify')
+                              .run()
+                          }
+                        >
+                          Justify Align
+                        </ToolbarButton>
 
-                    {/* Ensure editor is initialized before rendering the editor */}
-                    <StyledEditorContainer>
-                      {editor && <EditorContent editor={editor} />}
-                    </StyledEditorContainer>
-                  </div>
-                </FormItemContainer>
-                <FormItemContainer>
-                  <InputLabel htmlFor="imageUrl">Image:</InputLabel>
-                  <ImageContainer>
-                    <UploadButtonContainer>
-                      <UploadButton type="button" onClick={handleUploadImage}>
-                        Upload Image
-                      </UploadButton>
-                    </UploadButtonContainer>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleStrike().run()
+                          }
+                        >
+                          Strikethrough
+                        </ToolbarButton>
 
-                    {imageUrl && (
-                      <UploadedImageContainer>
-                        <Image
-                          src={imageUrl}
-                          alt="Uploaded Image"
-                          width={300}
-                          height={300}
-                        />
-                      </UploadedImageContainer>
-                    )}
-                  </ImageContainer>
-                </FormItemContainer>
+                        <ToolbarButton
+                          type="button"
+                          onClick={() =>
+                            editor?.chain().focus().toggleCode().run()
+                          }
+                        >
+                          Code
+                        </ToolbarButton>
+                      </ToolbarContainer>
+                      <ToolbarContainer>
+                        {/* Font Family Dropdown */}
+                        <div>
+                          <select
+                            onChange={(e) => handleFontChange(e.target.value)}
+                            defaultValue=""
+                          >
+                            <option value="">Select Font</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Times New Roman">
+                              Times New Roman
+                            </option>
+                            <option value="Verdana">Verdana</option>
+                          </select>
+                        </div>
+                        <div>
+                          <select
+                            onChange={(e) => {
+                              const level = parseInt(e.target.value, 10) as
+                                | 1
+                                | 2
+                                | 3
+                                | 4
+                                | 5
+                                | 6; // Explicit type assertion
+                              if (editor) {
+                                editor
+                                  .chain()
+                                  .focus()
+                                  .toggleHeading({ level })
+                                  .run();
+                              }
+                            }}
+                            defaultValue=""
+                          >
+                            <option value="">Normal Text</option>
+                            <option value="1">Heading 1</option>
+                            <option value="2">Heading 2</option>
+                            <option value="3">Heading 3</option>
+                            <option value="4">Heading 4</option>
+                            <option value="5">Heading 5</option>
+                            <option value="6">Heading 6</option>
+                          </select>
+                        </div>
+                      </ToolbarContainer>
 
-                <SubmitButtonContainer>
-                  <SubmitButton type="submit" disabled={isSubmitting}>
-                    {isSubmitting
-                      ? 'Submitting...'
-                      : editingArticleId
-                      ? 'Update Article'
-                      : 'Create Article'}{' '}
-                  </SubmitButton>
-                </SubmitButtonContainer>
+                      {/* Ensure editor is initialized before rendering the editor */}
+                      <StyledEditorContainer>
+                        {editor && <EditorContent editor={editor} />}
+                      </StyledEditorContainer>
+                    </div>
+                  </FormItemContainer>
+                  <FormItemContainer>
+                    <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                    <ImageContainer>
+                      <UploadButtonContainer>
+                        <UploadButton type="button" onClick={handleUploadImage}>
+                          Upload Image
+                        </UploadButton>
+                      </UploadButtonContainer>
 
-                <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
-              </ModalContentForm>
-            </ModalContent>
-          </ModalContainer>
-        </div>
+                      {imageUrl && (
+                        <UploadedImageContainer>
+                          <Image
+                            src={imageUrl}
+                            alt="Uploaded Image"
+                            width={300}
+                            height={300}
+                          />
+                        </UploadedImageContainer>
+                      )}
+                    </ImageContainer>
+                  </FormItemContainer>
+
+                  <SubmitButtonContainer>
+                    <SubmitButton type="submit" disabled={isSubmitting}>
+                      {isSubmitting
+                        ? 'Submitting...'
+                        : editingArticleId
+                        ? 'Update Article'
+                        : 'Create Article'}{' '}
+                    </SubmitButton>
+                  </SubmitButtonContainer>
+
+                  <ModalCloseButton onClick={toggleModal}>
+                    Close
+                  </ModalCloseButton>
+                </ModalContentForm>
+              </ModalContent>
+            </ModalContainer>
+          </div>
+        </ModalOverlay>
       )}
 
       <FeaturesSectionContainer>

@@ -50,6 +50,7 @@ import {
   OtherArticleItem,
   ArticleImage,
   SidebarArticleLink,
+  ModalOverlay,
 } from '../Events.styles';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -492,207 +493,213 @@ const Events = () => {
         <EventsContent>
           <SectionContainer>
             {isModalOpen && (
-              <ModalContainer>
-                <ModalContent>
-                  <ModalContentTitleContainer>
-                    <ModalContentTitle>
-                      {editingEvent ? 'Edit Event' : 'Create New Event'}
-                    </ModalContentTitle>
-                  </ModalContentTitleContainer>
-                  <ModalContentForm onSubmit={handleSubmit}>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="title">Event Name:</InputLabel>
-                      <Input
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="description">
-                        Description:
-                      </InputLabel>
-                      {/* <Textarea
+              <ModalOverlay>
+                <ModalContainer>
+                  <ModalContent>
+                    <ModalContentTitleContainer>
+                      <ModalContentTitle>
+                        {editingEvent ? 'Edit Event' : 'Create New Event'}
+                      </ModalContentTitle>
+                    </ModalContentTitleContainer>
+                    <ModalContentForm onSubmit={handleSubmit}>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="title">Event Name:</InputLabel>
+                        <Input
+                          id="title"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="description">
+                          Description:
+                        </InputLabel>
+                        {/* <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 /> */}
-                      <div>
-                        <ToolbarContainer>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleBold().run()
-                            }
-                          >
-                            Bold
-                          </ToolbarButton>
+                        <div>
+                          <ToolbarContainer>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleBold().run()
+                              }
+                            >
+                              Bold
+                            </ToolbarButton>
 
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleItalic().run()
-                            }
-                          >
-                            Italic
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleUnderline().run()
-                            }
-                          >
-                            Underline
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('center')
-                                .run()
-                            }
-                          >
-                            Center
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().setTextAlign('left').run()
-                            }
-                          >
-                            Left Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('center')
-                                .run()
-                            }
-                          >
-                            Center Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('right')
-                                .run()
-                            }
-                          >
-                            Right Align
-                          </ToolbarButton>
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor
-                                ?.chain()
-                                .focus()
-                                .setTextAlign('justify')
-                                .run()
-                            }
-                          >
-                            Justify Align
-                          </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleItalic().run()
+                              }
+                            >
+                              Italic
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleUnderline().run()
+                              }
+                            >
+                              Underline
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('center')
+                                  .run()
+                              }
+                            >
+                              Center
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('left')
+                                  .run()
+                              }
+                            >
+                              Left Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('center')
+                                  .run()
+                              }
+                            >
+                              Center Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('right')
+                                  .run()
+                              }
+                            >
+                              Right Align
+                            </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor
+                                  ?.chain()
+                                  .focus()
+                                  .setTextAlign('justify')
+                                  .run()
+                              }
+                            >
+                              Justify Align
+                            </ToolbarButton>
 
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleStrike().run()
-                            }
-                          >
-                            Strikethrough
-                          </ToolbarButton>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleStrike().run()
+                              }
+                            >
+                              Strikethrough
+                            </ToolbarButton>
 
-                          <ToolbarButton
-                            type="button"
-                            onClick={() =>
-                              editor?.chain().focus().toggleCode().run()
-                            }
-                          >
-                            Code
-                          </ToolbarButton>
-                        </ToolbarContainer>
+                            <ToolbarButton
+                              type="button"
+                              onClick={() =>
+                                editor?.chain().focus().toggleCode().run()
+                              }
+                            >
+                              Code
+                            </ToolbarButton>
+                          </ToolbarContainer>
 
-                        {/* Ensure editor is initialized before rendering the editor */}
-                        <StyledEditorContainer>
-                          {editor && <EditorContent editor={editor} />}
-                        </StyledEditorContainer>
-                      </div>
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="date">Date:</InputLabel>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="time">Time:</InputLabel>
-                      <Input
-                        id="time"
-                        type="time"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="address">Address:</InputLabel>
-                      <Input
-                        id="address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        required
-                      />
-                    </FormItemContainer>
-                    <FormItemContainer>
-                      <InputLabel htmlFor="imageUrl">Image:</InputLabel>
-                      <ImageContainer>
-                        <UploadButtonContainer>
-                          <UploadButton
-                            type="button"
-                            onClick={handleUploadImage}
-                          >
-                            Upload Image
-                          </UploadButton>
-                        </UploadButtonContainer>
-                        {imageUrl && (
-                          <UploadedImageContainer>
-                            <Image
-                              src={imageUrl}
-                              alt="Event"
-                              width={150}
-                              height={150}
-                            />
-                          </UploadedImageContainer>
-                        )}
-                      </ImageContainer>
-                    </FormItemContainer>
-                    <SubmitButton type="submit" disabled={isSubmitting}>
-                      {isSubmitting
-                        ? 'Submitting...'
-                        : editingEvent
-                        ? 'Update Event'
-                        : 'Create Event'}{' '}
-                    </SubmitButton>
-                    <ModalCloseButton onClick={toggleModal}>
-                      Close
-                    </ModalCloseButton>
-                  </ModalContentForm>
-                </ModalContent>
-              </ModalContainer>
+                          {/* Ensure editor is initialized before rendering the editor */}
+                          <StyledEditorContainer>
+                            {editor && <EditorContent editor={editor} />}
+                          </StyledEditorContainer>
+                        </div>
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="date">Date:</InputLabel>
+                        <Input
+                          id="date"
+                          type="date"
+                          value={date}
+                          onChange={(e) => setDate(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="time">Time:</InputLabel>
+                        <Input
+                          id="time"
+                          type="time"
+                          value={time}
+                          onChange={(e) => setTime(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="address">Address:</InputLabel>
+                        <Input
+                          id="address"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          required
+                        />
+                      </FormItemContainer>
+                      <FormItemContainer>
+                        <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                        <ImageContainer>
+                          <UploadButtonContainer>
+                            <UploadButton
+                              type="button"
+                              onClick={handleUploadImage}
+                            >
+                              Upload Image
+                            </UploadButton>
+                          </UploadButtonContainer>
+                          {imageUrl && (
+                            <UploadedImageContainer>
+                              <Image
+                                src={imageUrl}
+                                alt="Event"
+                                width={150}
+                                height={150}
+                              />
+                            </UploadedImageContainer>
+                          )}
+                        </ImageContainer>
+                      </FormItemContainer>
+                      <SubmitButton type="submit" disabled={isSubmitting}>
+                        {isSubmitting
+                          ? 'Submitting...'
+                          : editingEvent
+                          ? 'Update Event'
+                          : 'Create Event'}{' '}
+                      </SubmitButton>
+                      <ModalCloseButton onClick={toggleModal}>
+                        Close
+                      </ModalCloseButton>
+                    </ModalContentForm>
+                  </ModalContent>
+                </ModalContainer>
+              </ModalOverlay>
             )}
             {displayedItems.slice(0, 6).map((event) => (
               <EventCard key={event.id}>
