@@ -28,6 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <script
+          type="text/javascript"
+          src="https://upload-widget.cloudinary.com/global/all.js"
+          async
+        ></script>
+      </head>
       <body>
         <div>
           <link
