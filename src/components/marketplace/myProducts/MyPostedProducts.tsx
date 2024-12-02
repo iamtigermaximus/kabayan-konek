@@ -81,6 +81,7 @@ import {
   UploadButtonContainer,
   UploadedImageContainer,
 } from '../Marketplace.styles';
+import MarketplaceBanner from '@/components/common/banners/MarketplaceBanner';
 
 export interface ProductProps {
   id?: string;
@@ -384,80 +385,16 @@ const MyPostedProducts = () => {
 
   return (
     <Container>
-      <title>MARKETPLACE | kabayankonek</title>
       <DividerContainer>
         <DividerLine />
-        <DividerLabel>MARKETPLACE</DividerLabel>
+        <DividerLabel> MY PRODUCTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <div>
-        {!session ? (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Want to sell or post your own products?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your products. Join our
-              marketplace and start selling today!
-            </p>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#222',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              Log In or Sign Up
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your products with the marketplace?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your products easily, and
-              reach more buyers.
-            </p>
-            <button
-              onClick={() => toggleModal()}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              POST PRODUCT
-            </button>
-          </div>
-        )}
-      </div>
+      <MarketplaceBanner
+        handleLoginClick={handleLoginClick}
+        toggleModal={toggleModal}
+      />
       {isLoading && <div>Loading products...</div>}
       {/* {session && (
         <CreateButtonContainer>
@@ -844,90 +781,6 @@ const MyPostedProducts = () => {
             </ProductCard>
           ))}
         </ProductList>
-
-        {/* <ProductList>
-          {displayedItems.map((product) => (
-            <ProductCard key={product.id}>
-              <ProductImage
-                src={product.imageUrl || DefaultImage}
-                alt={product.name}
-                width={150}
-                height={150}
-                priority
-              />
-              <BasicProductInfoContainer>
-                <Link
-                  href={`/marketplace/${product.id}`}
-                  style={{ textDecoration: 'none', color: 'black' }}
-                >
-                  <ProductTitle>{product.name}</ProductTitle>
-                </Link>
-                <ProductPrice>€{product.price}</ProductPrice>
-                <ProductDescription>
-                  {product.description.length > 100 ? (
-                    <>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: product.description.slice(0, 100) + '...',
-                        }}
-                      ></div>
-                      <StyledLink href={`/marketplace/${product.id}`}>
-                        <span style={{ color: 'blue', cursor: 'pointer' }}>
-                          Read More
-                        </span>
-                      </StyledLink>
-                    </>
-                  ) : (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: product.description,
-                      }}
-                    ></div>
-                  )}
-                </ProductDescription>
-              </BasicProductInfoContainer>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  gap: '5px',
-                  marginTop: '10px',
-                }}
-              >
-                <button
-                  style={{
-                    background: 'gray',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '5px 10px',
-                    cursor: 'pointer',
-                    width: '60px',
-                  }}
-                  onClick={() => handleEdit(product)}
-                >
-                  Edit
-                </button>
-                <button
-                  style={{
-                    background: 'tomato',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '5px 10px',
-                    cursor: 'pointer',
-                    width: '60px',
-                  }}
-                  onClick={() => {
-                    if (product.id) {
-                      handleDelete(product.id);
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </ProductCard>
-          ))}
-        </ProductList> */}
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>

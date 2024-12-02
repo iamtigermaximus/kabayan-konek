@@ -45,7 +45,7 @@ import {
   ModalOverlay,
 } from './Marketplace.styles';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DefaultImage from '@/assets/NoImage2.jpg';
@@ -83,6 +83,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import MarketplaceBanner from '../common/banners/MarketplaceBanner';
 
 export interface ProductProps {
   id?: string;
@@ -110,7 +111,7 @@ interface CloudinaryWidget {
 }
 
 const MarketPlace = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const router = useRouter();
   const [category, setCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -412,73 +413,10 @@ const MarketPlace = () => {
         <DividerLabel>MARKETPLACE</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <div>
-        {!session ? (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Want to sell or post your own products?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your products. Join our
-              marketplace and start selling today!
-            </p>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#222',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              Log In or Sign Up
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your products with the marketplace?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your products easily, and
-              reach more buyers.
-            </p>
-            <button
-              onClick={() => toggleModal()}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              POST PRODUCT
-            </button>
-          </div>
-        )}
-      </div>
+      <MarketplaceBanner
+        handleLoginClick={handleLoginClick}
+        toggleModal={toggleModal}
+      />
       {/* {session && (
         <CreateButtonContainer>
           <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>

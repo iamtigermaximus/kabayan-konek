@@ -91,6 +91,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import EventBanner from '@/components/common/banners/EventBanner';
 
 interface EventProps {
   id: string;
@@ -449,77 +450,14 @@ const Events = () => {
     <Container>
       <DividerContainer>
         <DividerLine />
-        <DividerLabel>EVENTS</DividerLabel>
+        <DividerLabel>MY EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <EventBanner
+        handleLoginClick={handleLoginClick}
+        toggleModal={toggleModal}
+      />
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <div>
-        {!session ? (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Want to post your own events?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your events with ease. Join
-              our community today!
-            </p>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#222',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              Log In or Sign Up
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your events with the community?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your events easily, and
-              engage with your audience.
-            </p>
-            <button
-              onClick={() => toggleModal()}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              CREATE AN EVENT
-            </button>
-          </div>
-        )}
-      </div>
 
       {isLoading && <div>Loading my events...</div>}
 

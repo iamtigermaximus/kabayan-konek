@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   AdBasicInfoContainer,
@@ -82,6 +82,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import AdvertisementBanner from '../common/banners/AdvertisementBanner';
 
 interface AdvertisementProps {
   id: string;
@@ -107,7 +108,7 @@ interface CloudinaryWidget {
 }
 
 const Advertisement = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -350,73 +351,10 @@ const Advertisement = () => {
         <DividerLine />
       </DividerContainer>
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <div>
-        {!session ? (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Want to post your own advertisement?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your advertisements easily.
-            </p>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#222',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              Log In or Sign Up
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your advertisement with the Filipino community in
-              Finland?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your ads, and reach more
-              potential customers.
-            </p>
-            <button
-              onClick={() => toggleModal()}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              CREATE ADVERTISEMENT
-            </button>
-          </div>
-        )}
-      </div>
+      <AdvertisementBanner
+        handleLoginClick={handleLoginClick}
+        toggleModal={toggleModal}
+      />
       {isLoading && <div>Loading advertisements...</div>}
       {/* {session && (
         <CreateButtonContainer>

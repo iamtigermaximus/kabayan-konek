@@ -49,7 +49,7 @@ import {
   ModalOverlay,
 } from './Events.styles';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DefaultImage from '@/assets/NoImage2.jpg';
@@ -86,6 +86,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import EventBanner from '../common/banners/EventBanner';
 
 interface EventProps {
   id: string;
@@ -133,7 +134,7 @@ interface CloudinaryWidget {
 }
 
 const Events = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const router = useRouter();
   const [events, setEvents] = useState<EventProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -375,79 +376,10 @@ const Events = () => {
         <DividerLabel>EVENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      <div>
-        {!session ? (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Want to post your own events?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              Log in or sign up to create and manage your events with ease. Join
-              our community today!
-            </p>
-            <button
-              onClick={handleLoginClick}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#222',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              Log In or Sign Up
-            </button>
-          </div>
-        ) : (
-          <div
-            style={{
-              margin: '20px 0',
-              padding: '20px',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              textAlign: 'center',
-              backgroundColor: '#e6f7ff',
-            }}
-          >
-            <h2 style={{ marginBottom: '10px' }}>
-              Ready to share your events with the community?
-            </h2>
-            <p style={{ marginBottom: '20px', color: '#555' }}>
-              You are logged in! Create and manage your events easily, and
-              engage with your audience.
-            </p>
-            <button
-              onClick={() => toggleModal()}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              CREATE AN EVENT
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* {session && (
-        <CreateButtonContainer>
-          <CreateButton onClick={toggleModal}>CREATE EVENT</CreateButton>
-        </CreateButtonContainer>
-      )} */}
+      <EventBanner
+        handleLoginClick={handleLoginClick}
+        toggleModal={toggleModal}
+      />
       <PageLayout>
         <EventsContent>
           {isModalOpen && (
