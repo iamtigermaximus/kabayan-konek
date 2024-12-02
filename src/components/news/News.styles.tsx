@@ -334,7 +334,7 @@ export const ToolbarButton = styled.button`
   font-weight: bold;
   color: #333;
   transition: all 0.3s ease;
-  width: 100px;
+  width: 50px;
   white-space: nowrap;
 
   &:hover {

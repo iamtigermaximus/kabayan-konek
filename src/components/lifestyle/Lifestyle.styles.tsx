@@ -333,6 +333,7 @@ export const ToolbarButton = styled.button`
   &:hover {
     background-color: #f4f4f4;
   }
+  
 
   &:active {
     background-color: #e0e0e0;
