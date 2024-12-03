@@ -16,8 +16,6 @@ import {
   ProductTitle,
   ProductPrice,
   ProductDescription,
-  // CreateButtonContainer,
-  // CreateButton,
   ModalContainer,
   ModalContent,
   ModalContentTitle,
@@ -25,7 +23,6 @@ import {
   FormItemContainer,
   InputLabel,
   Input,
-  // Textarea,
   UploadedImageContainer,
   SubmitButton,
   ModalCloseButton,
@@ -37,9 +34,6 @@ import {
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
-  ToolbarButton,
-  ToolbarContainer,
-  StyledEditorContainer,
   StyledLink,
   BasicProductInfoContainer,
   ModalOverlay,
@@ -49,41 +43,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DefaultImage from '@/assets/NoImage2.jpg';
-import {
-  FaBold,
-  FaItalic,
-  FaUnderline,
-  FaAlignLeft,
-  FaAlignCenter,
-  FaAlignRight,
-  FaAlignJustify,
-  FaCode,
-  FaQuoteRight,
-  FaImage,
-  FaStrikethrough,
-  FaSubscript,
-  FaSuperscript,
-  FaHighlighter,
-  FaLink,
-} from 'react-icons/fa';
-
-// Tiptap imports
-import { useEditor, EditorContent } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
-import { Heading } from '@tiptap/extension-heading'; // For headings
-import { Link as TiptapLink } from '@tiptap/extension-link'; // For links
-import { Image as TiptapImage } from '@tiptap/extension-image'; // For image handling
-import { Blockquote } from '@tiptap/extension-blockquote'; // For blockquote
-import { HorizontalRule } from '@tiptap/extension-horizontal-rule'; // For horizontal rule
-import { TextAlign } from '@tiptap/extension-text-align'; // For text alignment
-import { CodeBlock } from '@tiptap/extension-code-block';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Underline } from '@tiptap/extension-underline';
-import { FontFamily } from '@tiptap/extension-font-family';
-import { Subscript } from '@tiptap/extension-subscript';
-import { Superscript } from '@tiptap/extension-superscript';
-import { Highlight } from '@tiptap/extension-highlight';
 import MarketplaceBanner from '../common/banners/MarketplaceBanner';
+import RichTextEditor from '../common/editor/RichTextEditor';
+import { Editor } from '@tiptap/core';
 
 export interface ProductProps {
   id?: string;
@@ -131,43 +93,11 @@ const MarketPlace = () => {
 
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
+  const [content, setContent] = useState('');
+  const [editor, setEditor] = useState<Editor | null>(null);
 
-  // Initialize Tiptap editor
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextAlign.configure({
-        types: ['paragraph', 'heading'],
-      }),
-      Underline,
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6], // Supports all levels of headings
-        HTMLAttributes: {
-          class: 'editor-heading', // Apply a class for custom styles
-        },
-      }),
-      TiptapLink,
-      TiptapImage,
-      Blockquote,
-      HorizontalRule,
-      TextAlign.configure({ types: ['paragraph', 'heading'] }),
-      CodeBlock,
-      TextStyle,
-      FontFamily.configure({
-        types: ['textStyle'], // Apply font family to textStyle
-      }),
-      Subscript,
-      Superscript,
-      Highlight,
-    ],
-    content: '',
-  });
-
-  // Font Change Handler
-  const handleFontChange = (fontFamily: string) => {
-    if (editor) {
-      editor.chain().focus().setFontFamily(fontFamily).run();
-    }
+  const handleContentChange = (newContent: string) => {
+    setContent(newContent); // Update content when editor changes
   };
 
   const fetchProducts = async () => {
@@ -237,64 +167,6 @@ const MarketPlace = () => {
       widgetRef.current = cloudinaryWidget;
     }
   }, []);
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
-
-  //   if (
-  //     !name ||
-  //     !editor?.getHTML() ||
-  //     !price ||
-  //     !category ||
-  //     !contactEmail ||
-  //     !contactPhone
-  //   ) {
-  //     alert('Please fill out all required fields.');
-  //     setIsSubmitting(false);
-  //     return;
-  //   }
-
-  //   const productData = {
-  //     name,
-  //     description: editor.getHTML(),
-  //     price: parseFloat(price),
-  //     category,
-  //     contactEmail,
-  //     contactPhone,
-  //     image: imageUrl || null,
-  //   };
-
-  //   try {
-  //     const response = await fetch('/api/marketplace', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(productData),
-  //     });
-
-  //     const responseBody = await response.json();
-
-  //     if (!response.ok) {
-  //       console.error(
-  //         'Error creating product:',
-  //         responseBody.error || 'Unknown error'
-  //       );
-  //       alert(responseBody.error || 'Error creating event');
-  //       return;
-  //     }
-
-  //     console.log('Event created!', responseBody);
-  //     setIsModalOpen(false);
-  //     fetchProducts();
-  //   } catch (error) {
-  //     console.error('Error creating product:', error);
-  //     alert('Error creating product. Please try again later.');
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -367,45 +239,6 @@ const MarketPlace = () => {
     router.push('/login');
   };
 
-  // const handleEdit = (product: ProductProps) => {
-  //   setEditingProduct(product);
-  //   setName(product.name);
-  //   setPrice(product.price.toString());
-  //   setContactEmail(product.contactEmail);
-  //   setContactPhone(product.contactPhone);
-  //   setImageUrl(product.imageUrl || null);
-  //   editor?.commands.setContent(product.description); // Load description into Tiptap editor
-  //   setIsModalOpen(true); // Open modal for editing
-  // };
-
-  // const handleDelete = async (productId: string) => {
-  //   if (!confirm('Are you sure you want to delete this product?')) {
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await fetch(`/api/marketplace/${productId}`, {
-  //       method: 'DELETE',
-  //     });
-
-  //     if (!response.ok) {
-  //       const responseBody = await response.json();
-  //       console.error(
-  //         'Error deleting product:',
-  //         responseBody.error || 'Unknown error'
-  //       );
-  //       alert(responseBody.error || 'Error deleting product');
-  //       return;
-  //     }
-
-  //     console.log('Product deleted successfully!');
-  //     fetchProducts(); // Refresh product list
-  //   } catch (error) {
-  //     console.error('Error deleting product:', error);
-  //     alert('Error deleting product. Please try again later.');
-  //   }
-  // };
-
   return (
     <Container>
       <DividerContainer>
@@ -417,11 +250,6 @@ const MarketPlace = () => {
         handleLoginClick={handleLoginClick}
         toggleModal={toggleModal}
       />
-      {/* {session && (
-        <CreateButtonContainer>
-          <CreateButton onClick={toggleModal}>POST PRODUCT</CreateButton>
-        </CreateButtonContainer>
-      )} */}
       {isModalOpen && (
         <ModalOverlay>
           <ModalContainer>
@@ -442,173 +270,12 @@ const MarketPlace = () => {
                 </FormItemContainer>
                 <FormItemContainer>
                   <InputLabel htmlFor="description">Description:</InputLabel>
-                  <div>
-                    <ToolbarContainer>
-                      {/* Font Family Dropdown */}
-                      <div>
-                        <select
-                          onChange={(e) => handleFontChange(e.target.value)}
-                          defaultValue=""
-                          style={{ padding: '5px 10px' }}
-                        >
-                          <option value="">Select Font</option>
-                          <option value="Arial">Arial</option>
-                          <option value="Courier New">Courier New</option>
-                          <option value="Georgia">Georgia</option>
-                          <option value="Times New Roman">
-                            Times New Roman
-                          </option>
-                          <option value="Verdana">Verdana</option>
-                        </select>
-                      </div>
-                      {/* <div>
-                          <select
-                            onChange={handleFontSizeChange}
-                            defaultValue="16px"
-                          >
-                            <option value="12px">12px</option>
-                            <option value="14px">14px</option>
-                            <option value="16px">16px</option>
-                            <option value="18px">18px</option>
-                            <option value="20px">20px</option>
-                            <option value="24px">24px</option>
-                          </select>
-                        </div> */}
-
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleBold().run()
-                        }
-                      >
-                        <FaBold />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleItalic().run()
-                        }
-                      >
-                        <FaItalic />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleUnderline().run()
-                        }
-                      >
-                        <FaUnderline />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleStrike().run()
-                        }
-                      >
-                        <FaStrikethrough />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleSubscript().run()
-                        }
-                      >
-                        <FaSubscript />{' '}
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleSuperscript().run()
-                        }
-                      >
-                        <FaSuperscript />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleHighlight().run()
-                        }
-                      >
-                        <FaHighlighter />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('left').run()
-                        }
-                      >
-                        <FaAlignLeft />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('center').run()
-                        }
-                      >
-                        <FaAlignCenter />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('right').run()
-                        }
-                      >
-                        <FaAlignRight />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setTextAlign('justify').run()
-                        }
-                      >
-                        <FaAlignJustify />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleCode().run()
-                        }
-                      >
-                        <FaCode />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() => {
-                          const url = prompt('Enter the URL');
-                          if (url) {
-                            editor
-                              ?.chain()
-                              .focus()
-                              .setLink({ href: url })
-                              .run();
-                          }
-                        }}
-                      >
-                        <FaLink />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().toggleBlockquote().run()
-                        }
-                      >
-                        <FaQuoteRight />
-                      </ToolbarButton>
-                      <ToolbarButton
-                        type="button"
-                        onClick={() =>
-                          editor?.chain().focus().setImage({ src: '' }).run()
-                        }
-                      >
-                        <FaImage />
-                      </ToolbarButton>
-                    </ToolbarContainer>
-
-                    {/* Ensure editor is initialized before rendering the editor */}
-                    <StyledEditorContainer>
-                      {editor && <EditorContent editor={editor} />}
-                    </StyledEditorContainer>
-                  </div>
+                  <RichTextEditor
+                    content={content}
+                    onContentChange={handleContentChange}
+                    editor={editor}
+                    setEditor={setEditor}
+                  />
                 </FormItemContainer>
                 <FormItemContainer>
                   <InputLabel htmlFor="price">Price:</InputLabel>

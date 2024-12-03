@@ -74,13 +74,74 @@ export const FontSizeSelect = styled.select`
   }
 `;
 
+// export const StyledEditorContainer = styled.div`
+//   border: 1px solid #ddd;
+//   border-radius: 8px;
+//   padding: 10px;
+//   min-height: 200px;
+//   background: #fff;
+//   overflow-y: auto;
+// `;
+
 export const StyledEditorContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
-  min-height: 200px;
-  background: #fff;
-  overflow-y: auto;
+  padding: 20px;
+  min-height: 200px; // Ensures a minimum height for the editor
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+
+  /* To improve the typing experience */
+  &.ProseMirror {
+    padding: 10px;
+  }
+
+  /* Make sure the cursor is visible when the user is editing */
+  .ProseMirror-focused {
+    border-color: #3e7e7e;
+    outline: none;
+  }
+
+  /* Add some visual improvements to headers */
+  h1,
+  h2,
+  h3 {
+    color: #333;
+  }
+
+  /* Add a background color to paragraphs for contrast */
+  p {
+    margin-bottom: 1rem;
+  }
+
+  /* Make sure links are styled */
+  a {
+    color: #0070f3;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Add spacing between blocks */
+  blockquote {
+    padding-left: 20px;
+    border-left: 4px solid #ccc;
+    margin-left: 0;
+    font-style: italic;
+    color: #555;
+  }
+
+  /* Make sure images inside the editor are responsive */
+  .ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain; /* Ensures the image fits within the container */
+  }
 `;
 
 interface RichTextEditorProps {
