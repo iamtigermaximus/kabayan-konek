@@ -91,7 +91,8 @@ interface AdvertisementProps {
   description: string;
   category: string;
   imageUrl?: string;
-  userId: string;
+  contactEmail: string;
+  contactPhone: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -120,6 +121,8 @@ const MyPostedAdvertisements = () => {
   const [title, setTitle] = useState('');
   // const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
@@ -294,6 +297,8 @@ const MyPostedAdvertisements = () => {
     setTitle('');
     editor?.commands.clearContent(); // Clear Tiptap editor content
     setCategory('all');
+    setContactEmail('');
+    setContactPhone('');
     setImageUrl(null);
     setEditingAdvertisement(null); // Ensure it resets to "create" mode
   };
@@ -301,7 +306,13 @@ const MyPostedAdvertisements = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!title || !editor?.getHTML() || !category) {
+    if (
+      !title ||
+      !editor?.getHTML() ||
+      !category ||
+      !contactEmail ||
+      !contactPhone
+    ) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
       return;
@@ -311,6 +322,8 @@ const MyPostedAdvertisements = () => {
       title,
       description: editor?.getHTML(),
       category,
+      contactEmail,
+      contactPhone,
       image: imageUrl || null,
     };
 
@@ -365,6 +378,8 @@ const MyPostedAdvertisements = () => {
     setTitle(advertisement.title);
     editor?.commands.setContent(advertisement.description);
     setCategory(advertisement.category);
+    setContactEmail(advertisement.contactEmail);
+    setContactPhone(advertisement.contactPhone);
     setImageUrl(advertisement.imageUrl || null);
     setIsModalOpen(true); // Open modal for editing
   };
@@ -621,6 +636,26 @@ const MyPostedAdvertisements = () => {
                   </FilterSelect>
                 </FormItemContainer>
                 <FormItemContainer>
+                  <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
+                  <Input
+                    id="contactEmail"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
+                  <Input
+                    id="contactPhone"
+                    type="tel"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
                   <InputLabel htmlFor="imageUrl">Image:</InputLabel>
                   <ImageContainer>
                     <UploadButtonContainer>
@@ -671,92 +706,92 @@ const MyPostedAdvertisements = () => {
         </FilterSection>
         <AdList>
           {displayedItems.map((ad) => (
-            <Link
-              href={`/advertisement/${ad.id}`}
-              key={ad.id}
-              style={{ textDecoration: 'none', color: 'black' }}
-            >
-              <AdCard>
-                <AdImage
-                  src={ad.imageUrl || DefaultImage}
-                  alt={ad.title}
-                  width={150}
-                  height={150}
-                  priority
-                />
-                <AdBasicInfoContainer>
+            <AdCard key={ad.id}>
+              <AdImage
+                src={ad.imageUrl || DefaultImage}
+                alt={ad.title}
+                width={150}
+                height={150}
+                priority
+              />
+
+              <AdBasicInfoContainer>
+                <Link
+                  href={`/advertisement/${ad.id}`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
                   <AdItemContainer>
                     <AdTitle>{ad.title}</AdTitle>
                   </AdItemContainer>
-                  <AdItemContainer>
-                    {' '}
-                    <AdDescription>
-                      {ad.description.length > 200 ? (
-                        <>
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: ad.description.slice(0, 100) + '...',
-                            }}
-                          ></div>
+                </Link>
 
-                          <div style={{ color: 'blue', cursor: 'pointer' }}>
-                            <StyledLink href={`/advertisement/${ad.id}`}>
-                              Read More
-                            </StyledLink>
-                          </div>
-                        </>
-                      ) : (
+                <AdItemContainer>
+                  <AdDescription>
+                    {ad.description.length > 200 ? (
+                      <>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: ad.description,
+                            __html: ad.description.slice(0, 100) + '...',
                           }}
                         ></div>
-                      )}
-                    </AdDescription>
-                  </AdItemContainer>
-                </AdBasicInfoContainer>
 
-                <div
+                        <div style={{ color: 'blue', cursor: 'pointer' }}>
+                          <StyledLink href={`/advertisement/${ad.id}`}>
+                            Read More
+                          </StyledLink>
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: ad.description,
+                        }}
+                      ></div>
+                    )}
+                  </AdDescription>
+                </AdItemContainer>
+              </AdBasicInfoContainer>
+
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '5px',
+                  marginTop: '10px',
+                }}
+              >
+                <button
                   style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    gap: '5px',
-                    marginTop: '10px',
+                    background: 'gray',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => handleEdit(ad)}
+                >
+                  Edit
+                </button>
+                <button
+                  style={{
+                    background: 'tomato',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    width: '60px',
+                  }}
+                  onClick={() => {
+                    if (ad.id) {
+                      handleDelete(ad.id);
+                    }
                   }}
                 >
-                  <button
-                    style={{
-                      background: 'gray',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '5px 10px',
-                      cursor: 'pointer',
-                      width: '60px',
-                    }}
-                    onClick={() => handleEdit(ad)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    style={{
-                      background: 'tomato',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '5px 10px',
-                      cursor: 'pointer',
-                      width: '60px',
-                    }}
-                    onClick={() => {
-                      if (ad.id) {
-                        handleDelete(ad.id);
-                      }
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </AdCard>
-            </Link>
+                  Delete
+                </button>
+              </div>
+            </AdCard>
           ))}
         </AdList>
         {/* <AdList>

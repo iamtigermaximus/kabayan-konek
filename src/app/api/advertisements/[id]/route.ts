@@ -56,9 +56,17 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, description, category, image } = body;
+    const { title, description, category, contactEmail, contactPhone, image } =
+      body;
 
-    if (!title || !description || !category || !image) {
+    if (
+      !title ||
+      !description ||
+      !category ||
+      contactEmail ||
+      !contactPhone ||
+      !image
+    ) {
       return NextResponse.json(
         { error: 'All fields are required' },
         { status: 400 }
@@ -88,6 +96,8 @@ export async function PUT(req: NextRequest) {
         title,
         description,
         category,
+        contactEmail,
+        contactPhone,
         imageUrl: image,
       },
     });

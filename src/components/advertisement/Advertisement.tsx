@@ -119,6 +119,8 @@ const Advertisement = () => {
   const [title, setTitle] = useState('');
   // const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
@@ -284,7 +286,13 @@ const Advertisement = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!title || !editor?.getHTML() || !category) {
+    if (
+      !title ||
+      !editor?.getHTML() ||
+      !category ||
+      !contactEmail ||
+      !contactPhone
+    ) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
       return;
@@ -294,6 +302,8 @@ const Advertisement = () => {
       title,
       description: editor?.getHTML(),
       category,
+      contactEmail,
+      contactPhone,
       image: imageUrl || null,
     };
 
@@ -567,6 +577,26 @@ const Advertisement = () => {
                     <option value="events">Events</option>
                     <option value="community">Community</option>
                   </FilterSelect>
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="contactEmail">Contact Email:</InputLabel>
+                  <Input
+                    id="contactEmail"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    required
+                  />
+                </FormItemContainer>
+                <FormItemContainer>
+                  <InputLabel htmlFor="contactPhone">Contact Phone:</InputLabel>
+                  <Input
+                    id="contactPhone"
+                    type="tel"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    required
+                  />
                 </FormItemContainer>
                 <FormItemContainer>
                   <InputLabel htmlFor="imageUrl">Image:</InputLabel>

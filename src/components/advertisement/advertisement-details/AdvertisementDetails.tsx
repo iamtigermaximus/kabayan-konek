@@ -7,14 +7,16 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { breakpoints as bp } from '@/utils/layout';
 import DefaultImage from '@/assets/NoImage2.jpg';
+import { useSession } from 'next-auth/react';
 
 interface AdvertisementProps {
   id: string;
   title: string;
   description: string;
   category: string;
+  contactEmail: string;
+  contactPhone: string;
   imageUrl?: string;
-  userId: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -113,6 +115,10 @@ export const MessageButton = styled.div`
   font-size: 1rem;
   border-radius: 5px;
 
+  &:hover {
+    background-color: rgb(246, 68, 37);
+  }
+
   @media (min-width: ${bp.md}) {
     font-size: 1.5rem;
   }
@@ -126,15 +132,70 @@ export const BasicAdInfoContainer = styled.div`
   justify-content: flex-start;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Button = styled.button`
+  background-color: #007bff;
+  /* background-color: #520668; */
+  color: white;
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    background: tomato;
+  }
+`;
+
+const CloseButton = styled.button`
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  cursor: pointer;
+`;
+
+const ModalHeading = styled.h3`
+  width: 100%;
+  font-size: 1.25rem;
+`;
+
 const AdvertisementDetails = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [advertisement, setAdvertisement] = useState<AdvertisementProps | null>(
     null
   );
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const { id } = useParams();
-  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -158,6 +219,53 @@ const AdvertisementDetails = () => {
         });
     }
   }, [id]);
+  const handleSendMessage = () => {
+    if (!session) {
+      setShowLoginModal(true); // Show the login modal if not logged in
+      return;
+    }
+    setShowModal(true); // Show the message modal if logged in
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close modal
+  };
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false); // Close the login modal
+  };
+
+  const handleLoginRedirect = () => {
+    router.push('/login'); // Redirect to the login page
+  };
+
+  const handleSendSMS = () => {
+    if (!advertisement) return; // Ensure ad is not null
+    const message = `Hi, I saw your advertisement for ${advertisement.title} and would like more information.`;
+    const smsLink = `sms:${
+      advertisement.contactPhone
+    }?body=${encodeURIComponent(message)}`;
+    window.location.href = smsLink;
+  };
+
+  const handleSendEmail = () => {
+    if (!advertisement) return; // Ensure ad is not null
+    const subject = `Inquiry about ${advertisement.title}`;
+    const body = `Hi, I saw your advertisement for ${advertisement.title}. Could you provide more details? Thank you!`;
+    const mailtoLink = `mailto:${
+      advertisement.contactEmail
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
+
+  const handleSendWhatsApp = () => {
+    if (!advertisement) return; // Ensure ad is not null
+    const message = `Hi, I’m interested in your listing for ${advertisement.title}. Could you share more details?`;
+    const whatsappLink = `https://wa.me/${
+      advertisement.contactPhone
+    }?text=${encodeURIComponent(message)}`;
+    window.location.href = whatsappLink;
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -174,51 +282,81 @@ const AdvertisementDetails = () => {
   const handleBackButton = () => router.back();
 
   return (
-    <AdvertisementDetailContainer>
-      <div
-        style={{
-          alignItems: 'center',
-          marginTop: '30px',
-          marginBottom: '10px',
-          cursor: 'pointer',
-        }}
-      >
+    <div>
+      <AdvertisementDetailContainer>
         <div
           style={{
-            display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            fontSize: '30px',
+            marginTop: '30px',
+            marginBottom: '10px',
+            cursor: 'pointer',
           }}
-          onClick={handleBackButton}
         >
-          <IoMdArrowRoundBack />
-        </div>
-      </div>
-      <AdvertisementImageContainer>
-        <AdvertisementImage
-          src={advertisement.imageUrl || DefaultImage}
-          alt={advertisement.title}
-          width={500} // Replace with appropriate width
-          height={300} // Replace with appropriate height
-          priority
-        />
-      </AdvertisementImageContainer>
-      <BasicAdInfoContainer>
-        <AdvertisementDetailTitleContainer>
-          <AdvertisementTitle>{advertisement.title}</AdvertisementTitle>
-        </AdvertisementDetailTitleContainer>
-        <MessageButtonContainer>
-          <MessageButton>Send a message</MessageButton>
-        </MessageButtonContainer>
-        <Content>
           <div
-            dangerouslySetInnerHTML={{ __html: advertisement.description }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              fontSize: '30px',
+            }}
+            onClick={handleBackButton}
+          >
+            <IoMdArrowRoundBack />
+          </div>
+        </div>
+        <AdvertisementImageContainer>
+          <AdvertisementImage
+            src={advertisement.imageUrl || DefaultImage}
+            alt={advertisement.title}
+            width={500} // Replace with appropriate width
+            height={300} // Replace with appropriate height
+            priority
           />
-        </Content>
-        {/* <h1>{advertisement.category}</h1> */}
-      </BasicAdInfoContainer>
-    </AdvertisementDetailContainer>
+        </AdvertisementImageContainer>
+        <BasicAdInfoContainer>
+          <AdvertisementDetailTitleContainer>
+            <AdvertisementTitle>{advertisement.title}</AdvertisementTitle>
+          </AdvertisementDetailTitleContainer>
+          <MessageButtonContainer>
+            <MessageButton onClick={handleSendMessage}>
+              Send a message
+            </MessageButton>
+          </MessageButtonContainer>
+          <Content>
+            <div
+              dangerouslySetInnerHTML={{ __html: advertisement.description }}
+            />
+          </Content>
+          {/* <h1>{advertisement.category}</h1> */}
+        </BasicAdInfoContainer>
+      </AdvertisementDetailContainer>
+
+      {/* Modal for Sending Message */}
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={handleCloseModal}>Close</CloseButton>
+            <ModalHeading>
+              How would you like to contact the advertiser?
+            </ModalHeading>{' '}
+            <Button onClick={handleSendSMS}>Send via SMS</Button>
+            <Button onClick={handleSendEmail}>Send via Email</Button>
+            <Button onClick={handleSendWhatsApp}>Send via WhatsApp</Button>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* Login Modal if the user is not logged in */}
+      {showLoginModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={handleCloseLoginModal}>Close</CloseButton>
+            <h3>You need to be logged in to send a message!</h3>
+            <Button onClick={handleLoginRedirect}>Go to Login</Button>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </div>
   );
 };
 

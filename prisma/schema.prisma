@@ -149,6 +149,8 @@ model Advertisement {
   title       String
   description  String 
   category   String
+  contactEmail  String? 
+  contactPhone  String? 
   imageUrl    String?  
   userId      String
   user        User     @relation(fields: [userId], references: [id])

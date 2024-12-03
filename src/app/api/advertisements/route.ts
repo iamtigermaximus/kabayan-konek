@@ -54,12 +54,14 @@ export async function POST(req: NextRequest) {
     if (session.user.role !== 'admin' && session.user.role !== 'user') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { title, description, category, image } = body;
+    const { title, description, category, contactEmail, contactPhone, image } =
+      body;
 
-    if (!title || !description || !category) {
+    if (!title || !description || !category || !contactEmail || !contactPhone) {
       return NextResponse.json(
         {
-          error: 'All fields (title, description,category ) are required',
+          error:
+            'All fields (title, description,category ,contactEmail,contactPhone) are required',
         },
         { status: 400 }
       );
@@ -80,6 +82,8 @@ export async function POST(req: NextRequest) {
         title,
         description,
         category,
+        contactEmail,
+        contactPhone,
         imageUrl,
         userId: session.user.id, // Add admin's ID as the userId
       },
