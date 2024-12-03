@@ -57,6 +57,7 @@ export const AdList = styled.div`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  justify-items: flex-start;
 
   @media (min-width: ${bp.md}) {
     gap: 20px;
@@ -82,7 +83,8 @@ export const AdCard = styled.div`
 `;
 
 export const AdImage = styled(Image)`
-  width: 100%; /* Fills the card width */
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 `;
 
@@ -98,11 +100,11 @@ export const AdItemContainer = styled.div`
 `;
 
 export const AdTitle = styled.h3`
-  font-size: 0.75rem;
+  font-size: 1rem;
 `;
 
 export const AdDescription = styled.div`
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: #7f8c8d;
   width: 100%;
 `;

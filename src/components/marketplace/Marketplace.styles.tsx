@@ -74,6 +74,7 @@ export const ProductList = styled.div`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  justify-items: flex-start;
 
   @media (min-width: ${bp.md}) {
     gap: 20px;
@@ -99,7 +100,8 @@ export const ProductCard = styled.div`
 `;
 
 export const ProductImage = styled(Image)`
-  width: 100%; /* Fills the card width */
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 `;
 
