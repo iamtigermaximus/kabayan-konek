@@ -32,6 +32,8 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cloudinary-react": "^1.8.1",
+    "firebase": "^11.0.2",
+    "firebase-admin": "^13.0.1",
     "formidable": "^3.5.2",
     "jsonwebtoken": "^9.0.2",
     "next": "15.0.3",

@@ -26,6 +26,8 @@ model User {
   lifestyleArticles LifestyleArticle[]
   newsArticles NewsArticle[]
   advertisements     Advertisement[] 
+  fcmToken      String? 
+  inquiries     Inquiry[] 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())  
 }
@@ -90,9 +92,21 @@ model Product {
   imageUrl      String? 
   userId        String
   user          User     @relation(fields: [userId], references: [id])
+  inquiries     Inquiry[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())  
 }
+
+model Inquiry {
+  id        String   @id @default(uuid())
+  buyerId   String
+  productId String
+  message   String
+  buyer     User     @relation(fields: [buyerId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+}
+
 
 
 model KabayanSpotlight {

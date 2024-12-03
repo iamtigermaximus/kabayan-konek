@@ -8,6 +8,8 @@ import { breakpoints as bp } from '@/utils/layout';
 import DefaultImage from '@/assets/NoImage2.jpg';
 import { StyledLink } from '../Marketplace.styles';
 import Link from 'next/link';
+// import NotificationComponent from '@/components/notification/NotificationComponent';
+import { useSession } from 'next-auth/react';
 
 interface ProductProps {
   id: string;
@@ -196,6 +198,11 @@ export const MessageButton = styled.div`
   color: white;
   font-size: 1rem;
   border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(246, 68, 37);
+  }
 
   @media (min-width: ${bp.md}) {
     font-size: 1.5rem;
@@ -209,14 +216,69 @@ export const SectionContainer = styled.section`
   }
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Button = styled.button`
+  background-color: #007bff;
+  /* background-color: #520668; */
+  color: white;
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    background: tomato;
+  }
+`;
+
+const CloseButton = styled.button`
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  cursor: pointer;
+`;
+
+const ModalHeading = styled.h3`
+  width: 100%;
+  font-size: 1.25rem;
+`;
+
 const MarketplaceDetails = () => {
   const { id } = useParams();
   const router = useRouter();
-
+  const { data: session } = useSession();
   const [product, setProduct] = useState<ProductProps | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<ProductProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -253,6 +315,53 @@ const MarketplaceDetails = () => {
         });
     }
   }, [id]);
+  const handleSendMessage = () => {
+    if (!session) {
+      setShowLoginModal(true); // Show the login modal if not logged in
+      return;
+    }
+    setShowModal(true); // Show the message modal if logged in
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false); // Close modal
+  };
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false); // Close the login modal
+  };
+
+  const handleLoginRedirect = () => {
+    router.push('/login'); // Redirect to the login page
+  };
+
+  const handleSendSMS = () => {
+    if (!product) return; // Ensure product is not null
+    const message = 'I am interested in your product!';
+    const smsLink = `sms:${product.contactPhone}?body=${encodeURIComponent(
+      message
+    )}`;
+    window.location.href = smsLink;
+  };
+
+  const handleSendEmail = () => {
+    if (!product) return; // Ensure product is not null
+    const subject = 'Inquiry about your product';
+    const body = 'I am interested in your product!';
+    const mailtoLink = `mailto:${
+      product.contactEmail
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
+
+  const handleSendWhatsApp = () => {
+    if (!product) return; // Ensure product is not null
+    const message = 'I am interested in your product!';
+    const whatsappLink = `https://wa.me/${
+      product.contactPhone
+    }?text=${encodeURIComponent(message)}`;
+    window.location.href = whatsappLink;
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -294,8 +403,8 @@ const MarketplaceDetails = () => {
           <ProductImage
             src={product.imageUrl || DefaultImage}
             alt={product.name}
-            width={500} // Replace with appropriate width
-            height={300} // Replace with appropriate height
+            width={500}
+            height={300}
             priority
           />
         </ProductImageContainer>
@@ -305,7 +414,9 @@ const MarketplaceDetails = () => {
           </ProductDetailTitleContainer>
           <ProductPrice>€{product.price}</ProductPrice>
           <MessageButtonContainer>
-            <MessageButton>Send a message</MessageButton>
+            <MessageButton onClick={handleSendMessage}>
+              Send a message
+            </MessageButton>
           </MessageButtonContainer>
           <Content>
             <div dangerouslySetInnerHTML={{ __html: product.description }} />
@@ -383,7 +494,31 @@ const MarketplaceDetails = () => {
           </SectionContainer>
         )}
       </ProductDetailContainer>
-      {/* Render Related Products */}
+      {/* Modal for Sending Message */}
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={handleCloseModal}>Close</CloseButton>
+            <ModalHeading>
+              How would you like to send a message to the seller?
+            </ModalHeading>{' '}
+            <Button onClick={handleSendSMS}>Send via SMS</Button>
+            <Button onClick={handleSendEmail}>Send via Email</Button>
+            <Button onClick={handleSendWhatsApp}>Send via WhatsApp</Button>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* Login Modal if the user is not logged in */}
+      {showLoginModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={handleCloseLoginModal}>Close</CloseButton>
+            <h3>You need to be logged in to send a message!</h3>
+            <Button onClick={handleLoginRedirect}>Go to Login</Button>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </div>
   );
 };
