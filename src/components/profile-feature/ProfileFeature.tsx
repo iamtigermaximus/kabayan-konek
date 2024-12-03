@@ -84,6 +84,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import KabayanBanner from '../common/banners/KabayanBanner';
 
 interface KabayanArticle {
   id: string;
@@ -380,6 +381,7 @@ const ProfileFeature = () => {
         <DividerLabel>KABAYAN SPOTLIGHT</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <KabayanBanner />
       {session?.user?.role === 'admin' && (
         <CreateButtonContainer>
           <CreateButton onClick={toggleModal}>CREATE ARTICLE</CreateButton>

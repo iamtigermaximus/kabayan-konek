@@ -39,6 +39,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DefaultImage from '@/assets/NoImage2.jpg';
+import HomeBanner from '../common/banners/HomeBanner';
 
 interface LifestyleArticle {
   id: string;
@@ -178,7 +179,7 @@ const Home = () => {
 
   return (
     <Container>
-      <title>HOME | KABAYAN KONEK</title>
+      <HomeBanner />
       <DividerContainer>
         <DividerLine />
         <DividerLabel>FEATURE</DividerLabel>

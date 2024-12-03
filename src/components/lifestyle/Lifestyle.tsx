@@ -83,6 +83,7 @@ import { FontFamily } from '@tiptap/extension-font-family';
 import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Highlight } from '@tiptap/extension-highlight';
+import LifestyleBanner from '../common/banners/LifestyleBanner';
 
 interface LifestyleArticle {
   id: string;
@@ -379,6 +380,7 @@ const Lifestyle = () => {
         <DividerLabel>LIFESTYLE</DividerLabel>
         <DividerLine />
       </DividerContainer>
+      <LifestyleBanner />
 
       {session?.user?.role === 'admin' && (
         <CreateButtonContainer>
