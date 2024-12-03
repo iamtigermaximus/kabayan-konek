@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  // Container,
   DividerContainer,
   DividerLine,
   DividerLabel,
@@ -10,7 +9,6 @@ import {
   NewsItem,
   NewsContent,
   NewsHeadline,
-  // NewsSummary,
   NewsDate,
   NewsSource,
   PaginationContainer,
@@ -26,12 +24,8 @@ import {
   FormItemContainer,
   InputLabel,
   Input,
-  // Textarea,
   SubmitButton,
   ModalCloseButton,
-  ToolbarButton,
-  ToolbarContainer,
-  StyledEditorContainer,
   EditButtonsContainer,
   EditButton,
   DeleteButton,
@@ -54,40 +48,8 @@ import {
   ModalOverlay,
 } from './News.styles';
 import { useSession } from 'next-auth/react';
-import {
-  FaBold,
-  FaItalic,
-  FaUnderline,
-  FaAlignLeft,
-  FaAlignCenter,
-  FaAlignRight,
-  FaAlignJustify,
-  FaCode,
-  FaQuoteRight,
-  FaImage,
-  FaStrikethrough,
-  FaSubscript,
-  FaSuperscript,
-  FaHighlighter,
-  FaLink,
-} from 'react-icons/fa';
-
-// Tiptap imports
-import { useEditor, EditorContent } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
-import { Heading } from '@tiptap/extension-heading';
-import { Link as TiptapLink } from '@tiptap/extension-link';
-import { Image as TiptapImage } from '@tiptap/extension-image';
-import { Blockquote } from '@tiptap/extension-blockquote';
-import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { CodeBlock } from '@tiptap/extension-code-block';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Underline } from '@tiptap/extension-underline';
-import { FontFamily } from '@tiptap/extension-font-family';
-import { Subscript } from '@tiptap/extension-subscript';
-import { Superscript } from '@tiptap/extension-superscript';
-import { Highlight } from '@tiptap/extension-highlight';
+import RichTextEditor from '../common/editor/RichTextEditor';
+import { Editor } from '@tiptap/core';
 
 interface NewsArticleProps {
   id: string;
@@ -141,45 +103,12 @@ const News = () => {
     LifestyleArticle[]
   >([]);
   const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
+  const [content, setContent] = useState('');
+  const [editor, setEditor] = useState<Editor | null>(null);
 
   const itemsPerPage = 10;
-
-  // Initialize Tiptap editor
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextAlign.configure({
-        types: ['paragraph', 'heading'],
-      }),
-      Underline,
-      Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6], // Supports all levels of headings
-        HTMLAttributes: {
-          class: 'editor-heading', // Apply a class for custom styles
-        },
-      }),
-      TiptapLink,
-      TiptapImage,
-      Blockquote,
-      HorizontalRule,
-      TextAlign.configure({ types: ['paragraph', 'heading'] }),
-      CodeBlock,
-      TextStyle,
-      FontFamily.configure({
-        types: ['textStyle'], // Apply font family to textStyle (or any other type you need)
-      }),
-      Subscript,
-      Superscript,
-      Highlight,
-    ],
-    content: '',
-  });
-
-  // Font Change Handler
-  const handleFontChange = (fontFamily: string) => {
-    if (editor) {
-      editor.chain().focus().setFontFamily(fontFamily).run();
-    }
+  const handleContentChange = (newContent: string) => {
+    setContent(newContent); // Update content when editor changes
   };
 
   const fetchNewsArticles = async () => {
@@ -404,199 +333,12 @@ const News = () => {
                       </FormItemContainer>
                       <FormItemContainer>
                         <InputLabel htmlFor="newsSummary">Summary:</InputLabel>
-                        <div>
-                          <ToolbarContainer>
-                            {/* Font Family Dropdown */}
-                            <div>
-                              <select
-                                onChange={(e) =>
-                                  handleFontChange(e.target.value)
-                                }
-                                defaultValue=""
-                                style={{ padding: '5px 10px' }}
-                              >
-                                <option value="">Select Font</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Georgia">Georgia</option>
-                                <option value="Times New Roman">
-                                  Times New Roman
-                                </option>
-                                <option value="Verdana">Verdana</option>
-                              </select>
-                            </div>
-                            {/* <div>
-                          <select
-                            onChange={handleFontSizeChange}
-                            defaultValue="16px"
-                          >
-                            <option value="12px">12px</option>
-                            <option value="14px">14px</option>
-                            <option value="16px">16px</option>
-                            <option value="18px">18px</option>
-                            <option value="20px">20px</option>
-                            <option value="24px">24px</option>
-                          </select>
-                        </div> */}
-
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleBold().run()
-                              }
-                            >
-                              <FaBold />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleItalic().run()
-                              }
-                            >
-                              <FaItalic />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleUnderline().run()
-                              }
-                            >
-                              <FaUnderline />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleStrike().run()
-                              }
-                            >
-                              <FaStrikethrough />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleSubscript().run()
-                              }
-                            >
-                              <FaSubscript />{' '}
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .toggleSuperscript()
-                                  .run()
-                              }
-                            >
-                              <FaSuperscript />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleHighlight().run()
-                              }
-                            >
-                              <FaHighlighter />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .setTextAlign('left')
-                                  .run()
-                              }
-                            >
-                              <FaAlignLeft />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .setTextAlign('center')
-                                  .run()
-                              }
-                            >
-                              <FaAlignCenter />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .setTextAlign('right')
-                                  .run()
-                              }
-                            >
-                              <FaAlignRight />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .setTextAlign('justify')
-                                  .run()
-                              }
-                            >
-                              <FaAlignJustify />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleCode().run()
-                              }
-                            >
-                              <FaCode />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() => {
-                                const url = prompt('Enter the URL');
-                                if (url) {
-                                  editor
-                                    ?.chain()
-                                    .focus()
-                                    .setLink({ href: url })
-                                    .run();
-                                }
-                              }}
-                            >
-                              <FaLink />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor?.chain().focus().toggleBlockquote().run()
-                              }
-                            >
-                              <FaQuoteRight />
-                            </ToolbarButton>
-                            <ToolbarButton
-                              type="button"
-                              onClick={() =>
-                                editor
-                                  ?.chain()
-                                  .focus()
-                                  .setImage({ src: '' })
-                                  .run()
-                              }
-                            >
-                              <FaImage />
-                            </ToolbarButton>
-                          </ToolbarContainer>
-
-                          {/* Ensure editor is initialized before rendering the editor */}
-                          <StyledEditorContainer>
-                            {editor && <EditorContent editor={editor} />}
-                          </StyledEditorContainer>
-                        </div>
+                        <RichTextEditor
+                          content={content}
+                          onContentChange={handleContentChange}
+                          editor={editor}
+                          setEditor={setEditor}
+                        />
                       </FormItemContainer>
                       <FormItemContainer>
                         <InputLabel htmlFor="date">Date:</InputLabel>
