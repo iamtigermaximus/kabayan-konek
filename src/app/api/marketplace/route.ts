@@ -28,15 +28,9 @@ export async function GET() {
   }
 }
 
-// POST: Create a new product
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-
-    // const session = await getServerSession({ req, ...authOptions });
-    // if (!session || session.user.role !== 'admin') {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
 
     // Get the session (user info)
     const session = await getServerSession({ req, ...authOptions });
@@ -49,11 +43,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if you want only admins to post or allow regular users
-    // Remove this condition to allow all logged-in users to post
+    // Check if the user is allowed to create products
     if (session.user.role !== 'admin' && session.user.role !== 'user') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
     const {
       name,
       description,
@@ -61,7 +55,7 @@ export async function POST(req: NextRequest) {
       category,
       contactEmail,
       contactPhone,
-      image,
+      images, // Expecting an array of image URLs
     } = body;
 
     if (
@@ -75,19 +69,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            'All fields (name, description,price,category,contactEmail, contactPhone ) are required',
+            'All fields (name, description, price, category, contactEmail, contactPhone) are required',
         },
         { status: 400 }
       );
     }
 
-    let imageUrl = null;
-    // Handle optional image upload
-    if (image) {
-      const uploadedImage = await cloudinary.uploader.upload(image, {
-        folder: 'marketplace_folder',
-      });
-      imageUrl = uploadedImage.secure_url;
+    if (!Array.isArray(images) || images.length === 0) {
+      return NextResponse.json(
+        { error: 'At least one image is required' },
+        { status: 400 }
+      );
+    }
+
+    // Handle image uploads to Cloudinary
+    const uploadedImages = [];
+    if (images && Array.isArray(images) && images.length > 0) {
+      // We expect `images` to be an array of URLs
+      uploadedImages.push(...images); // Directly use the images array
     }
 
     // Create product in the database
@@ -99,12 +98,15 @@ export async function POST(req: NextRequest) {
         category,
         contactEmail,
         contactPhone,
-        imageUrl,
-        userId: session.user.id, // Add admin's ID as the userId
+        primaryImageUrl: uploadedImages[0], // Use the first image as the primary image
+        userId: session.user.id, // Add user's ID
+        images: {
+          create: uploadedImages.map((url) => ({ imageUrl: url })),
+        },
       },
     });
 
-    // Return the created article
+    // Return the created product
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('Error creating product:', error);

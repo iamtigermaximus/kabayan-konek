@@ -19,7 +19,8 @@ interface ProductProps {
   category: string;
   contactEmail: string;
   contactPhone: string;
-  imageUrl?: string | null;
+  primaryImageUrl: string;
+  images: { imageUrl: string }[];
 }
 
 export const RelatedProductList = styled.div`
@@ -66,7 +67,7 @@ export const RelatedProductItemContainer = styled.div`
   max-height: 60px;
 `;
 
-export const RelatedProductTitle = styled.div`
+export const RelatedProductTitle = styled.h3`
   font-size: 0.75rem;
 `;
 
@@ -76,7 +77,7 @@ export const RelatedProductPrice = styled.p`
   color: #2c3e50;
 `;
 
-export const RelatedProductDescription = styled.p`
+export const RelatedProductDescription = styled.div`
   font-size: 0.7rem;
   color: #7f8c8d;
   width: 100%;
@@ -269,6 +270,21 @@ const ModalHeading = styled.h3`
   font-size: 1.25rem;
 `;
 
+const ProductGallery = styled.div`
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+`;
+
+const GalleryImage = styled(Image)`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 8px;
+`;
+
 const MarketplaceDetails = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -279,6 +295,7 @@ const MarketplaceDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null); // Add state to manage selected image
 
   useEffect(() => {
     if (id) {
@@ -315,6 +332,7 @@ const MarketplaceDetails = () => {
         });
     }
   }, [id]);
+
   const handleSendMessage = () => {
     if (!session) {
       setShowLoginModal(true); // Show the login modal if not logged in
@@ -374,6 +392,10 @@ const MarketplaceDetails = () => {
   if (!product) {
     return <div>Product not found.</div>;
   }
+
+  const handleGalleryImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl); // Update the selected image
+  };
   const handleBackButton = () => router.back();
 
   return (
@@ -401,13 +423,28 @@ const MarketplaceDetails = () => {
         </div>
         <ProductImageContainer>
           <ProductImage
-            src={product.imageUrl || DefaultImage}
+            src={selectedImage || product.primaryImageUrl || DefaultImage}
             alt={product.name}
             width={500}
             height={300}
             priority
           />
         </ProductImageContainer>
+        {product.images && product.images.length > 0 && (
+          <ProductGallery>
+            {product.images.map((img) => (
+              <GalleryImage
+                key={img.imageUrl}
+                src={img.imageUrl || DefaultImage}
+                alt={img.imageUrl}
+                width={100}
+                height={100}
+                onClick={() => handleGalleryImageClick(img.imageUrl)}
+              />
+            ))}
+          </ProductGallery>
+        )}
+
         <BasicProductInfoContainer>
           <ProductDetailTitleContainer>
             <Title>{product.name}</Title>
@@ -438,7 +475,7 @@ const MarketplaceDetails = () => {
               {relatedProducts.map((product) => (
                 <RelatedProductCard key={product.id}>
                   <RelatedProductImage
-                    src={product.imageUrl || DefaultImage}
+                    src={product.primaryImageUrl || DefaultImage}
                     alt={product.name}
                     width={150}
                     height={150}

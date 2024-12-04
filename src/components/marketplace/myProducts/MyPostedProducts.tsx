@@ -55,7 +55,8 @@ export interface ProductProps {
   category: string;
   contactEmail: string;
   contactPhone: string;
-  imageUrl?: string | null;
+  primaryImageUrl: string;
+  images: { id: string; imageUrl: string }[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -84,7 +85,7 @@ const MyPostedProducts = () => {
   const [price, setPrice] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
@@ -177,13 +178,21 @@ const MyPostedProducts = () => {
         {
           cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
           uploadPreset: 'kabayankonek',
-          multiple: false,
+          multiple: true, // Allow multiple images
           sources: ['local', 'url', 'camera'],
-          debug: true,
+          debug: true, // Enable debugging
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
           if (result?.event === 'success') {
-            setImageUrl(result.info.secure_url);
+            // Add the new uploaded image URL to the list of image URLs
+            const uploadedUrl = result.info.secure_url;
+            setImageUrls((prevUrls) => {
+              // Avoid adding duplicate URLs
+              if (!prevUrls.includes(uploadedUrl)) {
+                return [...prevUrls, uploadedUrl];
+              }
+              return prevUrls;
+            });
           } else if (error) {
             console.error('Cloudinary upload error:', error);
           }
@@ -200,7 +209,7 @@ const MyPostedProducts = () => {
     setCategory('all');
     setContactEmail('');
     setContactPhone('');
-    setImageUrl(null);
+    setImageUrls([]);
     setEditingProduct(null); // Ensure it resets to "create" mode
   };
 
@@ -214,7 +223,8 @@ const MyPostedProducts = () => {
       !price ||
       !category ||
       !contactEmail ||
-      !contactPhone
+      !contactPhone ||
+      imageUrls.length === 0
     ) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
@@ -228,7 +238,7 @@ const MyPostedProducts = () => {
       category,
       contactEmail,
       contactPhone,
-      image: imageUrl || null,
+      images: imageUrls || null,
     };
 
     try {
@@ -282,8 +292,9 @@ const MyPostedProducts = () => {
     setCategory(product.category);
     setContactEmail(product.contactEmail);
     setContactPhone(product.contactPhone);
-    setImageUrl(product.imageUrl || null);
-    editor?.commands.setContent(product.description); // Load description into Tiptap editor
+    setImageUrls(product.images.map((img) => img.imageUrl));
+    editor?.commands.setContent(product.description);
+
     setIsModalOpen(true); // Open modal for editing
   };
 
@@ -419,15 +430,26 @@ const MyPostedProducts = () => {
                         Upload Image
                       </UploadButton>
                     </UploadButtonContainer>
-                    {imageUrl && (
-                      <UploadedImageContainer>
-                        <Image
-                          src={imageUrl}
-                          alt="Product"
-                          width={150}
-                          height={150}
-                        />
-                      </UploadedImageContainer>
+                    {imageUrls.length > 0 && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          gap: '10px',
+                        }}
+                      >
+                        {imageUrls.map((url, index) => (
+                          <UploadedImageContainer key={index}>
+                            <Image
+                              src={url}
+                              alt={`Uploaded Image ${index + 1}`}
+                              width={150}
+                              height={150}
+                            />
+                          </UploadedImageContainer>
+                        ))}
+                      </div>
                     )}
                   </ImageContainer>
                 </FormItemContainer>
@@ -467,7 +489,7 @@ const MyPostedProducts = () => {
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
               <ProductImage
-                src={product.imageUrl || DefaultImage}
+                src={product.primaryImageUrl || DefaultImage}
                 alt={product.name}
                 width={150}
                 height={150}

@@ -18,8 +18,11 @@ export async function GET() {
       where: {
         userId: session.user.id, // Filter products by the logged-in user's ID
       },
+      include: {
+        images: true, // Include the related images for each product
+      },
       orderBy: {
-        createdAt: 'desc', // Optional: Order by creation date (desc)
+        createdAt: 'desc', // Order by creation date (desc)
       },
     });
 

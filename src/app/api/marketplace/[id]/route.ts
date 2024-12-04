@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     // Fetch the product with user info included
     const marketplaceProduct = await prisma.product.findUnique({
       where: { id },
-      include: { user: true }, // Include user details (e.g., name, email) associated with the product
+      include: { user: true, images: true }, // Include user details (e.g., name, email) associated with the product
     });
 
     if (!marketplaceProduct) {
@@ -107,7 +107,7 @@ export async function PUT(req: NextRequest) {
         category,
         contactEmail,
         contactPhone,
-        imageUrl: image,
+        primaryImageUrl: image,
       },
     });
 

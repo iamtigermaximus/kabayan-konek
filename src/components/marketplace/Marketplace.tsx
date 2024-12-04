@@ -55,6 +55,7 @@ export interface ProductProps {
   category: string;
   contactEmail: string;
   contactPhone: string;
+  primaryImageUrl: string;
   imageUrl?: string | null;
   createdAt?: string;
   updatedAt?: string;
@@ -84,7 +85,7 @@ const MarketPlace = () => {
   const [price, setPrice] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
@@ -152,13 +153,21 @@ const MarketPlace = () => {
         {
           cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
           uploadPreset: 'kabayankonek',
-          multiple: false,
+          multiple: true, // Allow multiple images
           sources: ['local', 'url', 'camera'],
           debug: true,
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
           if (result?.event === 'success') {
-            setImageUrl(result.info.secure_url);
+            // Collect all uploaded image URLs
+            const uploadedUrls = result.info.secure_url
+              ? [result.info.secure_url]
+              : [];
+
+            // Add the new image URLs to the existing image URLs state
+            if (result.info.secure_url) {
+              setImageUrls((prevUrls) => [...prevUrls, ...uploadedUrls]);
+            }
           } else if (error) {
             console.error('Cloudinary upload error:', error);
           }
@@ -178,7 +187,8 @@ const MarketPlace = () => {
       !price ||
       !category ||
       !contactEmail ||
-      !contactPhone
+      !contactPhone ||
+      imageUrls.length === 0
     ) {
       alert('Please fill out all required fields.');
       setIsSubmitting(false);
@@ -192,7 +202,7 @@ const MarketPlace = () => {
       category,
       contactEmail,
       contactPhone,
-      image: imageUrl || null,
+      images: imageUrls || null,
     };
 
     try {
@@ -324,22 +334,33 @@ const MarketPlace = () => {
                   />
                 </FormItemContainer>
                 <FormItemContainer>
-                  <InputLabel htmlFor="imageUrl">Image:</InputLabel>
+                  <InputLabel htmlFor="imageUrls">Images:</InputLabel>
                   <ImageContainer>
                     <UploadButtonContainer>
                       <UploadButton type="button" onClick={handleUploadImage}>
                         Upload Image
                       </UploadButton>
                     </UploadButtonContainer>
-                    {imageUrl && (
-                      <UploadedImageContainer>
-                        <Image
-                          src={imageUrl}
-                          alt="Product"
-                          width={150}
-                          height={150}
-                        />
-                      </UploadedImageContainer>
+                    {imageUrls.length > 0 && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                          gap: '10px',
+                        }}
+                      >
+                        {imageUrls.map((url, index) => (
+                          <UploadedImageContainer key={index}>
+                            <Image
+                              src={url}
+                              alt={`Uploaded Image ${index + 1}`}
+                              width={150}
+                              height={150}
+                            />
+                          </UploadedImageContainer>
+                        ))}
+                      </div>
                     )}
                   </ImageContainer>
                 </FormItemContainer>
@@ -376,7 +397,7 @@ const MarketPlace = () => {
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
               <ProductImage
-                src={product.imageUrl || DefaultImage}
+                src={product.primaryImageUrl || DefaultImage}
                 alt={product.name}
                 width={150}
                 height={150}
