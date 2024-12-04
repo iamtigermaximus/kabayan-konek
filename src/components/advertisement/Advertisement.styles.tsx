@@ -100,7 +100,14 @@ export const AdItemContainer = styled.div`
 `;
 
 export const AdTitle = styled.h3`
-  font-size: 1rem;
+  font-size: 0.85rem;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (min-width: ${bp.md}) {
+    font-size: 0.75rem;
+  }
 `;
 
 export const AdDescription = styled.div`

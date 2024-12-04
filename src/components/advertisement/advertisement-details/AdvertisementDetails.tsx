@@ -36,15 +36,17 @@ const AdvertisementDetailContainer = styled.div`
 
 const AdvertisementImageContainer = styled.div`
   display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 export const AdvertisementImage = styled(Image)`
   width: 100%;
-  /* height: auto; */
+  height: auto;
   border-radius: 8px;
   margin-bottom: 15px;
   height: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
+  object-fit: contain cover;
   min-height: 300px;
   max-height: 350px;
 `;

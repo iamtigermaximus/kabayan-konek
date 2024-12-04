@@ -98,15 +98,18 @@ const ProductDetailContainer = styled.div`
 
 const ProductImageContainer = styled.div`
   display: flex;
+  /* border: 1px solid red; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 export const ProductImage = styled(Image)`
   width: 100%;
-  /* height: auto; */
+  height: auto;
   border-radius: 8px;
   margin-bottom: 15px;
   height: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
+  object-fit: contain;
   min-height: 300px;
   max-height: 350px;
 `;
@@ -277,6 +280,11 @@ const ProductGallery = styled.div`
   padding: 10px 0;
 `;
 
+const GalleryImageContainer = styled.div`
+  /* border: 1px solid red; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
 const GalleryImage = styled(Image)`
   width: 100px;
   height: 100px;
@@ -433,14 +441,15 @@ const MarketplaceDetails = () => {
         {product.images && product.images.length > 0 && (
           <ProductGallery>
             {product.images.map((img) => (
-              <GalleryImage
-                key={img.imageUrl}
-                src={img.imageUrl || DefaultImage}
-                alt={img.imageUrl}
-                width={100}
-                height={100}
-                onClick={() => handleGalleryImageClick(img.imageUrl)}
-              />
+              <GalleryImageContainer key={img.imageUrl}>
+                <GalleryImage
+                  src={img.imageUrl || DefaultImage}
+                  alt={img.imageUrl}
+                  width={100}
+                  height={100}
+                  onClick={() => handleGalleryImageClick(img.imageUrl)}
+                />
+              </GalleryImageContainer>
             ))}
           </ProductGallery>
         )}
