@@ -6,7 +6,7 @@ import {
   AdBasicInfoContainer,
   AdItemContainer,
   AdCard,
-  AdDescription,
+  // AdDescription,
   AdImage,
   AdList,
   AdTitle,
@@ -32,12 +32,14 @@ import {
   PaginationContainer,
   PrevButton,
   SectionContainer,
-  StyledLink,
+  // StyledLink,
   SubmitButton,
   UploadButton,
   UploadButtonContainer,
   UploadedImageContainer,
   ModalOverlay,
+  AdCategory,
+  AdCategoryContainer,
 } from './Advertisement.styles';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -45,6 +47,7 @@ import DefaultImage from '@/assets/NoImage2.jpg';
 import AdvertisementBanner from '../common/banners/AdvertisementBanner';
 import RichTextEditor from '../common/editor/RichTextEditor';
 import { Editor } from '@tiptap/core';
+import { formatDistanceToNow } from 'date-fns';
 interface AdvertisementProps {
   id: string;
   title: string;
@@ -333,11 +336,11 @@ const Advertisement = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     required
                   >
-                    <option value="jobs">Jobs</option>
-                    <option value="services">Services</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="events">Events</option>
-                    <option value="community">Community</option>
+                    <option value="JOBS">Jobs</option>
+                    <option value="SERVICES">Services</option>
+                    <option value="REAL ESTATE">Real Estate</option>
+                    <option value="EVENTS">Events</option>
+                    <option value="COMMUNITY">Community</option>
                   </FilterSelect>
                 </FormItemContainer>
                 <FormItemContainer>
@@ -396,12 +399,12 @@ const Advertisement = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="all">All</option>
-              <option value="jobs">Jobs</option>
-              <option value="services">Services</option>
-              <option value="real-estate">Real Estate</option>
-              <option value="events">Events</option>
-              <option value="community">Community</option>
+              <option value="ALL">All</option>
+              <option value="JOBS">Jobs</option>
+              <option value="SERVICES">Services</option>
+              <option value="REAL ESTATE">Real Estate</option>
+              <option value="EVENTS">Events</option>
+              <option value="COMMUNITY">Community</option>
             </FilterSelect>
           </div>
         </FilterSection>
@@ -413,6 +416,9 @@ const Advertisement = () => {
               style={{ textDecoration: 'none', color: 'black' }}
             >
               <AdCard>
+                <AdCategoryContainer>
+                  <AdCategory>{ad.category}</AdCategory>
+                </AdCategoryContainer>
                 <AdImage
                   src={ad.imageUrl || DefaultImage}
                   alt={ad.title}
@@ -425,8 +431,7 @@ const Advertisement = () => {
                     <AdTitle>{ad.title}</AdTitle>
                   </AdItemContainer>
                   <AdItemContainer>
-                    {' '}
-                    <AdDescription>
+                    {/* <AdDescription>
                       {ad.description.length > 200 ? (
                         <>
                           <div
@@ -448,7 +453,18 @@ const Advertisement = () => {
                           }}
                         ></div>
                       )}
-                    </AdDescription>
+                    </AdDescription> */}
+                    {ad.createdAt && (
+                      <div
+                        style={{
+                          fontSize: '12px',
+                          color: 'gray',
+                          marginTop: '5px',
+                        }}
+                      >
+                        Posted {formatDistanceToNow(new Date(ad.createdAt))} ago
+                      </div>
+                    )}
                   </AdItemContainer>
                 </AdBasicInfoContainer>
               </AdCard>

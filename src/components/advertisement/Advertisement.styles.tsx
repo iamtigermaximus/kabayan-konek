@@ -73,13 +73,30 @@ export const AdCard = styled.div`
   flex-direction: column;
   /* align-items: center; */
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 2px 10px 10px;
   background-color: #f9f9f9;
   text-align: center;
 
   @media (min-width: ${bp.md}) {
-    padding: 20px;
+    padding: 2px 20px 20px;
   }
+`;
+
+export const AdCategoryContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  /* border: 1px solid red; */
+`;
+export const AdCategory = styled.div`
+  font-size: 8px;
+  font-weight: bold;
+  color: white;
+  background-color: #4caf50;
+  padding: 5px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  display: inline-block;
 `;
 
 export const AdImage = styled(Image)`

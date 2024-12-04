@@ -15,7 +15,7 @@ import {
   ProductItemContainer,
   ProductTitle,
   ProductPrice,
-  ProductDescription,
+  // ProductDescription,
   ModalContainer,
   ModalContent,
   ModalContentTitle,
@@ -34,9 +34,11 @@ import {
   ImageContainer,
   UploadButtonContainer,
   UploadButton,
-  StyledLink,
+  // StyledLink,
   BasicProductInfoContainer,
   ModalOverlay,
+  ProductCategory,
+  ProductCategoryContainer,
 } from './Marketplace.styles';
 import Image from 'next/image';
 // import { useSession } from 'next-auth/react';
@@ -46,6 +48,7 @@ import DefaultImage from '@/assets/NoImage2.jpg';
 import MarketplaceBanner from '../common/banners/MarketplaceBanner';
 import RichTextEditor from '../common/editor/RichTextEditor';
 import { Editor } from '@tiptap/core';
+import { formatDistanceToNow } from 'date-fns';
 
 export interface ProductProps {
   id?: string;
@@ -396,6 +399,9 @@ const MarketPlace = () => {
         <ProductList>
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
+              <ProductCategoryContainer>
+                <ProductCategory>{product.category}</ProductCategory>
+              </ProductCategoryContainer>
               <ProductImage
                 src={product.primaryImageUrl || DefaultImage}
                 alt={product.name}
@@ -416,7 +422,7 @@ const MarketPlace = () => {
                   </Link>
                 </ProductItemContainer>
                 <ProductItemContainer>
-                  <ProductDescription>
+                  {/* <ProductDescription>
                     {product.description.length > 100 ? (
                       <>
                         <div
@@ -437,7 +443,19 @@ const MarketPlace = () => {
                         }}
                       ></div>
                     )}
-                  </ProductDescription>
+                  </ProductDescription> */}
+                  {product.createdAt && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: 'gray',
+                        marginTop: '5px',
+                      }}
+                    >
+                      Posted {formatDistanceToNow(new Date(product.createdAt))}{' '}
+                      ago
+                    </div>
+                  )}
                 </ProductItemContainer>
               </BasicProductInfoContainer>
             </ProductCard>

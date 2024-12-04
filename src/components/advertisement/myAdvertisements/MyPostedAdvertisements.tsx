@@ -7,7 +7,7 @@ import {
   AdBasicInfoContainer,
   AdItemContainer,
   AdCard,
-  AdDescription,
+  // AdDescription,
   AdImage,
   AdList,
   AdTitle,
@@ -33,12 +33,14 @@ import {
   PaginationContainer,
   PrevButton,
   SectionContainer,
-  StyledLink,
+  // StyledLink,
   SubmitButton,
   UploadButton,
   UploadButtonContainer,
   UploadedImageContainer,
   ModalOverlay,
+  AdCategory,
+  AdCategoryContainer,
 } from '../Advertisement.styles';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -46,6 +48,7 @@ import DefaultImage from '@/assets/NoImage2.jpg';
 import AdvertisementBanner from '@/components/common/banners/AdvertisementBanner';
 import RichTextEditor from '@/components/common/editor/RichTextEditor';
 import { Editor } from '@tiptap/core';
+import { formatDistanceToNow } from 'date-fns';
 
 interface AdvertisementProps {
   id: string;
@@ -402,12 +405,11 @@ const MyPostedAdvertisements = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     required
                   >
-                    <option value="all">All</option>
-                    <option value="jobs">Jobs</option>
-                    <option value="services">Services</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="events">Events</option>
-                    <option value="community">Community</option>
+                    <option value="JOBS">Jobs</option>
+                    <option value="SERVICES">Services</option>
+                    <option value="REAL ESTATE">Real Estate</option>
+                    <option value="EVENTS">Events</option>
+                    <option value="COMMUNITY">Community</option>
                   </FilterSelect>
                 </FormItemContainer>
                 <FormItemContainer>
@@ -470,18 +472,21 @@ const MyPostedAdvertisements = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="all">All</option>
-              <option value="jobs">Jobs</option>
-              <option value="services">Services</option>
-              <option value="real-estate">Real Estate</option>
-              <option value="events">Events</option>
-              <option value="community">Community</option>
+              <option value="ALL">All</option>
+              <option value="JOBS">Jobs</option>
+              <option value="SERVICES">Services</option>
+              <option value="REAL ESTATE">Real Estate</option>
+              <option value="EVENTS">Events</option>
+              <option value="COMMUNITY">Community</option>
             </FilterSelect>
           </div>
         </FilterSection>
         <AdList>
           {displayedItems.map((ad) => (
             <AdCard key={ad.id}>
+              <AdCategoryContainer>
+                <AdCategory>{ad.category}</AdCategory>
+              </AdCategoryContainer>
               <AdImage
                 src={ad.imageUrl || DefaultImage}
                 alt={ad.title}
@@ -501,7 +506,7 @@ const MyPostedAdvertisements = () => {
                 </Link>
 
                 <AdItemContainer>
-                  <AdDescription>
+                  {/* <AdDescription>
                     {ad.description.length > 200 ? (
                       <>
                         <div
@@ -523,7 +528,18 @@ const MyPostedAdvertisements = () => {
                         }}
                       ></div>
                     )}
-                  </AdDescription>
+                  </AdDescription> */}
+                  {ad.createdAt && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: 'gray',
+                        marginTop: '5px',
+                      }}
+                    >
+                      Posted {formatDistanceToNow(new Date(ad.createdAt))} ago
+                    </div>
+                  )}
                 </AdItemContainer>
               </AdBasicInfoContainer>
 

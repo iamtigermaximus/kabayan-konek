@@ -30,14 +30,16 @@ import {
   PaginationContainer,
   PrevButton,
   ProductCard,
-  ProductDescription,
+  ProductCategory,
+  ProductCategoryContainer,
+  // ProductDescription,
   ProductImage,
   ProductItemContainer,
   ProductList,
   ProductPrice,
   ProductTitle,
   SectionContainer,
-  StyledLink,
+  // StyledLink,
   SubmitButton,
   UploadButton,
   UploadButtonContainer,
@@ -46,6 +48,7 @@ import {
 import MarketplaceBanner from '@/components/common/banners/MarketplaceBanner';
 import RichTextEditor from '@/components/common/editor/RichTextEditor';
 import { Editor } from '@tiptap/core';
+import { formatDistanceToNow } from 'date-fns';
 
 export interface ProductProps {
   id?: string;
@@ -405,12 +408,12 @@ const MyPostedProducts = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     required
                   >
-                    <option value="all">All</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="home">Home</option>
-                    <option value="food">Food</option>
-                    <option value="others">Others</option>
+                    <option value="ALL">All</option>
+                    <option value="ELECTRONICS">Electronics</option>
+                    <option value="FASHION">Fashion</option>
+                    <option value="HOME">Home</option>
+                    <option value="FOOD">Food</option>
+                    <option value="OTHERS">Others</option>
                   </FilterSelect>
                 </FormItemContainer>
 
@@ -489,17 +492,21 @@ const MyPostedProducts = () => {
                 setCurrentPage(1);
               }}
             >
-              <option value="all">All</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home</option>
-              <option value="food">Food</option>
+              <option value="ALL">All</option>
+              <option value="ELECTRONICS">Electronics</option>
+              <option value="FASHION">Fashion</option>
+              <option value="HOME">Home</option>
+              <option value="FOOD">Food</option>
+              <option value="OTHERS">Others</option>
             </FilterSelect>
           </div>
         </FilterSection>
         <ProductList>
           {displayedItems.map((product) => (
             <ProductCard key={product.id}>
+              <ProductCategoryContainer>
+                <ProductCategory>{product.category}</ProductCategory>
+              </ProductCategoryContainer>
               <ProductImage
                 src={product.primaryImageUrl || DefaultImage}
                 alt={product.name}
@@ -520,7 +527,7 @@ const MyPostedProducts = () => {
                   </Link>
                 </ProductItemContainer>
                 <ProductItemContainer>
-                  <ProductDescription>
+                  {/* <ProductDescription>
                     {product.description.length > 100 ? (
                       <>
                         <div
@@ -541,7 +548,19 @@ const MyPostedProducts = () => {
                         }}
                       ></div>
                     )}
-                  </ProductDescription>
+                  </ProductDescription> */}
+                  {product.createdAt && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: 'gray',
+                        marginTop: '5px',
+                      }}
+                    >
+                      Posted {formatDistanceToNow(new Date(product.createdAt))}{' '}
+                      ago
+                    </div>
+                  )}
                 </ProductItemContainer>
               </BasicProductInfoContainer>
               <div
