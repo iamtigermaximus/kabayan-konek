@@ -126,7 +126,7 @@ export const ProductPrice = styled.p`
   color: #2c3e50;
 `;
 
-export const ProductDescription = styled.p`
+export const ProductDescription = styled.div`
   font-size: 0.7rem;
   color: #7f8c8d;
   width: 100%;

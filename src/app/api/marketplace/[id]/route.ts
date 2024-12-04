@@ -153,6 +153,11 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    const productImages = await prisma.productImage.count({
+      where: { productId: id },
+    });
+    console.log(`Product has ${productImages} images.`);
+
     // Proceed to delete the product
     await prisma.product.delete({ where: { id } });
 
