@@ -167,27 +167,31 @@ const Events = () => {
       const response = await fetch('/api/events');
       const data: EventProps[] = await response.json();
 
-      // // sort by latest
-
       const now = Date.now();
 
-      // Sort by nearest date to now, pushing past events to the end
-      data.sort((a, b) => {
-        const dateA = a.date ? new Date(a.date).getTime() : Infinity;
-        const dateB = b.date ? new Date(b.date).getTime() : Infinity;
+      // Ensure we're using the `date` field for sorting
+      const validEvents = data.filter((event) => {
+        // Filter out invalid or missing dates
+        return event.date && !isNaN(new Date(event.date).getTime());
+      });
+
+      // Sort events by proximity to the current time (`now`)
+      validEvents.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
 
         const isPastA = dateA < now;
         const isPastB = dateB < now;
 
-        // Handle past events: Push them to the end
+        // Push past events to the end
         if (isPastA && !isPastB) return 1;
         if (!isPastA && isPastB) return -1;
 
-        // For future dates, sort by proximity to 'now'
+        // For future events or both past, sort by date proximity
         return dateA - dateB;
       });
 
-      setEvents(data);
+      setEvents(validEvents);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
