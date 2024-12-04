@@ -324,8 +324,13 @@ const Events = () => {
   const handleEdit = (event: EventProps) => {
     setEditingEvent(event);
     setTitle(event.title);
-    editor?.commands.setContent(event.description);
-
+    // Defer setting the content until the editor is initialized
+    if (editor) {
+      editor.commands.setContent(event.description);
+    } else {
+      // If the editor is not yet initialized, save content temporarily
+      setContent(event.description);
+    }
     // Parse event.date only if it's not already a Date object
     const formattedDate =
       typeof event.date === 'string'
@@ -337,6 +342,12 @@ const Events = () => {
     setImageUrl(event.imageUrl || null);
     setIsModalOpen(true); // Open modal for editing
   };
+
+  useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   const handleDelete = async (eventId: string) => {
     if (!confirm('Are you sure you want to delete this event?')) {

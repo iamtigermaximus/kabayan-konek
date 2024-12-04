@@ -306,7 +306,13 @@ const MyPostedAdvertisements = () => {
   const handleEdit = (advertisement: AdvertisementProps) => {
     setEditingAdvertisement(advertisement);
     setTitle(advertisement.title);
-    editor?.commands.setContent(advertisement.description);
+    // Defer setting the content until the editor is initialized
+    if (editor) {
+      editor.commands.setContent(advertisement.description);
+    } else {
+      // If the editor is not yet initialized, save content temporarily
+      setContent(advertisement.description);
+    }
     setCategory(advertisement.category);
     setContactEmail(advertisement.contactEmail);
     setContactPhone(advertisement.contactPhone);

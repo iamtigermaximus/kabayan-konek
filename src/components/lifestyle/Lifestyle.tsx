@@ -287,13 +287,26 @@ const Lifestyle = () => {
   const handleEdit = (article: LifestyleArticle) => {
     setTitle(article.title);
     setImageUrl(article.imageUrl || null);
-    editor?.commands.setContent(article.content);
+    // Defer setting the content until the editor is initialized
+    if (editor) {
+      editor.commands.setContent(article.content);
+    } else {
+      // In case the editor is not initialized yet, we can set the content once the editor is set
+      setContent(article.content); // Save content temporarily and update it later
+    }
     setEditingArticleId(article.id);
     setIsModalOpen(true); // Open modal for editing
 
     // Scroll to the editor section
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Update the editor's content if it has been initialized
+  useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   return (
     <Container>

@@ -274,7 +274,13 @@ const News = () => {
   const handleEdit = (article: NewsArticleProps) => {
     setTitle(article.title);
     setContentUrl(article.contentUrl);
-    editor?.commands.setContent(article.newsSummary);
+    // Defer setting the content until the editor is initialized
+    if (editor) {
+      editor.commands.setContent(article.newsSummary);
+    } else {
+      // If the editor is not yet initialized, save content temporarily
+      setContent(article.newsSummary);
+    }
     setDate(new Date(article.date));
     setSource(article.source);
     setEditingArticleId(article.id);
@@ -283,6 +289,13 @@ const News = () => {
     // Scroll to the editor section
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Update the editor's content if it has been initialized
+  useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value ? new Date(e.target.value) : null; // Convert to Date or null

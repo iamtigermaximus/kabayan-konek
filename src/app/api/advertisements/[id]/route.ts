@@ -63,7 +63,7 @@ export async function PUT(req: NextRequest) {
       !title ||
       !description ||
       !category ||
-      contactEmail ||
+      !contactEmail ||
       !contactPhone ||
       !image
     ) {
