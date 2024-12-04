@@ -30,6 +30,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
+        {/* Google Analytics Script */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-H0PBMXTEBB`} // Replace with your GA4 ID
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-H0PBMXTEBB', { page_path: window.location.pathname });
+            `,
+          }}
+        ></script>
         <script
           type="text/javascript"
           src="https://upload-widget.cloudinary.com/global/all.js"
