@@ -363,7 +363,7 @@ const MarketplaceDetails = () => {
 
   const handleSendSMS = () => {
     if (!product) return; // Ensure product is not null
-    const message = 'I am interested in your product!';
+    const message = 'Kabayan Konek:I am interested in your product!';
     const smsLink = `sms:${product.contactPhone}?body=${encodeURIComponent(
       message
     )}`;
@@ -373,7 +373,7 @@ const MarketplaceDetails = () => {
   const handleSendEmail = () => {
     if (!product) return; // Ensure product is not null
     const subject = 'Inquiry about your product';
-    const body = 'I am interested in your product!';
+    const body = 'Kabayan Konek:I am interested in your product!';
     const mailtoLink = `mailto:${
       product.contactEmail
     }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -382,7 +382,7 @@ const MarketplaceDetails = () => {
 
   const handleSendWhatsApp = () => {
     if (!product) return; // Ensure product is not null
-    const message = 'I am interested in your product!';
+    const message = 'Kabayan Konek:I am interested in your product!';
     const whatsappLink = `https://wa.me/${
       product.contactPhone
     }?text=${encodeURIComponent(message)}`;

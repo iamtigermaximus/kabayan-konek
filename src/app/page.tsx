@@ -4,11 +4,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'HOME | KABAYAN KONEK',
   description:
-    'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+    'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
   openGraph: {
-    title: 'ADVERTISEMENTS | KABAYAN KONEK',
+    title: 'HOME| KABAYAN KONEK',
     description:
-      'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+      'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
     url: 'https://kabayankonek.com/',
     images: [
       {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'HOME | KABAYAN KONEK',
     description:
-      'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+      'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',

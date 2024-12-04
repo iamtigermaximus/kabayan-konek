@@ -243,7 +243,7 @@ const AdvertisementDetails = () => {
 
   const handleSendSMS = () => {
     if (!advertisement) return; // Ensure ad is not null
-    const message = `Hi, I saw your advertisement for ${advertisement.title} and would like more information.`;
+    const message = `Kabayan Konek:Hi, I saw your advertisement for ${advertisement.title} and would like more information.`;
     const smsLink = `sms:${
       advertisement.contactPhone
     }?body=${encodeURIComponent(message)}`;
@@ -253,7 +253,7 @@ const AdvertisementDetails = () => {
   const handleSendEmail = () => {
     if (!advertisement) return; // Ensure ad is not null
     const subject = `Inquiry about ${advertisement.title}`;
-    const body = `Hi, I saw your advertisement for ${advertisement.title}. Could you provide more details? Thank you!`;
+    const body = `Kabayan Konek:Hi, I saw your advertisement for ${advertisement.title}. Could you provide more details? Thank you!`;
     const mailtoLink = `mailto:${
       advertisement.contactEmail
     }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -262,7 +262,7 @@ const AdvertisementDetails = () => {
 
   const handleSendWhatsApp = () => {
     if (!advertisement) return; // Ensure ad is not null
-    const message = `Hi, I’m interested in your listing for ${advertisement.title}. Could you share more details?`;
+    const message = `Kabayan Konek:Hi, I’m interested in your listing for ${advertisement.title}. Could you share more details?`;
     const whatsappLink = `https://wa.me/${
       advertisement.contactPhone
     }?text=${encodeURIComponent(message)}`;
