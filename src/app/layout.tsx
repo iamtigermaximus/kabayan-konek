@@ -3,6 +3,8 @@ import Navbar from '@/components/common/navbar/Navbar';
 import Footer from '@/components/common/footer/Footer';
 import { NextAuthProvider } from './providers/sessionProviders';
 import { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
+
 export const metadata: Metadata = {
   title: 'Kabayan Konek',
   description:
@@ -74,6 +76,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <Navbar />
           {children}
+          <Analytics />
         </NextAuthProvider>
         <Footer />
       </body>
