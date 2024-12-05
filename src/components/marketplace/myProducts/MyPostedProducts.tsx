@@ -90,7 +90,7 @@ const MyPostedProducts = () => {
   );
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [name, setName] = useState('');
-  const [category, setCategory] = useState('all');
+  const [category, setCategory] = useState('ALL');
   const [price, setPrice] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
@@ -148,13 +148,16 @@ const MyPostedProducts = () => {
     }
   }, [session, fetchProducts]);
 
+  // Filter and paginate products
   const filteredProducts =
-    category === 'all'
+    category === 'ALL'
       ? products
       : products.filter((product) => product.category === category);
 
-  // //  Calculate total number of pages
-  // const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  useEffect(() => {
+    setTotalPages(Math.ceil(filteredProducts.length / itemsPerPage));
+  }, [filteredProducts]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedItems = filteredProducts.slice(startIndex, endIndex);
@@ -210,7 +213,7 @@ const MyPostedProducts = () => {
     setName('');
     editor?.commands.clearContent(); // Clear Tiptap editor content
     setPrice('');
-    setCategory('all');
+    setCategory('ALL');
     setContactEmail('');
     setContactPhone('');
     setImageUrls([]);

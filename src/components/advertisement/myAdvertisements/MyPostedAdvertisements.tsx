@@ -147,7 +147,7 @@ const MyPostedAdvertisements = () => {
   }, [session, fetchAdvertisements]);
 
   const filteredAdvertisements =
-    editingAdvertisement || category === 'all' || category === ''
+    editingAdvertisement || category === 'ALL' || category === ''
       ? advertisements // Don't apply filter if editing or category is 'all'
       : advertisements.filter(
           (advertisement) => advertisement.category === category
@@ -198,7 +198,7 @@ const MyPostedAdvertisements = () => {
   const resetForm = () => {
     setTitle('');
     editor?.commands.clearContent(); // Clear Tiptap editor content
-    setCategory('all');
+    setCategory('ALL');
     setContactEmail('');
     setContactPhone('');
     setImageUrl(null);

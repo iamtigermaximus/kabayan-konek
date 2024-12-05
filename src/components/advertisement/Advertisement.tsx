@@ -135,7 +135,7 @@ const Advertisement = () => {
   }, []);
 
   const filteredAdvertisements =
-    category === 'all' || category === ''
+    category === 'ALL' || category === ''
       ? advertisements
       : advertisements.filter(
           (advertisement) => advertisement.category === category
