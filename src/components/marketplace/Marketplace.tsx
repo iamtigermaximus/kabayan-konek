@@ -79,7 +79,7 @@ interface CloudinaryWidget {
 const MarketPlace = () => {
   // const { data: session } = useSession();
   const router = useRouter();
-  const [category, setCategory] = useState('all');
+  const [category, setCategory] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -125,13 +125,16 @@ const MarketPlace = () => {
     fetchProducts();
   }, []);
 
+  // Filter and paginate products
   const filteredProducts =
-    category === 'all'
+    category === 'ALL'
       ? products
       : products.filter((product) => product.category === category);
 
-  // //  Calculate total number of pages
-  // const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  useEffect(() => {
+    setTotalPages(Math.ceil(filteredProducts.length / itemsPerPage));
+  }, [filteredProducts]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedItems = filteredProducts.slice(startIndex, endIndex);
@@ -308,11 +311,12 @@ const MarketPlace = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     required
                   >
-                    <option value="electronics">Electronics</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="home">Home</option>
-                    <option value="food">Food</option>
-                    <option value="others">Others</option>
+                    <option value="ALL">All</option>
+                    <option value="ELECTRONICS">Electronics</option>
+                    <option value="FASHION">Fashion</option>
+                    <option value="HOME">Home</option>
+                    <option value="FOOD">Food</option>
+                    <option value="OTHERS">Others</option>
                   </FilterSelect>
                 </FormItemContainer>
 
@@ -387,11 +391,12 @@ const MarketPlace = () => {
                 setCurrentPage(1);
               }}
             >
-              <option value="all">All</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home">Home</option>
-              <option value="food">Food</option>
+              <option value="ALL">All</option>
+              <option value="ELECTRONICS">Electronics</option>
+              <option value="FASHION">Fashion</option>
+              <option value="HOME">Home</option>
+              <option value="FOOD">Food</option>
+              <option value="OTHERS">Others</option>
             </FilterSelect>
           </div>
         </FilterSection>
