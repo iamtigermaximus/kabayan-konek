@@ -6,10 +6,14 @@ export const metadata: Metadata = {
   title: 'ABOUT US | KABAYAN KONEK',
   description:
     'Learn about Kabayan Konek, a platform connecting Filipinos in Finland to share their culture, lifestyle, and community events.',
+  keywords:
+    'Kabayan Konek, Filipino community in Finland, Pinoy culture, Filipino lifestyle, Kabayan Konek Finland, Filipino events in Finland, Filipino news and events, Pinoy lifestyle platform, Filipino online community, connect Filipinos in Finland, Kabayan platform Finland, share Filipino culture Finland, Filipino community hub, Filipino lifestyle website, Kabayan news Finland, Filipino marketplace Finland',
+
   openGraph: {
     title: 'ABOUT US | KABAYAN KONEK',
     description:
       'Learn about Kabayan Konek, a platform connecting Filipinos in Finland to share their culture, lifestyle, and community events.',
+
     url: 'https://kabayankonek.com/about',
     images: [
       {

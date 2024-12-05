@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'KABAYAN SPOTLIGHT | KABAYAN KONEK',
   description:
     'Discover inspiring stories from the Kabayan community and learn about the profiles making a difference in the world.',
+  keywords:
+    'Kabayan Spotlight, OFW Stories, Filipino Family in Finland, Pinoy Family in Finland,Kabayan community, Filipino profiles, Pinoy profiles, inspiring Pinoy stories, Filipino achievements, Filipino leaders, Kabayan success stories, Pinoy success stories, Filipino personalities, Pinoy personalities, Filipino influencers, Pinoy influencers, Filipino culture, Pinoy culture, Filipino heroes, Pinoy heroes, Filipinos making a difference, Filipino empowerment, Pinoy empowerment, Filipinos in Finland, Filipino expats, Pinoy expats, Kabayan spotlight Finland, Filipino stories Finland, Pinoy stories Finland, Kabayan Konek community, Filipino community Finland, Filipino culture in Finland, Filipino leaders in Finland, Filipino role models',
+
   openGraph: {
     title: 'KABAYAN SPOTLIGHT | KABAYAN KONEK',
     description:

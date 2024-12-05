@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'ADVERTISEMENTS | KABAYAN KONEK',
   description:
     "Post your advertisements to reach the Filipino community in Finland. Whether it's jobs, services, or events, create an ad today!",
+  keywords:
+    'Filipino advertisements, Pinoy ads, Filipino community ads, job postings for Filipinos, Filipino services, Pinoy jobs, Kabayan Konek advertisements, advertise in Finland, Filipino market, Pinoy business ads, Filipino marketplace, Filipino community Finland, Filipino event advertisements, Pinoy service advertisements, job listings Finland, Filipino job opportunities, Pinoy events Finland, advertise for Filipinos, online ads for Filipinos',
+
   openGraph: {
     title: 'ADVERTISEMENTS | KABAYAN KONEK',
     description:
