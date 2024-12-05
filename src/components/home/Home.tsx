@@ -40,7 +40,31 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DefaultImage from '@/assets/NoImage2.jpg';
 import HomeBanner from '../common/banners/HomeBanner';
-
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import 'swiper/css';
+import { formatDistanceToNow } from 'date-fns';
+import Link from 'next/link';
+import {
+  ProductList,
+  ProductCard,
+  ProductCategoryContainer,
+  ProductCategory,
+  ProductImage,
+  BasicProductInfoContainer,
+  ProductItemContainer,
+  ProductPrice,
+  ProductTitle,
+} from '../marketplace/Marketplace.styles';
+import {
+  AdBasicInfoContainer,
+  AdCard,
+  AdCategory,
+  AdCategoryContainer,
+  AdImage,
+  AdItemContainer,
+  AdList,
+  AdTitle,
+} from '../advertisement/Advertisement.styles';
 interface LifestyleArticle {
   id: string;
   title: string;
@@ -85,6 +109,31 @@ interface NewsArticleProps {
   updatedAt: Date;
 }
 
+export interface ProductProps {
+  id?: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  contactEmail: string;
+  contactPhone: string;
+  primaryImageUrl: string;
+  imageUrl?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface AdvertisementProps {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 const Home = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -95,6 +144,10 @@ const Home = () => {
   const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
   const [events, setEvents] = useState<EventProps[]>([]);
   const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
+  const [products, setProducts] = useState<ProductProps[]>([]);
+  const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
+    []
+  );
 
   const fetchArticles = async () => {
     try {
@@ -189,6 +242,31 @@ const Home = () => {
 
   useEffect(() => {
     fetchNewsArticles();
+  }, []);
+
+  const fetchMarketplace = async () => {
+    try {
+      const response = await fetch('/api/marketplace');
+      const data: ProductProps[] = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error('Error fetching marketplace products:', error);
+    }
+  };
+
+  const fetchAdvertisements = async () => {
+    try {
+      const response = await fetch('/api/advertisements');
+      const data: AdvertisementProps[] = await response.json();
+      setAdvertisements(data);
+    } catch (error) {
+      console.error('Error fetching advertisements:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketplace();
+    fetchAdvertisements();
   }, []);
 
   const handleLoginClick = () => {
@@ -409,6 +487,136 @@ const Home = () => {
       </EventsSectionContainer>
       <ShowMoreButtonContainer>
         <ShowMoreButtonLink href="/events">
+          <ShowMoreButton>Show More</ShowMoreButton>
+        </ShowMoreButtonLink>
+      </ShowMoreButtonContainer>
+      <DividerContainer>
+        <DividerLine />
+        <DividerLabel>LATEST PRODUCTS</DividerLabel>
+        <DividerLine />
+      </DividerContainer>
+      <SectionContainer>
+        <ProductList>
+          {products.slice(0, 6).map((product) => (
+            <ProductCard key={product.id}>
+              <ProductCategoryContainer>
+                <ProductCategory>{product.category}</ProductCategory>
+              </ProductCategoryContainer>
+              <ProductImage
+                src={product.primaryImageUrl || DefaultImage}
+                alt={product.name}
+                width={150}
+                height={150}
+                priority
+              />
+              <BasicProductInfoContainer>
+                <ProductItemContainer>
+                  <ProductPrice>€{product.price}</ProductPrice>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  <Link
+                    href={`/marketplace/${product.id}`}
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <ProductTitle>{product.name}</ProductTitle>
+                  </Link>
+                </ProductItemContainer>
+                <ProductItemContainer>
+                  {product.createdAt && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: 'gray',
+                        marginTop: '5px',
+                      }}
+                    >
+                      Posted {formatDistanceToNow(new Date(product.createdAt))}{' '}
+                      ago
+                    </div>
+                  )}
+                </ProductItemContainer>
+              </BasicProductInfoContainer>
+            </ProductCard>
+          ))}
+        </ProductList>
+      </SectionContainer>
+      <ShowMoreButtonContainer>
+        <ShowMoreButtonLink href="/marketplace">
+          <ShowMoreButton>Show More</ShowMoreButton>
+        </ShowMoreButtonLink>
+      </ShowMoreButtonContainer>
+      <DividerContainer>
+        <DividerLine />
+        <DividerLabel>LATEST ADVERTISEMENTS</DividerLabel>
+        <DividerLine />
+      </DividerContainer>
+      <SectionContainer>
+        <AdList>
+          {advertisements.slice(0, 6).map((ad) => (
+            <Link
+              href={`/advertisement/${ad.id}`}
+              key={ad.id}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              <AdCard>
+                <AdCategoryContainer>
+                  <AdCategory>{ad.category}</AdCategory>
+                </AdCategoryContainer>
+                <AdImage
+                  src={ad.imageUrl || DefaultImage}
+                  alt={ad.title}
+                  width={150}
+                  height={150}
+                  priority
+                />
+                <AdBasicInfoContainer>
+                  <AdItemContainer>
+                    <AdTitle>{ad.title}</AdTitle>
+                  </AdItemContainer>
+                  <AdItemContainer>
+                    {/* <AdDescription>
+                      {ad.description.length > 200 ? (
+                        <>
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: ad.description.slice(0, 100) + '...',
+                            }}
+                          ></div>
+
+                          <div style={{ color: 'blue', cursor: 'pointer' }}>
+                            <StyledLink href={`/advertisement/${ad.id}`}>
+                              Read More
+                            </StyledLink>
+                          </div>
+                        </>
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: ad.description,
+                          }}
+                        ></div>
+                      )}
+                    </AdDescription> */}
+                    {ad.createdAt && (
+                      <div
+                        style={{
+                          fontSize: '12px',
+                          color: 'gray',
+                          marginTop: '5px',
+                        }}
+                      >
+                        Posted {formatDistanceToNow(new Date(ad.createdAt))} ago
+                      </div>
+                    )}
+                  </AdItemContainer>
+                </AdBasicInfoContainer>
+              </AdCard>
+            </Link>
+          ))}
+        </AdList>
+      </SectionContainer>
+      <ShowMoreButtonContainer>
+        <ShowMoreButtonLink href="/advertisements">
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
       </ShowMoreButtonContainer>
