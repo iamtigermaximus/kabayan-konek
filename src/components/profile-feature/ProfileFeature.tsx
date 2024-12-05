@@ -76,12 +76,13 @@ const ProfileFeature = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState('');
-  // const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   const [articles, setArticles] = useState<KabayanArticle[]>([]);
-  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+  const [editingKabayan, setEditingKabayan] = useState<KabayanArticle | null>(
+    null
+  );
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
@@ -137,31 +138,6 @@ const ProfileFeature = () => {
     widgetRef.current?.open();
   };
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && window.cloudinary) {
-  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
-  //       {
-  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-  //         uploadPreset: 'kabayankonek',
-  //         multiple: false,
-  //         sources: ['local', 'url', 'camera'],
-  //         debug: true,
-  //       },
-  //       (error: Error | null, result: CloudinaryWidgetResult) => {
-  //         if (result?.event === 'success') {
-  //           setImageUrl(result.info.secure_url);
-  //           // console.log('Image uploaded successfully!', result.info.secure_url);
-  //         } else if (error) {
-  //           console.error('Cloudinary upload error:', error);
-  //         }
-  //       }
-  //     );
-  //     widgetRef.current = cloudinaryWidget;
-  //   } else {
-  //     console.log('Cloudinary script is not loaded');
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
@@ -199,7 +175,7 @@ const ProfileFeature = () => {
     setTitle('');
     editor?.commands.clearContent(); // Clear Tiptap editor content
     setImageUrl(null);
-    setEditingArticleId(null); // Ensure it resets to "create" mode
+    setEditingKabayan(null); // Ensure it resets to "create" mode
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -220,18 +196,10 @@ const ProfileFeature = () => {
     };
 
     try {
-      // const response = await fetch('/api/profile', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(articleData),
-      // });
-
       const response = await fetch(
-        editingArticleId ? `/api/profile/${editingArticleId}` : '/api/profile',
+        editingKabayan ? `/api/profile/${editingKabayan.id}` : '/api/profile',
         {
-          method: editingArticleId ? 'PUT' : 'POST',
+          method: editingKabayan ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(articleData),
         }
@@ -248,7 +216,7 @@ const ProfileFeature = () => {
         return;
       }
 
-      alert(editingArticleId ? 'Article updated!' : 'Article created!');
+      alert(editingKabayan ? 'Article updated!' : 'Article created!');
       setIsModalOpen(false);
       resetForm(); // Clear the form
       fetchArticles();
@@ -298,28 +266,26 @@ const ProfileFeature = () => {
   };
 
   const handleEdit = (article: KabayanArticle) => {
+    setEditingKabayan(article);
     setTitle(article.title);
     setImageUrl(article.imageUrl || null);
-    // Defer setting the content until the editor is initialized
-    if (editor) {
-      editor.commands.setContent(article.content);
-    } else {
-      // In case the editor is not initialized yet, we can set the content once the editor is set
-      setContent(article.content); // Save content temporarily and update it later
-    }
-    setEditingArticleId(article.id);
-    setIsModalOpen(true); // Open modal for editing
+    setTimeout(() => {
+      if (editor) {
+        editor.commands.setContent(article.content);
+      }
+    }, 0);
+    setIsModalOpen(true);
 
     // Scroll to the editor section
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Update the editor's content if it has been initialized
   useEffect(() => {
-    if (editor && content) {
-      editor.commands.setContent(content);
+    if (editor && editingKabayan) {
+      // Set content only after the editor is initialized
+      editor.commands.setContent(editingKabayan.content);
     }
-  }, [editor, content]);
+  }, [editor, editingKabayan]);
 
   return (
     <Container>
@@ -341,7 +307,7 @@ const ProfileFeature = () => {
               <ModalContent>
                 <ModalContentTitleContainer>
                   <ModalContentTitle>
-                    {editingArticleId ? 'Edit Article' : 'Create New Article'}
+                    {editingKabayan ? 'Edit Article' : 'Create New Article'}
                   </ModalContentTitle>
                 </ModalContentTitleContainer>
                 <ModalContentForm onSubmit={handleSubmit}>
@@ -390,7 +356,7 @@ const ProfileFeature = () => {
                     <SubmitButton type="submit" disabled={isSubmitting}>
                       {isSubmitting
                         ? 'Submitting...'
-                        : editingArticleId
+                        : editingKabayan
                         ? 'Update Article'
                         : 'Create Article'}{' '}
                     </SubmitButton>

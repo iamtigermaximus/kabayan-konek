@@ -80,7 +80,8 @@ const Lifestyle = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
   const [articles, setArticles] = useState<LifestyleArticle[]>([]);
-  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+  const [editingLifestyle, setEditingLifestyle] =
+    useState<LifestyleArticle | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
@@ -136,30 +137,6 @@ const Lifestyle = () => {
     widgetRef.current?.open();
   };
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && window.cloudinary) {
-  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
-  //       {
-  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-  //         uploadPreset: 'kabayankonek',
-  //         multiple: false,
-  //         sources: ['local', 'url', 'camera'],
-  //         debug: true,
-  //       },
-  //       (error: Error | null, result: CloudinaryWidgetResult) => {
-  //         if (result?.event === 'success') {
-  //           setImageUrl(result.info.secure_url);
-  //         } else if (error) {
-  //           console.error('Cloudinary upload error:', error);
-  //         }
-  //       }
-  //     );
-  //     widgetRef.current = cloudinaryWidget;
-  //   } else {
-  //     console.log('Cloudinary script is not loaded');
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (typeof window !== 'undefined' && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
@@ -197,7 +174,7 @@ const Lifestyle = () => {
     setTitle('');
     editor?.commands.clearContent(); // Clear Tiptap editor content
     setImageUrl(null);
-    setEditingArticleId(null); // Ensure it resets to "create" mode
+    setEditingLifestyle(null); // Ensure it resets to "create" mode
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -219,11 +196,11 @@ const Lifestyle = () => {
 
     try {
       const response = await fetch(
-        editingArticleId
-          ? `/api/lifestyle/${editingArticleId}`
+        editingLifestyle
+          ? `/api/lifestyle/${editingLifestyle.id}`
           : '/api/lifestyle',
         {
-          method: editingArticleId ? 'PUT' : 'POST',
+          method: editingLifestyle ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(articleData),
         }
@@ -236,7 +213,7 @@ const Lifestyle = () => {
         return;
       }
 
-      alert(editingArticleId ? 'Article updated!' : 'Article created!');
+      alert(editingLifestyle ? 'Article updated!' : 'Article created!');
       setIsModalOpen(false);
       resetForm(); // Clear the form
       fetchArticles();
@@ -285,16 +262,23 @@ const Lifestyle = () => {
   };
 
   const handleEdit = (article: LifestyleArticle) => {
+    setEditingLifestyle(article);
     setTitle(article.title);
     setImageUrl(article.imageUrl || null);
-    // Defer setting the content until the editor is initialized
-    if (editor) {
-      editor.commands.setContent(article.content);
-    } else {
-      // In case the editor is not initialized yet, we can set the content once the editor is set
-      setContent(article.content); // Save content temporarily and update it later
-    }
-    setEditingArticleId(article.id);
+    // // Defer setting the content until the editor is initialized
+    // if (editor) {
+    //   editor.commands.setContent(article.content);
+    // } else {
+    //   // In case the editor is not initialized yet, we can set the content once the editor is set
+    //   setContent(article.content); // Save content temporarily and update it later
+    // }
+
+    // Set editor content after editor is initialized
+    setTimeout(() => {
+      if (editor) {
+        editor.commands.setContent(article.content);
+      }
+    }, 0);
     setIsModalOpen(true); // Open modal for editing
 
     // Scroll to the editor section
@@ -303,10 +287,11 @@ const Lifestyle = () => {
 
   // Update the editor's content if it has been initialized
   useEffect(() => {
-    if (editor && content) {
-      editor.commands.setContent(content);
+    if (editor && editingLifestyle) {
+      // Set content only after the editor is initialized
+      editor.commands.setContent(editingLifestyle.content);
     }
-  }, [editor, content]);
+  }, [editor, editingLifestyle]);
 
   return (
     <Container>
@@ -329,7 +314,7 @@ const Lifestyle = () => {
               <ModalContent>
                 <ModalContentTitleContainer>
                   <ModalContentTitle>
-                    {editingArticleId ? 'Edit Article' : 'Create New Article'}
+                    {editingLifestyle ? 'Edit Article' : 'Create New Article'}
                   </ModalContentTitle>
                 </ModalContentTitleContainer>
                 <ModalContentForm onSubmit={handleSubmit}>
@@ -378,7 +363,7 @@ const Lifestyle = () => {
                     <SubmitButton type="submit" disabled={isSubmitting}>
                       {isSubmitting
                         ? 'Submitting...'
-                        : editingArticleId
+                        : editingLifestyle
                         ? 'Update Article'
                         : 'Create Article'}{' '}
                     </SubmitButton>

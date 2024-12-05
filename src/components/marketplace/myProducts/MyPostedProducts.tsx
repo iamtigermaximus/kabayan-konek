@@ -79,27 +79,28 @@ interface CloudinaryWidget {
 const MyPostedProducts = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [category, setCategory] = useState('all');
+  const widgetRef = useRef<CloudinaryWidget | null>(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const itemsPerPage = 6;
+
+  const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
+    null
+  );
+  const [products, setProducts] = useState<ProductProps[]>([]);
   const [name, setName] = useState('');
-  // const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('all');
   const [price, setPrice] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [products, setProducts] = useState<ProductProps[]>([]);
-  const [editingProduct, setEditingProduct] = useState<ProductProps | null>(
-    null
-  );
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const widgetRef = useRef<CloudinaryWidget | null>(null);
-  const itemsPerPage = 6;
   const [content, setContent] = useState('');
   const [editor, setEditor] = useState<Editor | null>(null);
 

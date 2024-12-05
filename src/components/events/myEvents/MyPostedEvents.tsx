@@ -387,12 +387,6 @@ const Events = () => {
       {error && <div style={{ color: 'red' }}>{error}</div>}
 
       {isLoading && <div>Loading my events...</div>}
-
-      {/* {session && (
-        <CreateButtonContainer>
-          <CreateButton onClick={toggleModal}>CREATE EVENT</CreateButton>
-        </CreateButtonContainer>
-      )} */}
       <PageLayout>
         <EventsContent>
           <SectionContainer>

@@ -94,7 +94,7 @@ const News = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [source, setSource] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
+  const [editingNews, setEditingNews] = useState<NewsArticleProps | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
@@ -203,9 +203,9 @@ const News = () => {
 
     try {
       const response = await fetch(
-        editingArticleId ? `/api/news/${editingArticleId}` : '/api/news',
+        editingNews ? `/api/news/${editingNews.id}` : '/api/news',
         {
-          method: editingArticleId ? 'PUT' : 'POST',
+          method: editingNews ? 'PUT' : 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newsArticleData),
         }
@@ -224,7 +224,7 @@ const News = () => {
 
       console.log('News article created!', responseBody);
       setIsModalOpen(false);
-      setEditingArticleId(null);
+      setEditingNews(null);
       fetchNewsArticles();
     } catch (error) {
       console.error('Error creating news article:', error);
@@ -272,30 +272,29 @@ const News = () => {
   };
 
   const handleEdit = (article: NewsArticleProps) => {
+    setEditingNews(article);
     setTitle(article.title);
     setContentUrl(article.contentUrl);
-    // Defer setting the content until the editor is initialized
-    if (editor) {
-      editor.commands.setContent(article.newsSummary);
-    } else {
-      // If the editor is not yet initialized, save content temporarily
-      setContent(article.newsSummary);
-    }
     setDate(new Date(article.date));
     setSource(article.source);
-    setEditingArticleId(article.id);
+    // Set editor content after editor is initialized
+    setTimeout(() => {
+      if (editor) {
+        editor.commands.setContent(article.newsSummary);
+      }
+    }, 0);
     setIsModalOpen(true); // Open modal for editing
 
     // Scroll to the editor section
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Update the editor's content if it has been initialized
   useEffect(() => {
-    if (editor && content) {
-      editor.commands.setContent(content);
+    if (editor && editingNews) {
+      // Set content only after the editor is initialized
+      editor.commands.setContent(editingNews.newsSummary);
     }
-  }, [editor, content]);
+  }, [editor, editingNews]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value ? new Date(e.target.value) : null; // Convert to Date or null
