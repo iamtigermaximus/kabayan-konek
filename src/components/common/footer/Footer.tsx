@@ -135,7 +135,7 @@ const Footer = () => {
           <h4>Follow Us</h4>
           <SocialMedia>
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/profile.php?id=61570225252598"
               target="_blank"
               rel="noopener noreferrer"
             >
