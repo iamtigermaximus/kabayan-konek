@@ -324,30 +324,27 @@ const Events = () => {
   const handleEdit = (event: EventProps) => {
     setEditingEvent(event);
     setTitle(event.title);
-    // Defer setting the content until the editor is initialized
-    if (editor) {
-      editor.commands.setContent(event.description);
-    } else {
-      // If the editor is not yet initialized, save content temporarily
-      setContent(event.description);
-    }
-    // Parse event.date only if it's not already a Date object
-    const formattedDate =
-      typeof event.date === 'string'
-        ? new Date(event.date).toISOString().split('T')[0]
-        : event.date.toISOString().split('T')[0];
-    setDate(formattedDate);
+    setDate(event.date ? new Date(event.date).toISOString().split('T')[0] : '');
     setTime(event.time);
     setAddress(event.address);
     setImageUrl(event.imageUrl || null);
+
+    // Set editor content after editor is initialized
+    setTimeout(() => {
+      if (editor) {
+        editor.commands.setContent(event.description);
+      }
+    }, 0);
+
     setIsModalOpen(true); // Open modal for editing
   };
 
   useEffect(() => {
-    if (editor && content) {
-      editor.commands.setContent(content);
+    if (editor && editingEvent) {
+      // Set content only after the editor is initialized
+      editor.commands.setContent(editingEvent.description);
     }
-  }, [editor, content]);
+  }, [editor, editingEvent]);
 
   const handleDelete = async (eventId: string) => {
     if (!confirm('Are you sure you want to delete this event?')) {

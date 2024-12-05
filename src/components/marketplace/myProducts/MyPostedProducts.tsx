@@ -296,22 +296,21 @@ const MyPostedProducts = () => {
     setContactEmail(product.contactEmail);
     setContactPhone(product.contactPhone);
     setImageUrls(product.images.map((img) => img.imageUrl));
-    // Defer setting the content until the editor is initialized
-    if (editor) {
-      editor.commands.setContent(product.description);
-    } else {
-      // If the editor is not yet initialized, save content temporarily
-      setContent(product.description);
-    }
+    // Set editor content after editor is initialized
+    setTimeout(() => {
+      if (editor) {
+        editor.commands.setContent(product.description);
+      }
+    }, 0);
     setIsModalOpen(true); // Open modal for editing
   };
 
-  // Update the editor's content if it has been initialized
   useEffect(() => {
-    if (editor && content) {
-      editor.commands.setContent(content);
+    if (editor && editingProduct) {
+      // Set content only after the editor is initialized
+      editor.commands.setContent(editingProduct.description);
     }
-  }, [editor, content]);
+  }, [editor, editingProduct]);
 
   const handleDelete = async (productId: string) => {
     if (!confirm('Are you sure you want to delete this product?')) {
