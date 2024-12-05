@@ -502,13 +502,18 @@ const Home = () => {
               <ProductCategoryContainer>
                 <ProductCategory>{product.category}</ProductCategory>
               </ProductCategoryContainer>
-              <ProductImage
-                src={product.primaryImageUrl || DefaultImage}
-                alt={product.name}
-                width={150}
-                height={150}
-                priority
-              />
+              <Link
+                href={`/marketplace/${product.id}`}
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                <ProductImage
+                  src={product.primaryImageUrl || DefaultImage}
+                  alt={product.name}
+                  width={150}
+                  height={150}
+                  priority
+                />
+              </Link>
               <BasicProductInfoContainer>
                 <ProductItemContainer>
                   <ProductPrice>€{product.price}</ProductPrice>
@@ -627,7 +632,7 @@ const Home = () => {
       </DividerContainer>
       <SectionContainer>
         <NewsList>
-          {newsArticles.slice(0, 10).map((news) => (
+          {newsArticles.slice(0, 6).map((news) => (
             <NewsItem key={news.id}>
               <NewsContent>
                 <NewsHeadline>

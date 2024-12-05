@@ -215,6 +215,10 @@ export const LoginButton = styled.button`
   border: none;
   font-size: 1rem;
 
+  &:hover {
+    background-color: #e64a19;
+  }
+
   @media (min-width: ${bp.md}) {
     margin-right: 20px;
   }

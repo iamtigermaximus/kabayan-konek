@@ -93,6 +93,12 @@ export const ProductCard = styled.div`
   padding: 2px 10px 10px;
   background-color: #f9f9f9;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(1);
+
+  &:hover {
+    transform: scale(1.05);
+  }
 
   @media (min-width: ${bp.md}) {
     padding: 2px 20px 20px;
