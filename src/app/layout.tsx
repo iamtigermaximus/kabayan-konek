@@ -6,11 +6,11 @@ import { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-  title: 'Kabayan Konek',
+  title: 'KABAYAN KONEK',
   description:
     'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
   openGraph: {
-    title: 'Kabayan Konek',
+    title: 'KABAYAN KONEK',
     description: 'A platform connecting Filipinos in Finland.',
     url: 'https://kabayankonek.com',
     images: [

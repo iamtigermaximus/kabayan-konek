@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     'Filipino lifestyle, Kabayan lifestyle, Pinoy lifestyle, lifestyle for Filipinos, Filipino expat life, Filipino culture, Kabayan Konek lifestyle, Filipino tips and inspiration, Pinoy community Finland, Filipino living in Finland, Filipino events, Filipino culture in Finland, Filipino expats tips, Pinoy lifestyle articles, Kabayan Konek articles, Filipino fashion and trends, Filipino food, Filipino health and wellness, Pinoy travel tips, Filipino entertainment',
 
   openGraph: {
-    title: 'ADVERTISEMENTS | KABAYAN KONEK',
+    title: 'LIFESTYLE | KABAYAN KONEK',
     description:
       'Explore the latest lifestyle articles, tips, and inspiration on Kabayan Konek',
     url: 'https://kabayankonek.com/lifestyle',
