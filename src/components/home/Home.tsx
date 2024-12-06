@@ -188,6 +188,44 @@ const Home = () => {
     fetchKabayanArticles();
   }, []);
 
+  // const fetchEvents = async () => {
+  //   try {
+  //     const response = await fetch('/api/events');
+  //     const data: EventProps[] = await response.json();
+
+  //     const now = Date.now();
+
+  //     // Ensure we're using the `date` field for sorting
+  //     const validEvents = data.filter((event) => {
+  //       // Filter out invalid or missing dates
+  //       return event.date && !isNaN(new Date(event.date).getTime());
+  //     });
+
+  //     // Sort events by proximity to the current time (`now`)
+  //     validEvents.sort((a, b) => {
+  //       const dateA = new Date(a.date).getTime();
+  //       const dateB = new Date(b.date).getTime();
+
+  //       const isPastA = dateA < now;
+  //       const isPastB = dateB < now;
+
+  //       // Push past events to the end
+  //       if (isPastA && !isPastB) return 1;
+  //       if (!isPastA && isPastB) return -1;
+
+  //       // For future events or both past, sort by date proximity
+  //       return dateA - dateB;
+  //     });
+
+  //     setEvents(validEvents);
+  //   } catch (error) {
+  //     console.error('Error fetching events:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchEvents();
+  // }, []);
   const fetchEvents = async () => {
     try {
       const response = await fetch('/api/events');
@@ -195,25 +233,38 @@ const Home = () => {
 
       const now = Date.now();
 
-      // Ensure we're using the `date` field for sorting
       const validEvents = data.filter((event) => {
-        // Filter out invalid or missing dates
+        // Ensure valid event date
         return event.date && !isNaN(new Date(event.date).getTime());
       });
 
-      // Sort events by proximity to the current time (`now`)
+      // Determine if an event is happening now
+      const isEventNow = (event: EventProps): boolean => {
+        const eventStart = new Date(event.date).getTime();
+        const eventEnd = new Date(event.date).setHours(23, 59, 59, 999); // Assuming it ends by day-end if no explicit time
+
+        return now >= eventStart && now <= eventEnd;
+      };
+
+      // Sort logic
       validEvents.sort((a, b) => {
+        const eventNowA = isEventNow(a);
+        const eventNowB = isEventNow(b);
+
+        // Prioritize events happening now
+        if (eventNowA && !eventNowB) return -1;
+        if (!eventNowA && eventNowB) return 1;
+
+        // For past and future events, sort by proximity to `now`
         const dateA = new Date(a.date).getTime();
         const dateB = new Date(b.date).getTime();
 
         const isPastA = dateA < now;
         const isPastB = dateB < now;
 
-        // Push past events to the end
         if (isPastA && !isPastB) return 1;
         if (!isPastA && isPastB) return -1;
 
-        // For future events or both past, sort by date proximity
         return dateA - dateB;
       });
 
