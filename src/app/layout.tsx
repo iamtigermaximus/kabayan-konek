@@ -2,27 +2,27 @@ import './globals.css';
 import Navbar from '@/components/common/navbar/Navbar';
 import Footer from '@/components/common/footer/Footer';
 import { NextAuthProvider } from './providers/sessionProviders';
-import { Metadata } from 'next';
+// import { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
-export const metadata: Metadata = {
-  title: 'KABAYAN KONEK',
-  description:
-    'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
-  openGraph: {
-    title: 'KABAYAN KONEK',
-    description: 'A platform connecting Filipinos in Finland.',
-    url: 'https://kabayankonek.com',
-    images: [
-      {
-        url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',
-        width: 1200,
-        height: 630,
-        alt: 'Kabayan Konek Logo',
-      },
-    ],
-  },
-};
+// export const metadata: Metadata = {
+//   title: 'KABAYAN KONEK',
+//   description:
+//     'Kabayan Konek is a platform that connects Filipinos in Finland, offering lifestyle content, news, local events, a marketplace, and a community hub. Stay informed, share experiences, and engage with kababayans through our spotlight features and advertisements.',
+//   openGraph: {
+//     title: 'KABAYAN KONEK',
+//     description: 'A platform connecting Filipinos in Finland.',
+//     url: 'https://kabayankonek.com',
+//     images: [
+//       {
+//         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',
+//         width: 1200,
+//         height: 630,
+//         alt: 'Kabayan Konek Logo',
+//       },
+//     ],
+//   },
+// };
 
 export default function RootLayout({
   children,
