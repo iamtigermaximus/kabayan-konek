@@ -12,6 +12,7 @@ import {
   FaRedditAlien,
 } from 'react-icons/fa';
 import { AiOutlineMail } from 'react-icons/ai';
+import Head from 'next/head';
 
 interface LifestyleArticle {
   id: string;
@@ -400,35 +401,33 @@ const LifestyleDetails = () => {
 
   const articleUrl = `https://kabayankonek.com/lifestyle/${article.id}`;
   const articleTitle = article.title;
+  const articleDescription = article.content;
+  const articleImage =
+    article.imageUrl ||
+    'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png';
 
   const encodedTitle = encodeURIComponent(articleTitle);
   const encodedUrl = encodeURIComponent(articleUrl);
 
   return (
     <>
-      <head>
-        <title>{article.title} | Kabayan Konek</title>
-        <meta property="og:title" content={article.title} />
-        <meta property="og:description" content={article.content} />
-        <meta
-          property="og:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
+      <Head>
+        <title>{articleTitle} | Kabayan Konek</title>
+        <meta name="description" content={articleDescription} />
+
+        {/* Open Graph meta tags */}
+        <meta property="og:title" content={articleTitle} />
+        <meta property="og:description" content={articleDescription} />
         <meta property="og:url" content={articleUrl} />
-        <meta name="twitter:title" content={article.title} />
-        <meta name="twitter:description" content={article.content} />
-        <meta
-          name="twitter:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
+        <meta property="og:image" content={articleImage} />
+        <meta property="og:type" content="article" />
+
+        {/* Twitter Card meta tags */}
+        <meta name="twitter:title" content={articleTitle} />
+        <meta name="twitter:description" content={articleDescription} />
+        <meta name="twitter:image" content={articleImage} />
         <meta name="twitter:card" content="summary_large_image" />
-      </head>
+      </Head>
       <ArticleContainer>
         <ArticleContent>
           <ArticleTitleContainer>
