@@ -12,7 +12,6 @@ import {
   FaRedditAlien,
 } from 'react-icons/fa';
 import { AiOutlineMail } from 'react-icons/ai';
-import Head from 'next/head';
 
 interface LifestyleArticle {
   id: string;
@@ -407,7 +406,7 @@ const LifestyleDetails = () => {
 
   return (
     <>
-      <Head>
+      <head>
         <title>{article.title} | Kabayan Konek</title>
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.content} />
@@ -429,7 +428,7 @@ const LifestyleDetails = () => {
           }
         />
         <meta name="twitter:card" content="summary_large_image" />
-      </Head>
+      </head>
       <ArticleContainer>
         <ArticleContent>
           <ArticleTitleContainer>
