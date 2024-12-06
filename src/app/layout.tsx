@@ -32,6 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
+        {/* Google Adsense Script */}
+
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2534929702759944"
+          crossOrigin="anonymous"
+        />
+
         {/* Google Analytics Script */}
         <script
           async
