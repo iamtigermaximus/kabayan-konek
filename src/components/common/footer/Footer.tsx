@@ -129,6 +129,9 @@ const Footer = () => {
             <li>
               <Link href="/privacy-policy">Privacy Policy</Link>
             </li>
+            <li>
+              <Link href="/terms-and-conditions">Terms and Conditions</Link>
+            </li>
           </NavLinks>
         </Section>
         <Section>
