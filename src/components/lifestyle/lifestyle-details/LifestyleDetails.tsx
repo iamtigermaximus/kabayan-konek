@@ -12,6 +12,7 @@ import {
   FaRedditAlien,
 } from 'react-icons/fa';
 import { AiOutlineMail } from 'react-icons/ai';
+import Head from 'next/head';
 
 interface LifestyleArticle {
   id: string;
@@ -405,117 +406,142 @@ const LifestyleDetails = () => {
   const encodedUrl = encodeURIComponent(articleUrl);
 
   return (
-    <ArticleContainer>
-      <ArticleContent>
-        <ArticleTitleContainer>
-          <div
-            style={{
-              alignItems: 'center',
-              marginTop: '30px',
-              marginBottom: '10px',
-              cursor: 'pointer',
-            }}
-          >
+    <>
+      <Head>
+        <title>{article.title} | Kabayan Konek</title>
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.content} />
+        <meta
+          property="og:image"
+          content={
+            article.imageUrl ||
+            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
+          }
+        />
+        <meta property="og:url" content={articleUrl} />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={article.content} />
+        <meta
+          name="twitter:image"
+          content={
+            article.imageUrl ||
+            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
+          }
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+      <ArticleContainer>
+        <ArticleContent>
+          <ArticleTitleContainer>
             <div
               style={{
-                display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'flex-start',
-                fontSize: '30px',
+                marginTop: '30px',
+                marginBottom: '10px',
+                cursor: 'pointer',
               }}
-              onClick={handleBackButton}
             >
-              <IoMdArrowRoundBack />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  fontSize: '30px',
+                }}
+                onClick={handleBackButton}
+              >
+                <IoMdArrowRoundBack />
+              </div>
             </div>
-          </div>
-          <Title>{article.title}</Title>
-          <>
-            <ShareBar>
-              {/* Facebook */}
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#1877f2' }}
-              >
-                <FaFacebookF />
-              </a>
+            <Title>{article.title}</Title>
+            <>
+              <ShareBar>
+                {/* Facebook */}
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#1877f2' }}
+                >
+                  <FaFacebookF />
+                </a>
 
-              {/* Twitter */}
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#1da1f2' }}
-              >
-                <FaTwitter />
-              </a>
+                {/* Twitter */}
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#1da1f2' }}
+                >
+                  <FaTwitter />
+                </a>
 
-              {/* LinkedIn */}
-              <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#0077b5' }}
-              >
-                <FaLinkedinIn />
-              </a>
+                {/* LinkedIn */}
+                <a
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#0077b5' }}
+                >
+                  <FaLinkedinIn />
+                </a>
 
-              {/* Reddit */}
-              <a
-                href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#ff4500' }}
-              >
-                <FaRedditAlien />
-              </a>
+                {/* Reddit */}
+                <a
+                  href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#ff4500' }}
+                >
+                  <FaRedditAlien />
+                </a>
 
-              {/* Email */}
-              <a
-                href={`mailto:?subject=${encodedTitle}&body=Check%20out%20this%20article:%20${encodedUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#333' }}
-              >
-                <AiOutlineMail />
-              </a>
-            </ShareBar>
-          </>
-        </ArticleTitleContainer>
+                {/* Email */}
+                <a
+                  href={`mailto:?subject=${encodedTitle}&body=Check%20out%20this%20article:%20${encodedUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#333' }}
+                >
+                  <AiOutlineMail />
+                </a>
+              </ShareBar>
+            </>
+          </ArticleTitleContainer>
 
-        <Content>
-          {/* Dynamically render content with HTML */}
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
-        </Content>
-        <PublishedDate>
-          Published on: {new Date(article.createdAt).toLocaleDateString()}
-        </PublishedDate>
-      </ArticleContent>
-      <Sidebar>
-        <SidebarTitleContainer>
-          <SidebarTitle>RELATED POSTS</SidebarTitle>
-        </SidebarTitleContainer>
-        <OtherArticlesList>
-          {otherArticles.map((otherArticle) => (
-            <OtherArticleItem key={otherArticle.id}>
-              {otherArticle.imageUrl && (
-                <ArticleImage
-                  src={otherArticle.imageUrl}
-                  alt={otherArticle.title}
-                />
-              )}
-              <SidebarArticleLink
-                href={`/lifestyle/${otherArticle.id}`}
-                style={{ fontWeight: '700' }}
-              >
-                {otherArticle.title}
-              </SidebarArticleLink>
-            </OtherArticleItem>
-          ))}
-        </OtherArticlesList>
-      </Sidebar>
-    </ArticleContainer>
+          <Content>
+            {/* Dynamically render content with HTML */}
+            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          </Content>
+          <PublishedDate>
+            Published on: {new Date(article.createdAt).toLocaleDateString()}
+          </PublishedDate>
+        </ArticleContent>
+        <Sidebar>
+          <SidebarTitleContainer>
+            <SidebarTitle>RELATED POSTS</SidebarTitle>
+          </SidebarTitleContainer>
+          <OtherArticlesList>
+            {otherArticles.map((otherArticle) => (
+              <OtherArticleItem key={otherArticle.id}>
+                {otherArticle.imageUrl && (
+                  <ArticleImage
+                    src={otherArticle.imageUrl}
+                    alt={otherArticle.title}
+                  />
+                )}
+                <SidebarArticleLink
+                  href={`/lifestyle/${otherArticle.id}`}
+                  style={{ fontWeight: '700' }}
+                >
+                  {otherArticle.title}
+                </SidebarArticleLink>
+              </OtherArticleItem>
+            ))}
+          </OtherArticlesList>
+        </Sidebar>
+      </ArticleContainer>
+    </>
   );
 };
 
