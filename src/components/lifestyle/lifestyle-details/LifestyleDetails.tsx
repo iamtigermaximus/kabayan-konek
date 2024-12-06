@@ -401,7 +401,6 @@ const LifestyleDetails = () => {
 
   const articleUrl = `https://kabayankonek.com/lifestyle/${article.id}`;
   const articleTitle = article.title;
-  const articleDescription = article.content;
   const articleImage =
     article.imageUrl ||
     'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png';
@@ -413,18 +412,18 @@ const LifestyleDetails = () => {
     <>
       <Head>
         <title>{articleTitle} | Kabayan Konek</title>
-        <meta name="description" content={articleDescription} />
-
         {/* Open Graph meta tags */}
         <meta property="og:title" content={articleTitle} />
-        <meta property="og:description" content={articleDescription} />
         <meta property="og:url" content={articleUrl} />
         <meta property="og:image" content={articleImage} />
         <meta property="og:type" content="article" />
-
+        <meta
+          property="og:description"
+          content={article.content.substring(0, 200)}
+        />{' '}
+        {/* Optional: Short Description */}
         {/* Twitter Card meta tags */}
         <meta name="twitter:title" content={articleTitle} />
-        <meta name="twitter:description" content={articleDescription} />
         <meta name="twitter:image" content={articleImage} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
