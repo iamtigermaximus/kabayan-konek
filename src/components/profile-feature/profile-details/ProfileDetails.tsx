@@ -116,13 +116,13 @@ const ProfileDetails = () => {
   const articleUrl = `https://kabayankonek.com/profile/${article.id}`;
   const articleTitle = article.title;
 
-  const encodedTitle = encodeURIComponent(articleTitle);
-  const encodedUrl = encodeURIComponent(articleUrl);
+  // const encodedTitle = encodeURIComponent(articleTitle);
+  // const encodedUrl = encodeURIComponent(articleUrl);
 
   return (
     <>
       <Head>
-        <title>{`${article.title} | Kabayan Konek`}</title>
+        <title>{`${article.title} | KABAYAN KONEK`}</title>
         <meta name="description" content={article.content.slice(0, 150)} />
         <meta
           name="keywords"
@@ -188,7 +188,7 @@ const ProfileDetails = () => {
             <>
               <ShareBar>
                 {/* Facebook */}
-                <FacebookShareButton url={encodedUrl} quote={encodedTitle}>
+                <FacebookShareButton url={articleUrl} quote={articleTitle}>
                   <FaFacebookF
                     style={{
                       color: '#1877f2',
@@ -209,7 +209,7 @@ const ProfileDetails = () => {
                 </FacebookShareButton>
 
                 {/* Twitter */}
-                <TwitterShareButton url={encodedUrl} title={encodedTitle}>
+                <TwitterShareButton url={articleUrl} title={articleTitle}>
                   <FaTwitter
                     style={{
                       color: '#1da1f2',
@@ -230,7 +230,7 @@ const ProfileDetails = () => {
                 </TwitterShareButton>
 
                 {/* LinkedIn */}
-                <LinkedinShareButton url={encodedUrl} title={encodedTitle}>
+                <LinkedinShareButton url={articleUrl} title={articleTitle}>
                   <FaLinkedinIn
                     style={{
                       color: '#0077b5',
@@ -251,7 +251,7 @@ const ProfileDetails = () => {
                 </LinkedinShareButton>
 
                 {/* Reddit */}
-                <RedditShareButton url={encodedUrl} title={encodedTitle}>
+                <RedditShareButton url={articleUrl} title={articleTitle}>
                   <FaRedditAlien
                     style={{
                       color: '#ff4500',
@@ -273,9 +273,9 @@ const ProfileDetails = () => {
 
                 {/* Email */}
                 <EmailShareButton
-                  url={encodedUrl}
-                  subject={encodedTitle}
-                  body={`Check out this article: ${encodedUrl}`}
+                  url={articleUrl}
+                  subject={articleTitle}
+                  body={`Check out this article: ${articleUrl}`}
                 >
                   <AiOutlineMail
                     style={{
