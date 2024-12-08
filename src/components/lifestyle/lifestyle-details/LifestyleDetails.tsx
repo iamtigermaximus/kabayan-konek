@@ -9,6 +9,14 @@ import {
   FaLinkedinIn,
   FaRedditAlien,
 } from 'react-icons/fa';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  RedditShareButton,
+  EmailShareButton,
+} from 'next-share';
+
 import { AiOutlineMail } from 'react-icons/ai';
 import {
   ArticleContainer,
@@ -182,54 +190,113 @@ const LifestyleDetails = () => {
             <>
               <ShareBar>
                 {/* Facebook */}
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#1877f2' }}
-                >
-                  <FaFacebookF />
-                </a>
+                <FacebookShareButton url={encodedUrl} quote={encodedTitle}>
+                  <FaFacebookF
+                    style={{
+                      color: '#1877f2',
+                      display: 'block',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '20px',
+                      height: '20px',
+                      textAlign: 'center',
+                      borderRadius: '50%',
+                      background: 'white',
+                      fontSize: '12px',
+                      textDecoration: 'none',
+                      boxShadow: '0 0 5px rgba(0, 0, 0, 0.15)',
+                      padding: '5px',
+                    }}
+                  />
+                </FacebookShareButton>
 
                 {/* Twitter */}
-                <a
-                  href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#1da1f2' }}
-                >
-                  <FaTwitter />
-                </a>
+                <TwitterShareButton url={encodedUrl} title={encodedTitle}>
+                  <FaTwitter
+                    style={{
+                      color: '#1da1f2',
+                      display: 'block',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '20px',
+                      height: '20px',
+                      textAlign: 'center',
+                      borderRadius: '50%',
+                      background: 'white',
+                      fontSize: '12px',
+                      textDecoration: 'none',
+                      boxShadow: '0 0 5px rgba(0, 0, 0, 0.15)',
+                      padding: '5px',
+                    }}
+                  />
+                </TwitterShareButton>
 
                 {/* LinkedIn */}
-                <a
-                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#0077b5' }}
-                >
-                  <FaLinkedinIn />
-                </a>
+                <LinkedinShareButton url={encodedUrl} title={encodedTitle}>
+                  <FaLinkedinIn
+                    style={{
+                      color: '#0077b5',
+                      display: 'block',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '20px',
+                      height: '20px',
+                      textAlign: 'center',
+                      borderRadius: '50%',
+                      background: 'white',
+                      fontSize: '12px',
+                      textDecoration: 'none',
+                      boxShadow: '0 0 5px rgba(0, 0, 0, 0.15)',
+                      padding: '5px',
+                    }}
+                  />
+                </LinkedinShareButton>
 
                 {/* Reddit */}
-                <a
-                  href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#ff4500' }}
-                >
-                  <FaRedditAlien />
-                </a>
+                <RedditShareButton url={encodedUrl} title={encodedTitle}>
+                  <FaRedditAlien
+                    style={{
+                      color: '#ff4500',
+                      display: 'block',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '20px',
+                      height: '20px',
+                      textAlign: 'center',
+                      borderRadius: '50%',
+                      background: 'white',
+                      fontSize: '12px',
+                      textDecoration: 'none',
+                      boxShadow: '0 0 5px rgba(0, 0, 0, 0.15)',
+                      padding: '5px',
+                    }}
+                  />
+                </RedditShareButton>
 
                 {/* Email */}
-                <a
-                  href={`mailto:?subject=${encodedTitle}&body=Check%20out%20this%20article:%20${encodedUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#333' }}
+                <EmailShareButton
+                  url={encodedUrl}
+                  subject={encodedTitle}
+                  body={`Check out this article: ${encodedUrl}`}
                 >
-                  <AiOutlineMail />
-                </a>
+                  <AiOutlineMail
+                    style={{
+                      color: '#333',
+                      display: 'block',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '20px',
+                      height: '20px',
+                      textAlign: 'center',
+                      borderRadius: '50%',
+                      background: 'white',
+                      fontSize: '12px',
+                      textDecoration: 'none',
+                      boxShadow: '0 0 5px rgba(0, 0, 0, 0.15)',
+                      padding: '5px',
+                    }}
+                  />
+                </EmailShareButton>
               </ShareBar>
             </>
           </ArticleTitleContainer>
