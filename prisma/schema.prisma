@@ -30,6 +30,8 @@ model User {
   inquiries     Inquiry[] 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())  
+
+  comments      Comment[]  
 }
 
 
@@ -127,6 +129,7 @@ model KabayanSpotlight {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())  
+  comments  Comment[]  
 }
 
 model LifestyleArticle {
@@ -137,7 +140,8 @@ model LifestyleArticle {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())  
+  updatedAt   DateTime @default(now()) 
+  comments  Comment[]   
 }
 
 model NewsArticle {
@@ -165,4 +169,20 @@ model Advertisement {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())  
+}
+
+model Comment {
+  id            String   @id @default(uuid())
+  content       String   // The content of the comment
+  userId        String   // User who posted the comment
+  user          User     @relation(fields: [userId], references: [id])  // Relation to User
+  lifestyleArticleId String?  // Relation to LifestyleArticle
+  kabayanSpotlightId String?  // Relation to KabayanSpotlight
+  lifestyleArticle   LifestyleArticle? @relation(fields: [lifestyleArticleId], references: [id])  // Relation to LifestyleArticle
+  kabayanSpotlight   KabayanSpotlight? @relation(fields: [kabayanSpotlightId], references: [id])  // Relation to KabayanSpotlight
+  parentId      String?  // For replies, this references the parent comment
+  parent        Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies       Comment[] @relation("CommentReplies")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
 }
