@@ -33,7 +33,6 @@ import {
   ArticleImage,
   SidebarArticleLink,
 } from './ProfileDetails.styles';
-import Head from 'next/head';
 
 interface KabayanArticle {
   id: string;
@@ -45,68 +44,39 @@ interface KabayanArticle {
   updatedAt: string;
 }
 
-const ProfileDetails = () => {
-  const [article, setArticle] = useState<KabayanArticle | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+interface ProfileDetailsProps {
+  article: KabayanArticle; // Use the LifestyleArticle type here
+}
+
+const ProfileDetails = ({ article }: ProfileDetailsProps) => {
   const [otherArticles, setOtherArticles] = useState<KabayanArticle[]>([]);
 
   const { id } = useParams();
   const router = useRouter();
 
   useEffect(() => {
-    if (id) {
-      console.log('Fetching kabayan article with id:', id);
-      fetch(`/api/profile/${id}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Failed to fetch kabayan article');
+    // Fetch other articles
+    fetch('/api/profile')
+      .then((res) => res.json())
+      .then((data) => {
+        // Sort articles by createdAt (desc) and limit to 5
+        const sortedArticles = data.sort(
+          (a: KabayanArticle, b: KabayanArticle) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
           }
-          return res.json();
-        })
-        .then((data) => {
-          console.log('Fetched kabayan article:', data);
-          setArticle(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error('Error:', err);
-          setError(err.message);
-          setLoading(false);
-        });
-
-      // Fetch other articles
-      fetch('/api/profile')
-        .then((res) => res.json())
-        .then((data) => {
-          // Sort articles by createdAt (desc) and limit to 5
-          const sortedArticles = data.sort(
-            (a: KabayanArticle, b: KabayanArticle) => {
-              return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-              );
-            }
-          );
-          // Filter out the current article and take the top 5
-          const filteredArticles = sortedArticles.filter(
-            (article: KabayanArticle) => article.id !== id
-          );
-          setOtherArticles(filteredArticles.slice(0, 5));
-        })
-        .catch((err) => {
-          console.error('Error fetching other articles:', err);
-        });
-    }
+        );
+        // Filter out the current article and take the top 5
+        const filteredArticles = sortedArticles.filter(
+          (article: KabayanArticle) => article.id !== id
+        );
+        setOtherArticles(filteredArticles.slice(0, 5));
+      })
+      .catch((err) => {
+        console.error('Error fetching other articles:', err);
+      });
   }, [id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (!article) {
     return <div>Kabayan article not found.</div>;
@@ -115,52 +85,13 @@ const ProfileDetails = () => {
 
   const articleUrl = `https://kabayankonek.com/profile/${article.id}`;
   const articleTitle = article.title;
-
-  // const encodedTitle = encodeURIComponent(articleTitle);
-  // const encodedUrl = encodeURIComponent(articleUrl);
+  // const imageUrl =
+  //   article.imageUrl ||
+  //   'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png';
+  // const articleContent = article.content.slice(0, 150);
 
   return (
     <>
-      <Head>
-        <title>{`${article.title} | KABAYAN KONEK`}</title>
-        <meta name="description" content={article.content.slice(0, 150)} />
-        <meta
-          name="keywords"
-          content={`Kabayan Spotlight, OFW Stories, Filipino Family in Finland, Pinoy Family in Finland,Kabayan community, Filipino profiles, Pinoy profiles, inspiring Pinoy stories, Filipino achievements, Filipino leaders, Kabayan success stories, Pinoy success stories, Filipino personalities, Pinoy personalities, Filipino influencers, Pinoy influencers, Filipino culture, Pinoy culture, Filipino heroes, Pinoy heroes, Filipinos making a difference, Filipino empowerment, Pinoy empowerment, Filipinos in Finland, Filipino expats, Pinoy expats, Kabayan spotlight Finland, Filipino stories Finland, Pinoy stories Finland, Kabayan Konek community, Filipino community Finland, Filipino culture in Finland, Filipino leaders in Finland, Filipino role models, ${article.title}`}
-        />
-        <link rel="canonical" href={articleUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:title" content={article.title} />
-        <meta
-          property="og:description"
-          content={article.content.slice(0, 150)}
-        />
-        <meta property="og:url" content={articleUrl} />
-        <meta
-          property="og:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
-        <meta property="og:type" content="article" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:title" content={article.title} />
-        <meta
-          name="twitter:description"
-          content={article.content.slice(0, 150)}
-        />
-        <meta
-          name="twitter:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
       <ArticleContainer>
         <ArticleContent>
           <ArticleTitleContainer>

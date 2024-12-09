@@ -34,7 +34,6 @@ import {
   SidebarTitleContainer,
   Title,
 } from './LifestyleDetails.styles';
-import Head from 'next/head';
 
 interface LifestyleArticle {
   id: string;
@@ -46,68 +45,39 @@ interface LifestyleArticle {
   updatedAt: string;
 }
 
-const LifestyleDetails = () => {
-  const [article, setArticle] = useState<LifestyleArticle | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+interface LifestyleDetailsProps {
+  article: LifestyleArticle; // Use the LifestyleArticle type here
+}
+
+const LifestyleDetails = ({ article }: LifestyleDetailsProps) => {
   const [otherArticles, setOtherArticles] = useState<LifestyleArticle[]>([]);
 
   const { id } = useParams(); // Use useParams to get the `id`
   const router = useRouter();
 
   useEffect(() => {
-    if (id) {
-      console.log('Fetching article with id:', id);
-      fetch(`/api/lifestyle/${id}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Failed to fetch article');
+    // Fetch other articles
+    fetch('/api/lifestyle')
+      .then((res) => res.json())
+      .then((data) => {
+        // Sort articles by createdAt (desc) and limit to 5
+        const sortedArticles = data.sort(
+          (a: LifestyleArticle, b: LifestyleArticle) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
           }
-          return res.json();
-        })
-        .then((data) => {
-          console.log('Fetched article:', data);
-          setArticle(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error('Error:', err);
-          setError(err.message);
-          setLoading(false);
-        });
-
-      // Fetch other articles
-      fetch('/api/lifestyle')
-        .then((res) => res.json())
-        .then((data) => {
-          // Sort articles by createdAt (desc) and limit to 5
-          const sortedArticles = data.sort(
-            (a: LifestyleArticle, b: LifestyleArticle) => {
-              return (
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-              );
-            }
-          );
-          // Filter out the current article and take the top 5
-          const filteredArticles = sortedArticles.filter(
-            (article: LifestyleArticle) => article.id !== id
-          );
-          setOtherArticles(filteredArticles.slice(0, 5));
-        })
-        .catch((err) => {
-          console.error('Error fetching other articles:', err);
-        });
-    }
+        );
+        // Filter out the current article and take the top 5
+        const filteredArticles = sortedArticles.filter(
+          (article: LifestyleArticle) => article.id !== id
+        );
+        setOtherArticles(filteredArticles.slice(0, 5));
+      })
+      .catch((err) => {
+        console.error('Error fetching other articles:', err);
+      });
   }, [id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (!article) {
     return <div>Article not found.</div>;
@@ -117,52 +87,13 @@ const LifestyleDetails = () => {
 
   const articleUrl = `https://kabayankonek.com/lifestyle/${article.id}`;
   const articleTitle = article.title;
-
-  // const encodedTitle = encodeURIComponent(articleTitle);
-  // const encodedUrl = encodeURIComponent(articleUrl);
+  // const articleContent = article.content.slice(0, 150);
+  // const imageUrl =
+  //   article.imageUrl ||
+  //   'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png';
 
   return (
     <>
-      <Head>
-        <title>{`${article.title} | KABAYAN KONEK`}</title>
-        <meta name="description" content={article.content.slice(0, 150)} />
-        <meta
-          name="keywords"
-          content={`Filipino lifestyle, Kabayan lifestyle, Pinoy lifestyle, lifestyle for Filipinos, Filipino expat life, Filipino culture, Kabayan Konek lifestyle, Filipino tips and inspiration, Pinoy community Finland, Filipino living in Finland, Filipino events, Filipino culture in Finland, Filipino expats tips, Pinoy lifestyle articles, Kabayan Konek articles, Filipino fashion and trends, Filipino food, Filipino health and wellness, Pinoy travel tips, Filipino entertainment, ${article.title}`}
-        />
-        <link rel="canonical" href={articleUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:title" content={article.title} />
-        <meta
-          property="og:description"
-          content={article.content.slice(0, 150)}
-        />
-        <meta property="og:url" content={articleUrl} />
-        <meta
-          property="og:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
-        <meta property="og:type" content="article" />
-
-        {/* Twitter Card */}
-        <meta name="twitter:title" content={article.title} />
-        <meta
-          name="twitter:description"
-          content={article.content.slice(0, 150)}
-        />
-        <meta
-          name="twitter:image"
-          content={
-            article.imageUrl ||
-            'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png'
-          }
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
       <ArticleContainer>
         <ArticleContent>
           <ArticleTitleContainer>
