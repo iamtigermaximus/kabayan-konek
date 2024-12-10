@@ -252,7 +252,7 @@ const ProfileDetails = ({ article }: ProfileDetailsProps) => {
                   />
                 )}
                 <SidebarArticleLink
-                  href={`/lifestyle/${otherArticle.id}`}
+                  href={`/profile/${otherArticle.id}`}
                   style={{ fontWeight: '700' }}
                 >
                   {otherArticle.title}
