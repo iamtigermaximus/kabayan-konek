@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image1 from '../../../assets/PhiliFin.webp';
+import Image1 from '../../../assets/pinasredblue.jpg';
 import LogoImage from '../../../assets/kabayankonek.png';
 import Image from 'next/image';
 import Link from 'next/link';
