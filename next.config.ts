@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['res.cloudinary.com'], // Add Cloudinary to allowed domains
+    domains: ['res.cloudinary.com', 'lh3.googleusercontent.com'], // Add Cloudinary to allowed domains
   },
   webpack: (config, { isServer }) => {
     // Add the yjs alias to webpack configuration
