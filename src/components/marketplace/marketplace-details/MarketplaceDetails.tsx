@@ -7,7 +7,7 @@ import {
   BasicProductInfoContainer,
   ModalContent,
   ModalOverlay,
-  ProductImage,
+  // ProductImage,
   ProductPrice,
   SectionContainer,
   StyledLink,
@@ -28,6 +28,7 @@ import {
   ProductDetailTitleContainer,
   ProductGallery,
   ProductImageContainer,
+  ProductImagePreview,
   RelatedProductCard,
   RelatedProductDescription,
   RelatedProductImage,
@@ -187,7 +188,7 @@ const MarketplaceDetails = () => {
           </div>
         </div>
         <ProductImageContainer>
-          <ProductImage
+          <ProductImagePreview
             src={selectedImage || product.primaryImageUrl || DefaultImage}
             alt={product.name}
             width={500}

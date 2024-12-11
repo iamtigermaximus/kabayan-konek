@@ -77,6 +77,8 @@ export const ProductDetailContainer = styled.div`
 
 export const ProductImageContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   /* border: 1px solid red; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
@@ -95,6 +97,17 @@ export const ProductImage = styled(Image)`
 export const ProductDetailTitleContainer = styled.div`
   max-width: 800px;
   margin-top: 30px;
+`;
+
+export const ProductImagePreview = styled(Image)`
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+
+  @media (min-width: ${bp.md}) {
+    width: 500px;
+    height: 500px;
+  }
 `;
 
 export const Title = styled.h1`

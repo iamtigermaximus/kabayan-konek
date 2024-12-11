@@ -17,19 +17,33 @@ export const AdvertisementDetailContainer = styled.div`
 
 export const AdvertisementImageContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
+// export const AdvertisementImage = styled(Image)`
+//   width: 100%;
+//   height: auto;
+//   border-radius: 8px;
+//   margin-bottom: 15px;
+//   height: 100%;
+//   /* object-fit: cover; */
+//   object-fit: contain cover;
+//   min-height: 300px;
+//   max-height: 350px;
+// `;
+
 export const AdvertisementImage = styled(Image)`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  height: 100%;
-  /* object-fit: cover; */
-  object-fit: contain cover;
-  min-height: 300px;
-  max-height: 350px;
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+
+  @media (min-width: ${bp.md}) {
+    width: 500px;
+    height: 500px;
+  }
 `;
 
 export const AdvertisementDetailTitleContainer = styled.div`
