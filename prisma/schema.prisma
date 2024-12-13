@@ -24,6 +24,7 @@ model User {
   products      Product[]
   kabayanSpotlights KabayanSpotlight[]
   lifestyleArticles LifestyleArticle[]
+  trendsArticles TrendArticle[]
   newsArticles NewsArticle[]
   advertisements     Advertisement[] 
   fcmToken      String? 
@@ -178,11 +179,25 @@ model Comment {
   user          User     @relation(fields: [userId], references: [id])  // Relation to User
   lifestyleArticleId String?  // Relation to LifestyleArticle
   kabayanSpotlightId String?  // Relation to KabayanSpotlight
+  trendArticleId String?  // Relation to TrendArticle
   lifestyleArticle   LifestyleArticle? @relation(fields: [lifestyleArticleId], references: [id])  // Relation to LifestyleArticle
   kabayanSpotlight   KabayanSpotlight? @relation(fields: [kabayanSpotlightId], references: [id])  // Relation to KabayanSpotlight
+  trendArticle   TrendArticle? @relation(fields: [trendArticleId], references: [id])  // Relation to TrendArticle
   parentId      String?  // For replies, this references the parent comment
   parent        Comment? @relation("CommentReplies", fields: [parentId], references: [id])
   replies       Comment[] @relation("CommentReplies")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now()) @updatedAt
+}
+
+model TrendArticle {
+   id        String   @id @default(uuid()) 
+  title       String  @unique 
+  content     String
+  imageUrl    String?  // Optional image URL for the lifestyle article
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) 
+  comments  Comment[]   
 }

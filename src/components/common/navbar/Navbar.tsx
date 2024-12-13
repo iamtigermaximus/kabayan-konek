@@ -113,6 +113,9 @@ const Navbar = () => {
           <Link href="/profile" onClick={toggleSidebar}>
             Kabayan
           </Link>
+          <Link href="/trends" onClick={toggleSidebar}>
+            Trends
+          </Link>
           <Link href="/news" onClick={toggleSidebar}>
             News
           </Link>
@@ -140,6 +143,7 @@ const Navbar = () => {
         <MenuLink href="/">Home</MenuLink>
         <MenuLink href="/lifestyle">Lifestyle</MenuLink>
         <MenuLink href="/profile">Kabayan</MenuLink>
+        <MenuLink href="/trends">Trends</MenuLink>
         <MenuLink href="/news">News</MenuLink>
         <MenuLink href="/events">Events</MenuLink>
         <MenuLink href="/marketplace">Marketplace</MenuLink>

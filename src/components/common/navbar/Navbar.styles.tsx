@@ -55,7 +55,7 @@ export const MenuContainer = styled.div`
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 20px;
+  gap: 12px;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 8px 16px;
 
@@ -78,7 +78,7 @@ export const MenuLink = styled(Link)`
   }
 
   @media (min-width: ${bp.md}) {
-    font-size: 1.1rem;
+    /* font-size: 1.1rem; */
   }
 
   @media (min-width: ${bp.lg}) {

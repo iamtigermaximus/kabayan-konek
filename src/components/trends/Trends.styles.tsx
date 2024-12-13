@@ -24,7 +24,7 @@ export const Container = styled.div`
 //   }
 // `;
 
-export const EventsContent = styled.div`
+export const TrendsContent = styled.div`
   flex: 3;
   margin-right: 20px;
 `;
@@ -133,7 +133,7 @@ export const SectionContainer = styled.section`
   }
 `;
 
-export const EventCard = styled.div`
+export const TrendCard = styled.div`
   display: flex;
   flex-direction: row;
   /* border: 1px solid #ccc; */
@@ -148,7 +148,7 @@ export const EventCard = styled.div`
     flex-direction: row;
   }
 `;
-export const EventImageContainer = styled.div`
+export const TrendImageContainer = styled.div`
   /* border: 1px solid red; */
   width: 100px;
   height: 100px;
@@ -163,7 +163,7 @@ export const EventImageContainer = styled.div`
   }
 `;
 
-export const EventImage = styled(Image)`
+export const TrendImage = styled(Image)`
   width: 100px;
   height: 100px;
   max-width: 150px;
@@ -180,7 +180,7 @@ export const EventImage = styled(Image)`
   }
 `;
 
-export const EventDetails = styled.div`
+export const TrendDetails = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -189,7 +189,7 @@ export const EventDetails = styled.div`
   }
 `;
 
-export const EventName = styled.h2`
+export const TrendName = styled.h2`
   // margin: 0 0 10px;
   font-size: 0.85rem;
   color: #333;
@@ -217,7 +217,7 @@ export const EventName = styled.h2`
   } */
 `;
 
-export const EventDescription = styled.p`
+export const TrendDescription = styled.p`
   margin: 10px 0;
   font-size: 0.75rem;
   color: #666;
@@ -237,7 +237,7 @@ export const EventDescription = styled.p`
   }
 `;
 
-export const EventDescriptionSpan = styled.span`
+export const TrendDescriptionSpan = styled.span`
   color: tomato;
   cursor: 'pointer';
   font-size: 0.75rem;
@@ -256,7 +256,7 @@ export const EventDescriptionSpan = styled.span`
   }
 `;
 
-export const BasicEventInfoContainer = styled.div`
+export const BasicTrendInfoContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -264,7 +264,7 @@ export const BasicEventInfoContainer = styled.div`
   gap: 10px;
 `;
 
-export const EventInfo = styled.div`
+export const TrendInfo = styled.div`
   margin: 5px 0;
   font-size: 0.75rem;
   color: #444;
@@ -522,7 +522,7 @@ export const SubmitButton = styled.button`
 
 export const UploadedImageContainer = styled.div`
   width: 100%;
-  height: 170px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -639,3 +639,295 @@ export const StyledEditorContainer = styled.div`
   }
 `;
 
+export const CreateButtonContainer = styled.div`
+  width: 100%;
+  padding: 0 10px 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+export const CreateButton = styled.button`
+  border: none;
+  padding: 10px;
+  width: 150px;
+  background-color: #494848;
+  color: white;
+`;
+
+export const Content = styled.div`
+  /* font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  h2,
+  h3 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+  } */
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700; /* Bold */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  h2 {
+    font-size: 2rem; /* 32px */
+    font-weight: 600; /* Semi-bold */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  h3 {
+    font-size: 1.75rem; /* 28px */
+    font-weight: 500; /* Medium */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  h4 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 400; /* Regular */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .editor-heading h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
+
+  .editor-heading h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 0.65rem;
+  }
+
+  .editor-heading h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+  }
+
+  .editor-heading h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.55rem;
+  }
+
+  .editor-heading h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .editor-heading h6 {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 0.45rem;
+  }
+
+  /* Paragraph */
+  p {
+    font-size: 0.7rem; /* 16px */
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 15px;
+    color: #555;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+
+  /* Blockquote */
+  blockquote {
+    background: #f4f4f4;
+    padding: 10px 20px;
+    border-left: 5px solid #ccc;
+    margin: 20px 0;
+    font-style: italic;
+  }
+
+  /* Links */
+  a {
+    text-decoration: none;
+    color: #007bff;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Additional Styles */
+  code {
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+
+  pre {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+  }
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  /* Directly applying truncation */
+  .truncate-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Adjust the number of lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds ellipsis when the content overflows */
+  }
+
+  /* Alternatively, applying truncation to the Content div itself */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+`;
+
+export const EditButtonsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+`;
+
+export const EditButton = styled.button`
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: gray;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+export const DeleteButton = styled.button`
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  background-color: tomato;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+export const ConfirmModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* z-index: 1000; */
+`;
+
+export const ConfirmModalContent = styled.div`
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+`;
+
+export const ConfirmModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 5px;
+`;
+
+export const CancelConfirmModalButton = styled.button`
+  background-color: gray;
+  color: white;
+  border: none;
+  width: 50px;
+  padding: 5px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+
+  &:hover {
+    background-color: black;
+  }
+`;
+
+export const DeleteConfirmModalButton = styled.button`
+  background-color: tomato;
+  color: white;
+  border: none;
+  width: 50px;
+  padding: 5px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+
+  &:hover {
+    background-color: red;
+  }
+`;
