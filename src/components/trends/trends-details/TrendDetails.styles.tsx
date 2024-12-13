@@ -118,27 +118,39 @@ export const Content = styled.div`
 
   /* Headings */
   h1 {
-    font-size: 2.25rem; /* 36px */
+    font-size: 1.25rem; /* 36px */
     font-weight: 700; /* Bold */
     margin-top: 20px;
     margin-bottom: 15px;
     color: #333;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 2rem; /* 36px */
+    }
   }
 
   h2 {
-    font-size: 2rem; /* 32px */
+    font-size: 1rem; /* 32px */
     font-weight: 600; /* Semi-bold */
     margin-top: 20px;
     margin-bottom: 10px;
     color: #333;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 2rem; /* 36px */
+    }
   }
 
   h3 {
-    font-size: 1.75rem; /* 28px */
+    font-size: 1.25rem; /* 28px */
     font-weight: 500; /* Medium */
     margin-top: 20px;
     margin-bottom: 10px;
     color: #333;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 1.5rem;
+    }
   }
 
   h4 {
@@ -150,9 +162,13 @@ export const Content = styled.div`
   }
 
   .editor-heading h1 {
-    font-size: 2rem;
+    font-size: 1.25;
     font-weight: bold;
     margin-bottom: 0.75rem;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 2rem;
+    }
   }
 
   .editor-heading h2 {
@@ -162,9 +178,13 @@ export const Content = styled.div`
   }
 
   .editor-heading h3 {
-    font-size: 1.5rem;
+    font-size: 0.75rem;
     font-weight: bold;
     margin-bottom: 0.6rem;
+
+    @media (min-width: ${bp.md}) {
+      font-size: 1.25rem;
+    }
   }
 
   .editor-heading h4 {
@@ -187,14 +207,14 @@ export const Content = styled.div`
 
   /* Paragraph */
   p {
-    font-size: 1rem; /* 16px */
+    font-size: 0.8rem; /* 16px */
     font-weight: 400;
     line-height: 1.6;
     margin-bottom: 15px;
     color: #555;
 
     @media (min-width: ${bp.md}) {
-      font-size: 1.25rem;
+      font-size: 1rem;
     }
   }
 
