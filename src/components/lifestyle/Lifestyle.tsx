@@ -88,7 +88,7 @@ const Lifestyle = () => {
 
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
-  const itemsPerPage = 6;
+  const itemsPerPage = 12;
   const [content, setContent] = useState('');
   const [editor, setEditor] = useState<Editor | null>(null);
 

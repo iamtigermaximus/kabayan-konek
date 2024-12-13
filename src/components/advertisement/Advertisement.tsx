@@ -93,7 +93,7 @@ const Advertisement = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const itemsPerPage = 6; // Number of ads to show per page
+  const itemsPerPage = 12; // Number of ads to show per page
   const [content, setContent] = useState('');
   const [editor, setEditor] = useState<Editor | null>(null);
 
