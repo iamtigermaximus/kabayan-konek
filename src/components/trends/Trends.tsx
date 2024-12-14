@@ -125,7 +125,7 @@ const Trends = () => {
   const [editor, setEditor] = useState<Editor | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const [totalPages, setTotalPages] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleContentChange = (newContent: string) => {
