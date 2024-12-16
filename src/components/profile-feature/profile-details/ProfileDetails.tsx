@@ -37,6 +37,16 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 
+interface LifestyleArticle {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface KabayanArticle {
   id: string;
   title: string;
@@ -62,11 +72,34 @@ interface Comment {
 
 const ProfileDetails = ({ article }: ProfileDetailsProps) => {
   const [otherArticles, setOtherArticles] = useState<KabayanArticle[]>([]);
+  const [lifestyleArticles, setLifestyleArticles] = useState<
+    LifestyleArticle[]
+  >([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
   const { id } = useParams();
   const router = useRouter();
   const { data: session } = useSession();
+
+  const fetchLifestyleArticles = async () => {
+    try {
+      const response = await fetch('/api/lifestyle');
+      const data: LifestyleArticle[] = await response.json();
+      // Sort articles by createdAt (desc) and filter out the current article
+      const sortedArticles = data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      // Take top 5 other articles (exclude current article if necessary)
+      setLifestyleArticles(sortedArticles.slice(0, 3));
+    } catch (error) {
+      console.error('Error fetching other articles:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLifestyleArticles();
+  }, []);
 
   useEffect(() => {
     // Fetch other articles
@@ -132,6 +165,9 @@ const ProfileDetails = ({ article }: ProfileDetailsProps) => {
     }
   };
   const handleBackButton = () => router.back();
+  const handleLoginRedirect = () => {
+    router.push('/login');
+  };
 
   const articleUrl = `https://kabayankonek.com/profile/${article.id}`;
   const articleTitle = article.title;
@@ -340,7 +376,57 @@ const ProfileDetails = ({ article }: ProfileDetailsProps) => {
                   fontWeight: 'bold',
                 }}
               >
-                <p style={{ color: '#888' }}>
+                <form
+                  onSubmit={handleCommentSubmit}
+                  style={{ marginBottom: '20px' }}
+                >
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write a comment..."
+                    style={{
+                      width: '100%',
+                      height: '80px',
+                      padding: '10px',
+                      borderRadius: '5px',
+                      border: '1px solid #ccc',
+                      marginBottom: '10px',
+                      fontSize: '14px',
+                      fontFamily: 'Arial, sans-serif',
+                      resize: 'vertical',
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      width: '100%',
+                      justifyContent: 'flex-end',
+                    }}
+                  >
+                    <button
+                      type="submit"
+                      style={{
+                        backgroundColor: '#1877f2',
+                        color: 'white',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '5px',
+                        fontSize: '16px',
+                        cursor: session?.user ? 'pointer' : 'not-allowed',
+                      }}
+                    >
+                      Post Comment
+                    </button>
+                  </div>
+                </form>
+                <p
+                  onClick={handleLoginRedirect}
+                  style={{
+                    color: '#888',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                  }}
+                >
                   Please log in to leave a comment.
                 </p>
               </div>
@@ -450,6 +536,24 @@ const ProfileDetails = ({ article }: ProfileDetailsProps) => {
                   style={{ fontWeight: '700' }}
                 >
                   {otherArticle.title}
+                </SidebarArticleLink>
+              </OtherArticleItem>
+            ))}
+          </OtherArticlesList>
+          <SidebarTitleContainer>
+            <SidebarTitle>FEATURES</SidebarTitle>
+          </SidebarTitleContainer>
+          <OtherArticlesList>
+            {lifestyleArticles.map((article) => (
+              <OtherArticleItem key={article.id}>
+                {article.imageUrl && (
+                  <ArticleImage src={article.imageUrl} alt={article.title} />
+                )}
+                <SidebarArticleLink
+                  href={`/lifestyle/${article.id}`}
+                  style={{ fontWeight: '700' }}
+                >
+                  {article.title}
                 </SidebarArticleLink>
               </OtherArticleItem>
             ))}
