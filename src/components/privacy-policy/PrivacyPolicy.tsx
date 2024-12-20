@@ -522,6 +522,33 @@ const PrivacyPolicy = () => {
         Usage Data may include information such as Your Device&apos;s Internet
         require Your parents consent before We collect and use that information.
       </p>
+      <h2>Monetization and Google Publisher Policies</h2>
+      <p>
+        Our platform adheres to Google’s Publisher Policies to ensure
+        responsible and compliant monetization practices. This includes
+        compliance with content restrictions and monetization pauses based on
+        specific regions or topics, such as the ongoing war in Ukraine, or for
+        users located in regions where Google has imposed advertising
+        restrictions (e.g., Russia).
+      </p>
+
+      <h2>Regional Monetization Restrictions</h2>
+      <p>
+        Due to geopolitical events, including the war in Ukraine and actions by
+        Google in response to these events, monetization may be paused or
+        restricted for users in specific regions, such as Russia. We comply with
+        all of Google advertising restrictions and pauses in these areas.
+      </p>
+
+      <h2>Sensitive Content and Monetization</h2>
+      <p>
+        In accordance with Google policies, we do not allow content that
+        exploits, dismisses, or condones harmful events, including conflicts or
+        wars. Monetization of such content will not be permitted on our
+        platform. This includes content related to sensitive topics such as the
+        war in Ukraine.
+      </p>
+
       <h2>Links to Other Websites</h2>
       <p>
         Our Service may contain links to other websites that are not operated by
