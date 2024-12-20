@@ -5,14 +5,14 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'NEWS | KABAYAN KONEK',
   description:
-    'Stay updated with the latest news and articles from Kabayan Konek.',
+    'Stay updated with the latest news and articles from Kabayan Konek, covering Filipino culture, events, and community updates in Finland.',
   keywords:
-    'Filipino news, Kabayan news, Pinoy news, Filipino community news, Kabayan Konek, news articles, Kabayan Konek news, Filipino news Finland, Pinoy news Finland, Filipino culture news, Filipino events, Kabayan updates, Kabayan community updates, Filipino lifestyle news, Pinoy news updates, Filipino stories, news for Filipinos, Filipino events in Finland, Kabayan Konek articles, Pinoy news and stories, Filipino expat news, Pinoy expat news, news for Pinoys in Finland, Kabayan Konek spotlight, Filipino expats in Finland, Kabayan community Finland',
+    'Filipino news, Kabayan Konek news, Filipino community Finland, Pinoy news Finland, Kabayan updates, Filipino culture news, Kabayan Konek articles, Filipino expat news, Filipino lifestyle news, Pinoy news updates, Kabayan community Finland',
 
   openGraph: {
     title: 'NEWS | KABAYAN KONEK',
     description:
-      'Stay updated with the latest news and articles from Kabayan Konek.',
+      'Stay updated with the latest news and articles from Kabayan Konek, covering Filipino culture, events, and community updates in Finland.',
     url: 'https://kabayankonek.com/news',
     images: [
       {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'NEWS | KABAYAN KONEK',
     description:
-      'Stay updated with the latest news and articles from Kabayan Konek.',
+      'Stay updated with the latest news and articles from Kabayan Konek, covering Filipino culture, events, and community updates in Finland.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',

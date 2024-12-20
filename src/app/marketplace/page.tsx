@@ -5,14 +5,14 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'MARKETPLACE  | KABAYAN KONEK',
   description:
-    'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+    'Explore the Kabayan Konek marketplace. Buy and sell a wide range of products including electronics, fashion, and home items within the Filipino community in Finland.',
   keywords:
-    'Filipino marketplace, Kabayan marketplace, Pinoy marketplace, buy Filipino products, sell Filipino products, Kabayan Konek marketplace, Filipino electronics, Filipino fashion, Pinoy fashion, Filipino home items, Filipino marketplace Finland, Pinoy products for sale, Filipino online shopping, Kabayan Konek buy and sell, e-commerce for Filipinos, Filipino goods, Pinoy products marketplace, Filipino community marketplace, Filipino expats buy and sell, online store for Filipinos, Kabayan marketplace Finland, secondhand products marketplace',
+    'Filipino marketplace, Kabayan Konek marketplace, Filipino products for sale, buy Filipino electronics, Filipino fashion marketplace, Filipino home goods, Pinoy products, Filipino community Finland, buy and sell Filipino products, secondhand Filipino marketplace',
 
   openGraph: {
     title: 'MARKETPLACE | KABAYAN KONEK',
     description:
-      'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+      'Explore the Kabayan Konek marketplace. Buy and sell a wide range of products including electronics, fashion, and home items within the Filipino community in Finland.',
     url: 'https://kabayankonek.com/marketplace',
     images: [
       {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'MARKETPLACE | KABAYAN KONEK',
     description:
-      'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+      'Explore the Kabayan Konek marketplace. Buy and sell a wide range of products including electronics, fashion, and home items within the Filipino community in Finland.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',

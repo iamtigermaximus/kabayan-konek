@@ -5,11 +5,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'PRIVACY POLICY  | KABAYAN KONEK',
   description:
-    'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+    'Read Kabayan Konek’s Privacy Policy to understand how we collect, use, and protect your personal data when using our services.',
+  keywords:
+    'Privacy Policy, Kabayan Konek privacy, data protection, Filipino community privacy, online privacy policy, Kabayan Konek terms, personal data protection, data collection policy, privacy rights, user data security, online privacy in Finland, user privacy Finland, Kabayan Konek data practices',
   openGraph: {
     title: 'PRIVACY POLICY  | KABAYAN KONEK',
     description:
-      'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+      'Read Kabayan Konek’s Privacy Policy to understand how we collect, use, and protect your personal data when using our services.',
     url: 'https://kabayankonek.com/privacy-policy',
     images: [
       {
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'PRIVACY POLICY | KABAYAN KONEK',
     description:
-      'Explore products for sale in the Kabayan Konek marketplace. Buy and sell electronics, fashion, home items, and more.',
+      'Read Kabayan Konek’s Privacy Policy to understand how we collect, use, and protect your personal data when using our services.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
   },
   alternates: {
-    canonical: 'https://kabayankonek.com/marketplace',
+    canonical: 'https://kabayankonek.com/privacy-policy',
   },
 };
 

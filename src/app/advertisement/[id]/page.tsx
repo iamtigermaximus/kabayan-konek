@@ -4,16 +4,16 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'ADVERTISEMENTS | KABAYAN KONEK',
+  title: 'Advertise with Kabayan Konek | KABAYAN KONEK',
   description:
-    "Post your advertisements to reach the Filipino community in Finland. Whether it's jobs, services, or events, create an ad today!",
+    'Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.',
   keywords:
-    'Filipino advertisements, Pinoy ads, Filipino community ads, job postings for Filipinos, Filipino services, Pinoy jobs, Kabayan Konek advertisements, advertise in Finland, Filipino market, Pinoy business ads, Filipino marketplace, Filipino community Finland, Filipino event advertisements, Pinoy service advertisements, job listings Finland, Filipino job opportunities, Pinoy events Finland, advertise for Filipinos, online ads for Filipinos',
+    'Filipino advertisements, Pinoy jobs, Filipino services, advertise in Finland, Filipino events',
 
   openGraph: {
     title: 'ADVERTISEMENTS | KABAYAN KONEK',
     description:
-      "Post your advertisements to reach the Filipino community in Finland. Whether it's jobs, services, or events, create an ad today!",
+      'Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.',
     url: 'https://kabayankonek.com/advertisement',
     images: [
       {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'ADVERTISEMENTS | KABAYAN KONEK',
     description:
-      "Post your advertisements to reach the Filipino community in Finland. Whether it's jobs, services, or events, create an ad today!",
+      'Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     title: 'TRENDS | KABAYAN KONEK',
     description:
-      'Explore the latest lifestyle articles, tips, and inspiration on Kabayan Konek',
+      'Explore the latest trends shaping the lives of Filipinos around the world! From travel tips and must-visit destinations to the hottest gadgets and tech updates, Kabayan Konek brings you articles and inspiration tailored for the Filipino community. Dive into insights on health, wellness, food, and culture, as well as events and lifestyle stories that celebrate the vibrant Pinoy spirit. Whether you are looking for practical advice, entertainment updates, or community highlights, Kabayan Konek is your go-to source for staying connected and inspired.',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',

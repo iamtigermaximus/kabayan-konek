@@ -2,16 +2,16 @@ import Events from '@/components/events/Events';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'EVENTS | KABAYAN KONEK',
+  title: 'Discover Filipino Community Event | KABAYAN KONEK',
   description:
-    'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+    'Explore upcoming events in the Filipino community in Finland. Join Kabayan Konek to stay connected and participate in exciting activities!',
   keywords:
-    'Filipino events, Pinoy community events, Kabayan Konek events, events for Filipinos in Finland, Filipino festivals, Filipino celebrations, Filipino cultural events, Pinoy meetups, Kabayan events, expat events in Finland, Filipino activities, Pinoy gatherings, Kabayan Konek community, Filipino social events, Filipino event management, Pinoy online events, Kabayan Konek Finland events, Filipino entertainment events, Filipino networking events, Filipino expat community events',
+    'Filipino community events, Kabayan Konek events, Pinoy gatherings Finland, Filipino festivals Finland, Filipino cultural events',
 
   openGraph: {
-    title: 'EVENTS | KABAYAN KONEK',
+    title: 'Discover Filipino Community Event | KABAYAN KONEK',
     description:
-      'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+      'Explore upcoming events in the Filipino community in Finland. Join Kabayan Konek to stay connected and participate in exciting activities!',
 
     url: 'https://kabayankonek.com/events',
     images: [
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    title: 'EVENTS | KABAYAN KONEK',
+    title: 'Discover Filipino Community Event| KABAYAN KONEK',
     description:
-      'Discover upcoming events in your community, create and manage events easily, and engage with others. Join Kabayan Konek today!',
+      'Explore upcoming events in the Filipino community in Finland. Join Kabayan Konek to stay connected and participate in exciting activities!',
     images: [
       {
         url: 'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png',
