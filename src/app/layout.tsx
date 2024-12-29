@@ -61,6 +61,9 @@ export default function RootLayout({
           async
         ></script>
 
+        {/* Canonical Link */}
+        <link rel="canonical" href="https://www.kabayankonek.com/" />
+
         <link
           rel="apple-touch-icon"
           sizes="180x180"
