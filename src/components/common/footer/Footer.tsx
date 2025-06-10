@@ -117,9 +117,9 @@ const Footer = () => {
             <li>
               <Link href="/events">Events</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/news">News</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/marketplace">Marketplace</Link>
             </li>
@@ -175,7 +175,7 @@ const Footer = () => {
         </Section>
       </FooterContent>
       <Copyright>
-        © {new Date().getFullYear()}{' '}
+        © {new Date().getFullYear()}
         <strong style={{ color: 'tomato' }}>kabayankonek</strong>. All Rights
         Reserved.
       </Copyright>

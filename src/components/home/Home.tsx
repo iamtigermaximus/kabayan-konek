@@ -21,13 +21,13 @@ import {
   // EventDescription,
   EventInfo,
   SectionContainer,
-  NewsList,
-  NewsItem,
-  NewsContent,
-  NewsHeadline,
-  NewsSummary,
-  NewsDate,
-  NewsSource,
+  // NewsList,
+  // NewsItem,
+  // NewsContent,
+  // NewsHeadline,
+  // NewsSummary,
+  // NewsDate,
+  // NewsSource,
   StyledLink,
   EventsSectionBannerContainer,
   // EventDescriptionSpan,
@@ -97,17 +97,17 @@ interface EventProps {
   createdAt?: Date;
   updatedAt?: Date;
 }
-interface NewsArticleProps {
-  id: string;
-  title: string;
-  contentUrl: string;
-  newsSummary: string;
-  date: Date;
-  source: string;
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// interface NewsArticleProps {
+//   id: string;
+//   title: string;
+//   contentUrl: string;
+//   newsSummary: string;
+//   date: Date;
+//   source: string;
+//   userId: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
 
 export interface ProductProps {
   id?: string;
@@ -143,7 +143,7 @@ const Home = () => {
   >([]);
   const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
   const [events, setEvents] = useState<EventProps[]>([]);
-  const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
+  // const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
     []
@@ -278,22 +278,22 @@ const Home = () => {
     fetchEvents();
   }, []);
 
-  const fetchNewsArticles = async () => {
-    try {
-      const response = await fetch('/api/news');
-      const data: NewsArticleProps[] = await response.json();
-      data.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-      setNewsArticles(data);
-    } catch (error) {
-      console.error('Error fetching news articles:', error);
-    }
-  };
+  // const fetchNewsArticles = async () => {
+  //   try {
+  //     const response = await fetch('/api/news');
+  //     const data: NewsArticleProps[] = await response.json();
+  //     data.sort(
+  //       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  //     );
+  //     setNewsArticles(data);
+  //   } catch (error) {
+  //     console.error('Error fetching news articles:', error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchNewsArticles();
-  }, []);
+  // useEffect(() => {
+  //   fetchNewsArticles();
+  // }, []);
 
   const fetchMarketplace = async () => {
     try {
@@ -676,7 +676,7 @@ const Home = () => {
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
       </ShowMoreButtonContainer>
-      <DividerContainer>
+      {/* <DividerContainer>
         <DividerLine />
         <DividerLabel>LATEST NEWS</DividerLabel>
         <DividerLine />
@@ -709,7 +709,7 @@ const Home = () => {
       </SectionContainer>
       <ShowMoreButtonLink href="/news">
         <ShowMoreButton>Show More</ShowMoreButton>
-      </ShowMoreButtonLink>
+      </ShowMoreButtonLink> */}
     </Container>
   );
 };

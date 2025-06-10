@@ -116,9 +116,9 @@ const Navbar = () => {
           <Link href="/trends" onClick={toggleSidebar}>
             Trends
           </Link>
-          <Link href="/news" onClick={toggleSidebar}>
+          {/* <Link href="/news" onClick={toggleSidebar}>
             News
-          </Link>
+          </Link> */}
           <Link href="/events" onClick={toggleSidebar}>
             Events
           </Link>
@@ -144,7 +144,7 @@ const Navbar = () => {
         <MenuLink href="/lifestyle">Lifestyle</MenuLink>
         <MenuLink href="/profile">Kabayan</MenuLink>
         <MenuLink href="/trends">Trends</MenuLink>
-        <MenuLink href="/news">News</MenuLink>
+        {/* <MenuLink href="/news">News</MenuLink> */}
         <MenuLink href="/events">Events</MenuLink>
         <MenuLink href="/marketplace">Marketplace</MenuLink>
         <MenuLink href="/advertisement">Advertisement</MenuLink>
