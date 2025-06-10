@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     'Filipino advertisements, Pinoy jobs, Filipino services, advertise in Finland, Filipino events',
 
   openGraph: {
-    title: 'ADVERTISEMENTS | KABAYAN KONEK',
+    title: 'ADVERTISEMENT | KABAYAN KONEK',
     description:
       'Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.',
     url: 'https://kabayankonek.com/advertisement',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
-    title: 'ADVERTISEMENTS | KABAYAN KONEK',
+    title: 'ADVERTISEMENT | KABAYAN KONEK',
     description:
       'Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.',
     images: [
