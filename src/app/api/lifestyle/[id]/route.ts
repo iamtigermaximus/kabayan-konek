@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(req: NextRequest) {
   const url = req.nextUrl; // Get the URL of the incoming request
@@ -43,6 +44,9 @@ export async function DELETE(req: NextRequest) {
       where: { id },
     });
 
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
+
     return NextResponse.json({ message: 'Article deleted successfully' });
   } catch (error) {
     console.error('Error deleting article:', error);
@@ -81,6 +85,9 @@ export async function PUT(req: NextRequest) {
         imageUrl: image,
       },
     });
+
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
 
     return NextResponse.json(updatedArticle);
   } catch (error) {

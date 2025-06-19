@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma'; // Ensure prisma is imported from your lib
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth'; // Make sure authOptions are correctly configured
+import { revalidatePath } from 'next/cache';
 
 // Handle GET Request to fetch a product by ID
 export async function GET(req: NextRequest) {
@@ -111,6 +112,9 @@ export async function PUT(req: NextRequest) {
       },
     });
 
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
+
     return NextResponse.json(updatedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
@@ -160,6 +164,9 @@ export async function DELETE(req: NextRequest) {
 
     // Proceed to delete the product
     await prisma.product.delete({ where: { id } });
+
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
 
     return NextResponse.json({ message: 'Product deleted successfully' });
   } catch (error) {

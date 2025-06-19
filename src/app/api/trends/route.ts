@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 // Correct Cloudinary config setup
 cloudinary.config({
@@ -67,6 +68,9 @@ export async function POST(req: NextRequest) {
         userId: session.user.id, // Add admin's ID as the userId
       },
     });
+
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
 
     // Return the created article
     return NextResponse.json(newArticle, { status: 201 });

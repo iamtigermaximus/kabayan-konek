@@ -4,6 +4,8 @@ import Footer from '@/components/common/footer/Footer';
 import { NextAuthProvider } from './providers/sessionProviders';
 // import { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
+import GoogleScripts from '@/components/google-script/GoogleScripts';
+import Script from 'next/script';
 
 // export const metadata: Metadata = {
 //   title: 'KABAYAN KONEK',
@@ -34,14 +36,14 @@ export default function RootLayout({
       <head>
         {/* Google Adsense Script */}
 
-        <script
+        {/* <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2534929702759944"
           crossOrigin="anonymous"
-        />
+        /> */}
 
         {/* Google Analytics Script */}
-        <script
+        {/* <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=G-H0PBMXTEBB`} // Replace with your GA4 ID
         ></script>
@@ -54,7 +56,14 @@ export default function RootLayout({
               gtag('config', 'G-H0PBMXTEBB', { page_path: window.location.pathname });
             `,
           }}
-        ></script>
+        ></script> */}
+        <Script id="remove-extension-attributes" strategy="beforeInteractive">
+          {`
+            document.addEventListener('DOMContentLoaded', () => {
+              document.documentElement.removeAttribute('cz-shortcut-listen');
+            });
+          `}
+        </Script>
         <script
           type="text/javascript"
           src="https://upload-widget.cloudinary.com/global/all.js"
@@ -84,6 +93,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>
+        <GoogleScripts />
         <NextAuthProvider>
           <Navbar />
           {children}

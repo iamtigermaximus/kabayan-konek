@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma'; // Adjust to your prisma instance path
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(req: NextRequest) {
   const url = req.nextUrl;
@@ -102,6 +103,9 @@ export async function PUT(req: NextRequest) {
       },
     });
 
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
+
     return NextResponse.json(updatedAdvertisement);
   } catch (error) {
     console.error('Error updating advertisement:', error);
@@ -151,6 +155,9 @@ export async function DELETE(req: NextRequest) {
 
     // Proceed to delete the product
     await prisma.advertisement.delete({ where: { id } });
+
+    // ADD THIS LINE - Triggers sitemap update after creation
+    await revalidatePath('/api/server-sitemap');
 
     return NextResponse.json({ message: 'Advertisement deleted successfully' });
   } catch (error) {
