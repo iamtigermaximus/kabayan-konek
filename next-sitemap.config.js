@@ -63,7 +63,7 @@ module.exports = {
         ],
       },
     ],
-    additionalSitemaps: ['https://kabayankonek.com/api/server-sitemap'],
+    additionalSitemaps: ['https://kabayankonek.com/api/server-sitemap.xml'],
   },
   transform: async (config, path) => {
     const priorityMap = {
