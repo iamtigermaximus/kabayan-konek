@@ -73,7 +73,10 @@ module.exports = {
         disallow: ['/api/', '/admin/'],
       },
     ],
-    additionalSitemaps: ['https://kabayankonek.com/api/server-sitemap'],
+    additionalSitemaps: [
+      'https://kabayankonek.com/sitemap-0.xml',
+      'https://kabayankonek.com/api/server-sitemap',
+    ],
   },
   transform: async (config, path) => {
     const priorityMap = {

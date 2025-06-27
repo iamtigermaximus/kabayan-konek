@@ -143,7 +143,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         {
           source: '/sitemap-0.xml',
-          destination: '/404',
+          destination: '/sitemap-0.xml',
         },
       ],
       afterFiles: [],
