@@ -54,6 +54,17 @@ module.exports = {
     '/events/myEvents',
     '/marketplace/myProducts',
   ],
+  additionalPaths: async () => [
+    { loc: '/', priority: 1.0, changefreq: 'daily' },
+    { loc: '/lifestyle', priority: 0.9 },
+    { loc: '/trends', priority: 0.9 },
+    { loc: '/events', priority: 0.8 },
+    { loc: '/marketplace', priority: 0.7 },
+    { loc: '/advertisement', priority: 0.6 },
+    { loc: '/about', priority: 0.5 },
+    { loc: '/terms-and-conditions', priority: 0.3 },
+    { loc: '/privacy-policy', priority: 0.3 },
+  ],
   robotsTxtOptions: {
     policies: [
       {
