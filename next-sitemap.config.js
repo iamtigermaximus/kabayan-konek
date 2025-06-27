@@ -44,26 +44,25 @@ module.exports = {
   siteUrl: 'https://kabayankonek.com',
   generateRobotsTxt: true,
   exclude: [
-    '/server-sitemap.xml', // Remove if not using
+    '/server-sitemap.xml',
     '/api/*',
     '/admin*',
     '/login',
     '/signup',
-    '/profile/me', // Example of user-specific pages to exclude
+    '/profile/me',
+    '/advertisement/myAdvertisements',
+    '/events/myEvents',
+    '/marketplace/myProducts',
   ],
   robotsTxtOptions: {
     policies: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: [
-          '/api/',
-          '/admin/',
-          '/server-sitemap.xml', // Remove if not using
-        ],
+        disallow: ['/api/', '/admin/'],
       },
     ],
-    additionalSitemaps: ['https://kabayankonek.com/api/server-sitemap.xml'],
+    additionalSitemaps: ['https://kabayankonek.com/api/server-sitemap'],
   },
   transform: async (config, path) => {
     const priorityMap = {

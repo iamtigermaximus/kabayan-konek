@@ -118,16 +118,16 @@ const nextConfig: NextConfig = {
         ],
       },
       // Add these to handle legacy sitemaps
-      {
-        source: '/sitemap-0.xml',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
-          },
-          { key: 'Content-Type', value: 'text/plain' },
-        ],
-      },
+      // {
+      //   source: '/sitemap-0.xml',
+      //   headers: [
+      //     {
+      //       key: 'Cache-Control',
+      //       value: 'no-cache, no-store, must-revalidate',
+      //     },
+      //     { key: 'Content-Type', value: 'text/plain' },
+      //   ],
+      // },
       {
         source: '/sitemap.xml',
         headers: [
