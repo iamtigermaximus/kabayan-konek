@@ -69,8 +69,12 @@ module.exports = {
     policies: [
       {
         userAgent: '*',
-        allow: ['/api/server-sitemap', '/'],
-        disallow: ['/api/', '/admin/'],
+        allow: ['/api/server-sitemap'],
+        disallow: ['/api', '/admin'],
+      },
+      {
+        userAgent: '*',
+        allow: '/',
       },
     ],
     additionalSitemaps: [
