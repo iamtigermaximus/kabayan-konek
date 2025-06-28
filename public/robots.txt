@@ -1,5 +1,6 @@
 # *
 User-agent: *
+Allow: /api/server-sitemap
 Allow: /
 Disallow: /api/
 Disallow: /admin/
