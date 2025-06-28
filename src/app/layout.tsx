@@ -34,29 +34,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        {/* Google Adsense Script */}
-
-        {/* <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2534929702759944"
-          crossOrigin="anonymous"
-        /> */}
-
-        {/* Google Analytics Script */}
-        {/* <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=G-H0PBMXTEBB`} // Replace with your GA4 ID
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-H0PBMXTEBB', { page_path: window.location.pathname });
-            `,
-          }}
-        ></script> */}
         <Script id="remove-extension-attributes" strategy="beforeInteractive">
           {`
             document.addEventListener('DOMContentLoaded', () => {
