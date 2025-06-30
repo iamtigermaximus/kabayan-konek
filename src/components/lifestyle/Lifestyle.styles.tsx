@@ -55,7 +55,7 @@ export const FeaturesTitleContainer = styled.div`
   }
 `;
 
-export const FeaturesTitle = styled.h3`
+export const FeaturesTitle = styled.h1`
   font-size: 1rem;
   font-weight: bold;
   color: #494848;
@@ -333,7 +333,6 @@ export const ToolbarButton = styled.button`
   &:hover {
     background-color: #f4f4f4;
   }
-  
 
   &:active {
     background-color: #e0e0e0;

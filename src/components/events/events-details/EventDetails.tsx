@@ -143,7 +143,6 @@ const EventDetails = () => {
           </BasicInfoContainer>
 
           <Description>
-            {' '}
             <div dangerouslySetInnerHTML={{ __html: event.description }} />
           </Description>
         </DetailsContainer>
