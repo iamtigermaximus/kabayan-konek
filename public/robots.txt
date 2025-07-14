@@ -13,5 +13,4 @@ Host: https://kabayankonek.com
 
 # Sitemaps
 Sitemap: https://kabayankonek.com/sitemap.xml
-Sitemap: https://kabayankonek.com/sitemap-0.xml
 Sitemap: https://kabayankonek.com/api/server-sitemap

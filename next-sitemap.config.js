@@ -78,7 +78,7 @@ module.exports = {
       },
     ],
     additionalSitemaps: [
-      'https://kabayankonek.com/sitemap-0.xml',
+      // 'https://kabayankonek.com/sitemap-0.xml',
       'https://kabayankonek.com/api/server-sitemap',
     ],
   },
