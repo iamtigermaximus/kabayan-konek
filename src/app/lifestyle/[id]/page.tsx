@@ -39,15 +39,21 @@ export const generateMetadata = async ({
     article.imageUrl ||
     "https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png";
 
+  const canonicalUrl = `https://www.kabayankonek.com/lifestyle/${article.id}`;
+
   return {
     title: articleTitle,
     description: articleContent,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     keywords:
       "Filipino lifestyle, Kabayan Konek lifestyle, Pinoy lifestyle, Filipino expat life, Filipino culture, Filipino community, lifestyle for Filipinos, Kabayan Konek Finland, Filipino tips, Filipino culture Finland, Filipino food, Filipino health, Filipino entertainment",
     openGraph: {
       title: articleTitle,
       description: articleContent,
       // url: `https://kabayankonek.com/lifestyle/${article.id}`,
+      url: canonicalUrl,
       images: [
         { url: imageUrl, width: 1200, height: 630, alt: "Kabayan Konek Image" },
       ],

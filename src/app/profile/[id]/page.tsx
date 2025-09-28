@@ -38,15 +38,21 @@ export const generateMetadata = async ({
     article.imageUrl ||
     "https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png";
 
+  const canonicalUrl = `https://www.kabayankonek.com/profile/${article.id}`;
+
   return {
     title: articleTitle,
     description: articleContent,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     keywords:
       "Kabayan Spotlight, Filipino profiles, Pinoy profiles, Filipino success stories, Filipino leaders, Kabayan community, inspiring Pinoy stories, Filipino achievements, Pinoy role models, Filipino influencers, Filipino empowerment, Pinoy empowerment, Kabayan profiles Finland, Filipino leaders in Finland, Filipino role models, Kabayan community Europe, Filipino professionals Europe, Filipino diaspora Europe, Filipino heroes, Pinoy heroes, Filipinos making a difference, Filipino stories, Kabayan community USA, Filipino influencers, Pinoy influencers, Filipino success stories worldwide",
     openGraph: {
       title: articleTitle,
       description: articleContent,
       // url: `https://kabayankonek.com/profile/${article.id}`,
+      url: canonicalUrl,
       images: [
         { url: imageUrl, width: 1200, height: 630, alt: "Kabayan Konek Image" },
       ],

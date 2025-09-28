@@ -1,52 +1,86 @@
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import AdvertisementDetails from "@/components/advertisement/advertisement-details/AdvertisementDetails";
-import React from "react";
 
-import type { Metadata } from "next";
+interface Props {
+  params: Promise<{ id: string }>;
+}
 
-export const metadata: Metadata = {
-  title: "Advertise with Kabayan Konek | KABAYAN KONEK",
-  description:
-    "Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.",
-  keywords:
-    "Filipino advertisements, Pinoy jobs, Filipino services, advertise in Finland, Filipino events",
-
-  openGraph: {
-    title: "ADVERTISEMENT | KABAYAN KONEK",
-    description:
-      "Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.",
-    // url: 'https://kabayankonek.com/advertisement',
-    images: [
+async function fetchAdvertisement(id: string) {
+  try {
+    const response = await fetch(
+      `https://www.kabayankonek.com/api/advertisements/${id}`,
       {
-        url: "https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png",
-        width: 1200,
-        height: 630,
-        alt: "Kabayan Konek Image",
-      },
-    ],
-    type: "website",
-  },
-  twitter: {
-    title: "ADVERTISEMENT | KABAYAN KONEK",
-    description:
-      "Reach the Filipino community in Finland with your advertisements. Post jobs, services, and events today and connect with your audience.",
-    images: [
-      {
-        url: "https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png",
-        width: 1200,
-        height: 630,
-        alt: "Kabayan Konek Image",
-      },
-    ],
-    card: "summary_large_image",
-  },
+        cache: "no-store",
+      }
+    );
 
-  // alternates: {
-  //   canonical: 'https://kabayankonek.com/advertisement',
-  // },
-};
+    if (!response.ok) {
+      return null;
+    }
 
-const AdvertisementDetailsPage = () => {
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching advertisement:", error);
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params; // Remove await since params is not a Promise
+  const advertisement = await fetchAdvertisement(id);
+
+  if (!advertisement) {
+    return {
+      title: "Advertisement Not Found | KABAYAN KONEK",
+    };
+  }
+
+  const canonicalUrl = `https://www.kabayankonek.com/advertisement/${id}`;
+
+  // Clean description by removing HTML tags
+  const cleanDescription = advertisement.description
+    ? advertisement.description.replace(/<[^>]*>/g, "").slice(0, 150)
+    : "Advertisement details";
+
+  return {
+    title: `${advertisement.title} | KABAYAN KONEK`,
+    description: cleanDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: advertisement.title,
+      description: cleanDescription,
+      url: canonicalUrl,
+      images: advertisement.imageUrl
+        ? [
+            {
+              url: advertisement.imageUrl,
+              width: 1200,
+              height: 630,
+              alt: advertisement.title,
+            },
+          ]
+        : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: advertisement.title,
+      description: cleanDescription,
+      images: advertisement.imageUrl ? [advertisement.imageUrl] : [],
+    },
+  };
+}
+
+export default async function AdvertisementPage({ params }: Props) {
+  const { id } = await params; // Remove await
+  const advertisement = await fetchAdvertisement(id);
+
+  if (!advertisement) {
+    notFound();
+  }
+
   return <AdvertisementDetails />;
-};
-
-export default AdvertisementDetailsPage;
+}
