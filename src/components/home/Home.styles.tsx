@@ -1,8 +1,8 @@
-'use client';
-import styled from 'styled-components';
-import { breakpoints as bp } from '../../utils/layout';
-import Link from 'next/link';
-import Image from 'next/image';
+"use client";
+import styled from "styled-components";
+import { breakpoints as bp } from "../../utils/layout";
+import Link from "next/link";
+import Image from "next/image";
 
 export const Container = styled.div`
   padding: 10px;
@@ -41,7 +41,7 @@ export const DividerLine = styled.hr`
   flex-grow: 1;
 `;
 
-export const DividerLabel = styled.span`
+export const DividerLabel = styled.h1`
   /* position: absolute; */
   top: -12px;
   background-color: white;
@@ -268,7 +268,7 @@ export const EventDescription = styled.p`
 
 export const EventDescriptionSpan = styled.span`
   color: tomato;
-  cursor: 'pointer';
+  cursor: "pointer";
   font-size: 0.75rem;
   overflow-y: hidden;
 
@@ -417,7 +417,7 @@ export const Content = styled.div`
   } */
 
   body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
@@ -521,7 +521,7 @@ export const Content = styled.div`
 
   /* Additional Styles */
   code {
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     background-color: #f8f9fa;
     padding: 2px 4px;
     border-radius: 4px;

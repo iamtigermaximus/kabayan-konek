@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { breakpoints as bp } from '../../utils/layout';
+import styled from "styled-components";
+import { breakpoints as bp } from "../../utils/layout";
 
 export const Container = styled.div`
   padding: 10px;
@@ -35,7 +35,7 @@ export const DividerLine = styled.hr`
   flex-grow: 1;
 `;
 
-export const DividerLabel = styled.span`
+export const DividerLabel = styled.h1`
   top: -12px;
   background-color: white;
   padding: 0 10px;

@@ -1,8 +1,8 @@
-'use client';
-import styled from 'styled-components';
-import Image from 'next/image';
-import { breakpoints as bp } from '../../utils/layout';
-import Link from 'next/link';
+"use client";
+import styled from "styled-components";
+import Image from "next/image";
+import { breakpoints as bp } from "../../utils/layout";
+import Link from "next/link";
 
 export const Container = styled.div`
   padding: 10px;
@@ -239,7 +239,7 @@ export const TrendDescription = styled.p`
 
 export const TrendDescriptionSpan = styled.span`
   color: tomato;
-  cursor: 'pointer';
+  cursor: "pointer";
   font-size: 0.75rem;
   overflow-y: hidden;
 
@@ -305,7 +305,7 @@ export const DividerLine = styled.hr`
   flex-grow: 1;
 `;
 
-export const DividerLabel = styled.span`
+export const DividerLabel = styled.h1`
   top: -12px;
   background-color: white;
   padding: 0 10px;
@@ -686,7 +686,7 @@ export const Content = styled.div`
   } */
 
   body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
@@ -795,7 +795,7 @@ export const Content = styled.div`
 
   /* Additional Styles */
   code {
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     background-color: #f8f9fa;
     padding: 2px 4px;
     border-radius: 4px;

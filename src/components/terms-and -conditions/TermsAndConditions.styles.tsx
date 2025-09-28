@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { breakpoints as bp } from '@/utils/layout';
+import styled from "styled-components";
+import { breakpoints as bp } from "@/utils/layout";
 
 export const Container = styled.div`
   color: gray;
@@ -20,7 +20,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Heading = styled.div`
+export const Heading = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
 

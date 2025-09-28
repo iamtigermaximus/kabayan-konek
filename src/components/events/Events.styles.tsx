@@ -1,8 +1,8 @@
-'use client';
-import styled from 'styled-components';
-import Image from 'next/image';
-import { breakpoints as bp } from '../../utils/layout';
-import Link from 'next/link';
+"use client";
+import styled from "styled-components";
+import Image from "next/image";
+import { breakpoints as bp } from "../../utils/layout";
+import Link from "next/link";
 
 export const Container = styled.div`
   padding: 10px;
@@ -239,7 +239,7 @@ export const EventDescription = styled.p`
 
 export const EventDescriptionSpan = styled.span`
   color: tomato;
-  cursor: 'pointer';
+  cursor: "pointer";
   font-size: 0.75rem;
   overflow-y: hidden;
 
@@ -305,7 +305,7 @@ export const DividerLine = styled.hr`
   flex-grow: 1;
 `;
 
-export const DividerLabel = styled.span`
+export const DividerLabel = styled.h1`
   top: -12px;
   background-color: white;
   padding: 0 10px;
@@ -638,4 +638,3 @@ export const StyledEditorContainer = styled.div`
     object-fit: contain; /* Ensures the image fits within the container */
   }
 `;
-

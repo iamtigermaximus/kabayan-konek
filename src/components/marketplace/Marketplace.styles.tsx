@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { breakpoints as bp } from '../../utils/layout';
-import Image from 'next/image';
-import Link from 'next/link';
+import styled from "styled-components";
+import { breakpoints as bp } from "../../utils/layout";
+import Image from "next/image";
+import Link from "next/link";
 
 export const Container = styled.div`
   padding: 10px;
@@ -38,7 +38,7 @@ export const DividerLine = styled.hr`
   flex-grow: 1;
 `;
 
-export const DividerLabel = styled.span`
+export const DividerLabel = styled.h1`
   top: -12px;
   background-color: white;
   padding: 0 10px;
@@ -171,8 +171,8 @@ export const PageButton = styled.button<PageButtonProps>`
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: ${({ $isActive }) => ($isActive ? 'tomato' : '#f9f9f9')};
-  color: ${({ $isActive }) => ($isActive ? '#fff' : '#2c3e50')};
+  background-color: ${({ $isActive }) => ($isActive ? "tomato" : "#f9f9f9")};
+  color: ${({ $isActive }) => ($isActive ? "#fff" : "#2c3e50")};
   cursor: pointer;
 
   &:hover {
