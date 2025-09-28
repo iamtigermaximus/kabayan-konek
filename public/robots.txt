@@ -1,16 +1,11 @@
 # *
 User-agent: *
 Allow: /api/server-sitemap
-Disallow: /api
-Disallow: /admin
-
-# *
-User-agent: *
-Allow: /
+Disallow: /api/
+Disallow: /admin/
 
 # Host
-Host: https://kabayankonek.com
+Host: https://www.kabayankonek.com
 
 # Sitemaps
-Sitemap: https://kabayankonek.com/sitemap.xml
-Sitemap: https://kabayankonek.com/api/server-sitemap
+Sitemap: https://www.kabayankonek.com/sitemap.xml
