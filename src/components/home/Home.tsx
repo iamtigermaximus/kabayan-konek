@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Container,
@@ -34,16 +34,16 @@ import {
   BasicEventInfoContainer,
   PublishedDate,
   EventImageContainer,
-} from './Home.styles';
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import DefaultImage from '@/assets/NoImage2.jpg';
-import HomeBanner from '../common/banners/HomeBanner';
+} from "./Home.styles";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import DefaultImage from "@/assets/NoImage2.jpg";
+import HomeBanner from "../common/banners/HomeBanner";
 // import { Swiper, SwiperSlide } from 'swiper/react';
 // import 'swiper/css';
-import { formatDistanceToNow } from 'date-fns';
-import Link from 'next/link';
+import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 import {
   ProductList,
   ProductCard,
@@ -54,7 +54,7 @@ import {
   ProductItemContainer,
   ProductPrice,
   ProductTitle,
-} from '../marketplace/Marketplace.styles';
+} from "../marketplace/Marketplace.styles";
 import {
   AdBasicInfoContainer,
   AdCard,
@@ -64,7 +64,7 @@ import {
   AdItemContainer,
   AdList,
   AdTitle,
-} from '../advertisement/Advertisement.styles';
+} from "../advertisement/Advertisement.styles";
 interface LifestyleArticle {
   id: string;
   title: string;
@@ -151,7 +151,7 @@ const Home = () => {
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch('/api/lifestyle');
+      const response = await fetch("/api/lifestyle");
       const data: LifestyleArticle[] = await response.json();
       data.sort(
         (a, b) =>
@@ -160,7 +160,7 @@ const Home = () => {
 
       setLifestyleArticles(data);
     } catch (error) {
-      console.error('Error fetching lifestyle articles:', error);
+      console.error("Error fetching lifestyle articles:", error);
     }
   };
 
@@ -170,7 +170,7 @@ const Home = () => {
 
   const fetchKabayanArticles = async () => {
     try {
-      const response = await fetch('/api/profile');
+      const response = await fetch("/api/profile");
       const data: KabayanArticle[] = await response.json();
 
       data.sort(
@@ -180,7 +180,7 @@ const Home = () => {
 
       setKabayanArticles(data);
     } catch (error) {
-      console.error('Error fetching lifestyle articles:', error);
+      console.error("Error fetching lifestyle articles:", error);
     }
   };
 
@@ -228,7 +228,7 @@ const Home = () => {
   // }, []);
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/events');
+      const response = await fetch("/api/events");
       const data: EventProps[] = await response.json();
 
       const now = Date.now();
@@ -270,7 +270,7 @@ const Home = () => {
 
       setEvents(validEvents);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error("Error fetching events:", error);
     }
   };
 
@@ -297,21 +297,21 @@ const Home = () => {
 
   const fetchMarketplace = async () => {
     try {
-      const response = await fetch('/api/marketplace');
+      const response = await fetch("/api/marketplace");
       const data: ProductProps[] = await response.json();
       setProducts(data);
     } catch (error) {
-      console.error('Error fetching marketplace products:', error);
+      console.error("Error fetching marketplace products:", error);
     }
   };
 
   const fetchAdvertisements = async () => {
     try {
-      const response = await fetch('/api/advertisements');
+      const response = await fetch("/api/advertisements");
       const data: AdvertisementProps[] = await response.json();
       setAdvertisements(data);
     } catch (error) {
-      console.error('Error fetching advertisements:', error);
+      console.error("Error fetching advertisements:", error);
     }
   };
 
@@ -321,7 +321,7 @@ const Home = () => {
   }, []);
 
   const handleLoginClick = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -347,7 +347,7 @@ const Home = () => {
                 <FeaturesTitle>{lifestyle.title}</FeaturesTitle>
               </StyledLink>
               <PublishedDate>
-                Published on{' '}
+                Published on{" "}
                 {new Date(lifestyle.createdAt).toLocaleDateString()}
               </PublishedDate>
             </FeaturesTitleContainer>
@@ -425,30 +425,30 @@ const Home = () => {
           {!session ? (
             <div
               style={{
-                margin: '20px 0',
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                textAlign: 'center',
-                backgroundColor: '#e6f7ff',
+                margin: "20px 0",
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                textAlign: "center",
+                backgroundColor: "#e6f7ff",
               }}
             >
-              <h2 style={{ marginBottom: '10px' }}>
+              <h2 style={{ marginBottom: "10px" }}>
                 Want to post your own events?
               </h2>
-              <p style={{ marginBottom: '20px', color: '#555' }}>
+              <p style={{ marginBottom: "20px", color: "#555" }}>
                 Log in or sign up to create and manage your events with ease.
                 Join our community today!
               </p>
               <button
                 onClick={handleLoginClick}
                 style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#222',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
+                  padding: "10px 20px",
+                  backgroundColor: "#222",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
                 }}
               >
                 Log In or Sign Up
@@ -457,18 +457,18 @@ const Home = () => {
           ) : (
             <div
               style={{
-                margin: '20px 0',
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                textAlign: 'center',
-                backgroundColor: '#e6f7ff',
+                margin: "20px 0",
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                textAlign: "center",
+                backgroundColor: "#e6f7ff",
               }}
             >
-              <h2 style={{ marginBottom: '10px' }}>
+              <h2 style={{ marginBottom: "10px" }}>
                 Ready to share your events with the community?
               </h2>
-              <p style={{ marginBottom: '20px', color: '#555' }}>
+              <p style={{ marginBottom: "20px", color: "#555" }}>
                 You are logged in! Create and manage your events easily, and
                 engage with your audience.
               </p>
@@ -494,11 +494,11 @@ const Home = () => {
                 <EventInfo>
                   {event.date
                     ? new Date(event.date).toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
                       })
-                    : 'N/A'}
+                    : "N/A"}
                 </EventInfo>
 
                 <EventInfo>{event.time}</EventInfo>
@@ -506,7 +506,7 @@ const Home = () => {
               <StyledLink
                 href={`/events/${event.id}`}
                 key={event.id}
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
               >
                 <EventName>{event.title}</EventName>
               </StyledLink>
@@ -555,7 +555,7 @@ const Home = () => {
               </ProductCategoryContainer>
               <Link
                 href={`/marketplace/${product.id}`}
-                style={{ textDecoration: 'none', color: 'black' }}
+                style={{ textDecoration: "none", color: "black" }}
               >
                 <ProductImage
                   src={product.primaryImageUrl || DefaultImage}
@@ -572,7 +572,7 @@ const Home = () => {
                 <ProductItemContainer>
                   <Link
                     href={`/marketplace/${product.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
+                    style={{ textDecoration: "none", color: "black" }}
                   >
                     <ProductTitle>{product.name}</ProductTitle>
                   </Link>
@@ -581,12 +581,12 @@ const Home = () => {
                   {product.createdAt && (
                     <div
                       style={{
-                        fontSize: '12px',
-                        color: 'gray',
-                        marginTop: '5px',
+                        fontSize: "12px",
+                        color: "gray",
+                        marginTop: "5px",
                       }}
                     >
-                      Posted {formatDistanceToNow(new Date(product.createdAt))}{' '}
+                      Posted {formatDistanceToNow(new Date(product.createdAt))}{" "}
                       ago
                     </div>
                   )}
@@ -612,7 +612,7 @@ const Home = () => {
             <Link
               href={`/advertisement/${ad.id}`}
               key={ad.id}
-              style={{ textDecoration: 'none', color: 'black' }}
+              style={{ textDecoration: "none", color: "black" }}
             >
               <AdCard>
                 <AdCategoryContainer>
@@ -656,9 +656,9 @@ const Home = () => {
                     {ad.createdAt && (
                       <div
                         style={{
-                          fontSize: '12px',
-                          color: 'gray',
-                          marginTop: '5px',
+                          fontSize: "12px",
+                          color: "gray",
+                          marginTop: "5px",
                         }}
                       >
                         Posted {formatDistanceToNow(new Date(ad.createdAt))} ago
@@ -672,7 +672,7 @@ const Home = () => {
         </AdList>
       </SectionContainer>
       <ShowMoreButtonContainer>
-        <ShowMoreButtonLink href="/advertisements">
+        <ShowMoreButtonLink href="/advertisement">
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
       </ShowMoreButtonContainer>

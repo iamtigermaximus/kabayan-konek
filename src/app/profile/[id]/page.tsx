@@ -1,6 +1,6 @@
-import ProfileDetails from '@/components/profile-feature/profile-details/ProfileDetails';
-import { stripHtml } from '@/utils/helper';
-import { Metadata } from 'next';
+import ProfileDetails from "@/components/profile-feature/profile-details/ProfileDetails";
+import { stripHtml } from "@/utils/helper";
+import { Metadata } from "next";
 
 interface KabayanArticle {
   id: string;
@@ -26,8 +26,8 @@ export const generateMetadata = async ({
 
   if (!article) {
     return {
-      title: 'Kabayan Konek - Article Not Found',
-      description: 'This article could not be found.',
+      title: "Kabayan Konek - Article Not Found",
+      description: "This article could not be found.",
     };
   }
 
@@ -36,28 +36,28 @@ export const generateMetadata = async ({
   const articleContent = cleanContent.slice(0, 150);
   const imageUrl =
     article.imageUrl ||
-    'https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png';
+    "https://res.cloudinary.com/dgkjr3qbc/image/upload/v1733010227/kabayan_iqasip.png";
 
   return {
     title: articleTitle,
     description: articleContent,
     keywords:
-      'Kabayan Spotlight, Filipino profiles, Pinoy profiles, Filipino success stories, Filipino leaders, Kabayan community, inspiring Pinoy stories, Filipino achievements, Pinoy role models, Filipino influencers, Filipino empowerment, Pinoy empowerment, Kabayan profiles Finland, Filipino leaders in Finland, Filipino role models, Kabayan community Europe, Filipino professionals Europe, Filipino diaspora Europe, Filipino heroes, Pinoy heroes, Filipinos making a difference, Filipino stories, Kabayan community USA, Filipino influencers, Pinoy influencers, Filipino success stories worldwide',
+      "Kabayan Spotlight, Filipino profiles, Pinoy profiles, Filipino success stories, Filipino leaders, Kabayan community, inspiring Pinoy stories, Filipino achievements, Pinoy role models, Filipino influencers, Filipino empowerment, Pinoy empowerment, Kabayan profiles Finland, Filipino leaders in Finland, Filipino role models, Kabayan community Europe, Filipino professionals Europe, Filipino diaspora Europe, Filipino heroes, Pinoy heroes, Filipinos making a difference, Filipino stories, Kabayan community USA, Filipino influencers, Pinoy influencers, Filipino success stories worldwide",
     openGraph: {
       title: articleTitle,
       description: articleContent,
-      url: `https://kabayankonek.com/profile/${article.id}`,
+      // url: `https://kabayankonek.com/profile/${article.id}`,
       images: [
-        { url: imageUrl, width: 1200, height: 630, alt: 'Kabayan Konek Image' },
+        { url: imageUrl, width: 1200, height: 630, alt: "Kabayan Konek Image" },
       ],
-      type: 'website',
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: articleTitle,
       description: articleContent,
       images: [
-        { url: imageUrl, width: 1200, height: 630, alt: 'Kabayan Konek Image' },
+        { url: imageUrl, width: 1200, height: 630, alt: "Kabayan Konek Image" },
       ],
     },
   };
@@ -66,15 +66,15 @@ export const generateMetadata = async ({
 // Fetching article data
 const fetchArticle = async (id: string): Promise<KabayanArticle | null> => {
   try {
-    const res = await fetch(`https://kabayankonek.com/api/profile/${id}`);
+    const res = await fetch(`https://www.kabayankonek.com/api/profile/${id}`);
 
     if (!res.ok) {
-      throw new Error('Failed to fetch article');
+      throw new Error("Failed to fetch article");
     }
 
     return res.json();
   } catch (err) {
-    console.error('Error fetching article:', err);
+    console.error("Error fetching article:", err);
     return null;
   }
 };

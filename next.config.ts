@@ -80,11 +80,11 @@
 
 // export default nextConfig;
 
-import { NextConfig } from 'next';
-import path from 'path';
+import { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: "standalone",
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
   },
@@ -94,26 +94,44 @@ const nextConfig: NextConfig = {
     reactRemoveProperties: true,
   },
   images: {
-    domains: ['res.cloudinary.com', 'lh3.googleusercontent.com'],
+    domains: ["res.cloudinary.com", "lh3.googleusercontent.com"],
   },
+
+  // ADD THIS: Redirect non-www to www to fix canonical issues
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "kabayankonek.com", // without www
+          },
+        ],
+        destination: "https://www.kabayankonek.com/:path*", // to www
+        permanent: true,
+      },
+    ];
+  },
+
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.resolve.alias['yjs'] = path.resolve(__dirname, 'node_modules/yjs');
+      config.resolve.alias["yjs"] = path.resolve(__dirname, "node_modules/yjs");
     }
     return config;
   },
   async headers() {
     return [
       {
-        source: '/api/server-sitemap',
+        source: "/api/server-sitemap",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=3600, stale-while-revalidate=1800',
+            key: "Cache-Control",
+            value: "public, max-age=3600, stale-while-revalidate=1800",
           },
           {
-            key: 'Content-Type',
-            value: 'application/xml; charset=utf-8',
+            key: "Content-Type",
+            value: "application/xml; charset=utf-8",
           },
         ],
       },
@@ -129,10 +147,10 @@ const nextConfig: NextConfig = {
       //   ],
       // },
       {
-        source: '/sitemap.xml',
+        source: "/sitemap.xml",
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=3600' },
-          { key: 'Content-Type', value: 'application/xml; charset=utf-8' },
+          { key: "Cache-Control", value: "public, max-age=3600" },
+          { key: "Content-Type", value: "application/xml; charset=utf-8" },
         ],
       },
     ];
@@ -142,8 +160,8 @@ const nextConfig: NextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/sitemap-0.xml',
-          destination: '/sitemap-0.xml',
+          source: "/sitemap-0.xml",
+          destination: "/sitemap-0.xml",
         },
       ],
       afterFiles: [],
