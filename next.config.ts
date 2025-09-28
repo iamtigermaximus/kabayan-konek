@@ -97,7 +97,7 @@ const nextConfig: NextConfig = {
     domains: ["res.cloudinary.com", "lh3.googleusercontent.com"],
   },
 
-  // ADD THIS: Redirect non-www to www to fix canonical issues
+  //Redirect non-www to www to fix canonical issues
   async redirects() {
     return [
       {
