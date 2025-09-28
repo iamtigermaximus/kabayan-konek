@@ -23,19 +23,19 @@
 //     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 //       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 //         <!-- Static Pages -->
-//         <url><loc>https://kabayankonek.com/lifestyle</loc><priority>1.0</priority></url>
-//         <url><loc>https://kabayankonek.com/profile</loc><priority>0.9</priority></url>
-//         <url><loc>https://kabayankonek.com/trends</loc><priority>0.9</priority></url>
-//         <url><loc>https://kabayankonek.com/events</loc><priority>0.8</priority></url>
-//         <url><loc>https://kabayankonek.com/marketplace</loc><priority>0.7</priority></url>
-//         <url><loc>https://kabayankonek.com/advertisement</loc><priority>0.6</priority></url>
+//         <url><loc>https://www.kabayankonek.com/lifestyle</loc><priority>1.0</priority></url>
+//         <url><loc>https://www.kabayankonek.com/profile</loc><priority>0.9</priority></url>
+//         <url><loc>https://www.kabayankonek.com/trends</loc><priority>0.9</priority></url>
+//         <url><loc>https://www.kabayankonek.com/events</loc><priority>0.8</priority></url>
+//         <url><loc>https://www.kabayankonek.com/marketplace</loc><priority>0.7</priority></url>
+//         <url><loc>https://www.kabayankonek.com/advertisement</loc><priority>0.6</priority></url>
 
 //         <!-- Dynamic Routes -->
 //         ${lifestyles
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/lifestyle/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/lifestyle/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.7</priority>
 //           </url>
@@ -46,7 +46,7 @@
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/profile/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/profile/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.6</priority>
 //           </url>
@@ -57,7 +57,7 @@
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/trends/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/trends/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.6</priority>
 //           </url>
@@ -68,7 +68,7 @@
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/events/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/events/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.5</priority>
 //           </url>
@@ -79,7 +79,7 @@
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/marketplace/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/marketplace/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.5</priority>
 //           </url>
@@ -90,7 +90,7 @@
 //           .map(
 //             (item) => `
 //           <url>
-//             <loc>https://kabayankonek.com/advertisement/${item.id}</loc>
+//             <loc>https://www.kabayankonek.com/advertisement/${item.id}</loc>
 //             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
 //             <priority>0.4</priority>
 //           </url>
@@ -111,8 +111,8 @@
 //   }
 // }
 
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -140,83 +140,83 @@ export async function GET() {
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/lifestyle/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/lifestyle/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.7</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
         
         ${profiles
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/profile/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/profile/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.6</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
         
         ${trends
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/trends/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/trends/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.6</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
         
         ${events
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/events/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/events/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.5</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
         
         ${marketplaces
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/marketplace/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/marketplace/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.5</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
         
         ${advertisements
           .map(
             (item) => `
           <url>
-            <loc>https://kabayankonek.com/advertisement/${item.id}</loc>
+            <loc>https://www.kabayankonek.com/advertisement/${item.id}</loc>
             <lastmod>${new Date(item.updatedAt).toISOString()}</lastmod>
             <priority>0.4</priority>
           </url>
         `
           )
-          .join('')}
+          .join("")}
       </urlset>`;
 
     return new NextResponse(xml, {
       headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=1800',
+        "Content-Type": "application/xml",
+        "Cache-Control": "public, max-age=3600, stale-while-revalidate=1800",
       },
     });
   } catch (error) {
-    console.error('Sitemap generation error:', error);
+    console.error("Sitemap generation error:", error);
     return new NextResponse(null, { status: 500 });
   }
 }
