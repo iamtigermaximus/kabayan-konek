@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   AdBasicInfoContainer,
   AdItemContainer,
@@ -40,14 +40,15 @@ import {
   ModalOverlay,
   AdCategory,
   AdCategoryContainer,
-} from './Advertisement.styles';
-import Link from 'next/link';
-import Image from 'next/image';
-import DefaultImage from '@/assets/NoImage2.jpg';
-import AdvertisementBanner from '../common/banners/AdvertisementBanner';
-import RichTextEditor from '../common/editor/RichTextEditor';
-import { Editor } from '@tiptap/core';
-import { formatDistanceToNow } from 'date-fns';
+} from "./Advertisement.styles";
+import Link from "next/link";
+import Image from "next/image";
+import DefaultImage from "@/assets/NoImage2.jpg";
+import AdvertisementBanner from "../common/banners/AdvertisementBanner";
+import RichTextEditor from "../common/editor/RichTextEditor";
+import { Editor } from "@tiptap/core";
+import { formatDistanceToNow } from "date-fns";
+
 interface AdvertisementProps {
   id: string;
   title: string;
@@ -80,11 +81,11 @@ const Advertisement = () => {
     []
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   // const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
+  const [category, setCategory] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const widgetRef = useRef<CloudinaryWidget | null>(null);
@@ -93,9 +94,26 @@ const Advertisement = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Add this state to track sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const itemsPerPage = 12; // Number of ads to show per page
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [editor, setEditor] = useState<Editor | null>(null);
+
+  // Add this useEffect to detect when sidebar opens/closes
+  useEffect(() => {
+    const checkSidebar = () => {
+      // Simple detection - check for backdrop
+      const backdrop = document.querySelector('[class*="Backdrop"]');
+      const isVisible =
+        backdrop && window.getComputedStyle(backdrop).display !== "none";
+      setIsSidebarOpen(!!isVisible);
+    };
+
+    const interval = setInterval(checkSidebar, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent); // Update content when editor changes
@@ -105,11 +123,11 @@ const Advertisement = () => {
     setIsLoading(false);
 
     try {
-      const response = await fetch('/api/advertisements');
+      const response = await fetch("/api/advertisements");
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.error || 'Failed to fetch products');
+        setError(errorData.error || "Failed to fetch products");
         setIsLoading(false);
         return;
       }
@@ -123,8 +141,8 @@ const Advertisement = () => {
       setAdvertisements(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
-      console.error('Error fetching advertisements:', error);
-      setError('Error fetching advertisements');
+      console.error("Error fetching advertisements:", error);
+      setError("Error fetching advertisements");
     } finally {
       setIsLoading(false);
     }
@@ -135,7 +153,7 @@ const Advertisement = () => {
   }, []);
 
   const filteredAdvertisements =
-    category === 'ALL' || category === ''
+    category === "ALL" || category === ""
       ? advertisements
       : advertisements.filter(
           (advertisement) => advertisement.category === category
@@ -160,59 +178,26 @@ const Advertisement = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.cloudinary) {
+    if (typeof window !== "undefined" && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
         {
           cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-          uploadPreset: 'kabayankonek',
+          uploadPreset: "kabayankonek",
           multiple: false,
-          sources: ['local', 'url', 'camera'],
+          sources: ["local", "url", "camera"],
           debug: true,
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
-          if (result?.event === 'success') {
+          if (result?.event === "success") {
             setImageUrl(result.info.secure_url);
           } else if (error) {
-            console.error('Cloudinary upload error:', error);
+            console.error("Cloudinary upload error:", error);
           }
         }
       );
       widgetRef.current = cloudinaryWidget;
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && window.cloudinary) {
-  //     const cloudinaryWidget = window.cloudinary.createUploadWidget(
-  //       {
-  //         cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-  //         uploadPreset: 'kabayankonek',
-  //         multiple: false,
-  //         sources: ['local', 'url', 'camera'],
-  //         debug: true,
-  //       },
-  //       (error: Error | null, result: CloudinaryWidgetResult) => {
-  //         if (result?.event === 'success') {
-  //           setImageUrl(result.info.secure_url); // Save the uploaded image URL
-
-  //           // Insert the image URL into the Tiptap editor at the current cursor position
-  //           if (editor) {
-  //             editor
-  //               .chain()
-  //               .focus()
-  //               .setImage({ src: result.info.secure_url })
-  //               .run();
-  //           }
-  //         } else if (error) {
-  //           console.error('Cloudinary upload error:', error);
-  //         }
-  //       }
-  //     );
-  //     widgetRef.current = cloudinaryWidget;
-  //   } else {
-  //     console.log('Cloudinary script is not loaded');
-  //   }
-  // }, [editor]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -225,7 +210,7 @@ const Advertisement = () => {
       !contactEmail ||
       !contactPhone
     ) {
-      alert('Please fill out all required fields.');
+      alert("Please fill out all required fields.");
       setIsSubmitting(false);
       return;
     }
@@ -242,13 +227,13 @@ const Advertisement = () => {
     try {
       const endpoint = editingAdvertisement
         ? `/api/advertisements/${editingAdvertisement.id}` // Edit endpoint
-        : '/api/advertisements'; // Create endpoint
-      const method = editingAdvertisement ? 'PUT' : 'POST'; // Use PUT for edit
+        : "/api/advertisements"; // Create endpoint
+      const method = editingAdvertisement ? "PUT" : "POST"; // Use PUT for edit
 
       const response = await fetch(endpoint, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(advertisementData),
       });
@@ -257,32 +242,32 @@ const Advertisement = () => {
 
       if (!response.ok) {
         console.error(
-          'Error submitting advertisement:',
-          responseBody.error || 'Unknown error'
+          "Error submitting advertisement:",
+          responseBody.error || "Unknown error"
         );
-        alert(responseBody.error || 'Error submitting advertisement');
+        alert(responseBody.error || "Error submitting advertisement");
         return;
       }
 
       console.log(
         editingAdvertisement
-          ? 'Advertisement updated!'
-          : 'Advertisement created!',
+          ? "Advertisement updated!"
+          : "Advertisement created!",
         responseBody
       );
       setIsModalOpen(false);
       setEditingAdvertisement(null); // Reset editing state
       fetchAdvertisements(); // Refresh products list
     } catch (error) {
-      console.error('Error submitting advertisement:', error);
-      alert('Error submitting advertisement. Please try again later.');
+      console.error("Error submitting advertisement:", error);
+      alert("Error submitting advertisement. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleLoginClick = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -292,7 +277,7 @@ const Advertisement = () => {
         <DividerLabel>ADVERTISEMENTS</DividerLabel>
         <DividerLine />
       </DividerContainer>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
       <AdvertisementBanner
         handleLoginClick={handleLoginClick}
         toggleModal={toggleModal}
@@ -384,7 +369,7 @@ const Advertisement = () => {
                   </ImageContainer>
                 </FormItemContainer>
                 <SubmitButton type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit'}
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </SubmitButton>
               </ModalContentForm>
             </ModalContent>
@@ -392,85 +377,70 @@ const Advertisement = () => {
         </ModalOverlay>
       )}
       <SectionContainer>
-        <FilterSection>
-          <div>
-            <FilterLabel>Category:</FilterLabel>
-            <FilterSelect
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="ALL">All</option>
-              <option value="JOBS">Jobs</option>
-              <option value="SERVICES">Services</option>
-              <option value="REAL ESTATE">Real Estate</option>
-              <option value="EVENTS">Events</option>
-              <option value="COMMUNITY">Community</option>
-            </FilterSelect>
-          </div>
-        </FilterSection>
-        <AdList>
-          {displayedItems.map((ad) => (
-            <Link
-              href={`/advertisement/${ad.id}`}
-              key={ad.id}
-              style={{ textDecoration: 'none', color: 'black' }}
-            >
-              <AdCard>
-                <AdCategoryContainer>
-                  <AdCategory>{ad.category}</AdCategory>
-                </AdCategoryContainer>
-                <AdImage
-                  src={ad.imageUrl || DefaultImage}
-                  alt={ad.title}
-                  width={150}
-                  height={150}
-                  priority
-                />
-                <AdBasicInfoContainer>
-                  <AdItemContainer>
-                    <AdTitle>{ad.title}</AdTitle>
-                  </AdItemContainer>
-                  <AdItemContainer>
-                    {/* <AdDescription>
-                      {ad.description.length > 200 ? (
-                        <>
+        {/* ONLY HIDE THE FUCKING FILTER AND ADS LIST WHEN SIDEBAR IS OPEN */}
+        {isSidebarOpen ? (
+          <div style={{ display: "none" }} />
+        ) : (
+          <>
+            <FilterSection>
+              <div>
+                <FilterLabel>Category:</FilterLabel>
+                <FilterSelect
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="ALL">All</option>
+                  <option value="JOBS">Jobs</option>
+                  <option value="SERVICES">Services</option>
+                  <option value="REAL ESTATE">Real Estate</option>
+                  <option value="EVENTS">Events</option>
+                  <option value="COMMUNITY">Community</option>
+                </FilterSelect>
+              </div>
+            </FilterSection>
+            <AdList>
+              {displayedItems.map((ad) => (
+                <Link
+                  href={`/advertisement/${ad.id}`}
+                  key={ad.id}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <AdCard>
+                    <AdCategoryContainer>
+                      <AdCategory>{ad.category}</AdCategory>
+                    </AdCategoryContainer>
+                    <AdImage
+                      src={ad.imageUrl || DefaultImage}
+                      alt={ad.title}
+                      width={150}
+                      height={150}
+                      priority
+                    />
+                    <AdBasicInfoContainer>
+                      <AdItemContainer>
+                        <AdTitle>{ad.title}</AdTitle>
+                      </AdItemContainer>
+                      <AdItemContainer>
+                        {ad.createdAt && (
                           <div
-                            dangerouslySetInnerHTML={{
-                              __html: ad.description.slice(0, 100) + '...',
+                            style={{
+                              fontSize: "12px",
+                              color: "gray",
+                              marginTop: "5px",
                             }}
-                          ></div>
-
-                          <div style={{ color: 'blue', cursor: 'pointer' }}>
-                            <StyledLink href={`/advertisement/${ad.id}`}>
-                              Read More
-                            </StyledLink>
+                          >
+                            Posted {formatDistanceToNow(new Date(ad.createdAt))}{" "}
+                            ago
                           </div>
-                        </>
-                      ) : (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: ad.description,
-                          }}
-                        ></div>
-                      )}
-                    </AdDescription> */}
-                    {ad.createdAt && (
-                      <div
-                        style={{
-                          fontSize: '12px',
-                          color: 'gray',
-                          marginTop: '5px',
-                        }}
-                      >
-                        Posted {formatDistanceToNow(new Date(ad.createdAt))} ago
-                      </div>
-                    )}
-                  </AdItemContainer>
-                </AdBasicInfoContainer>
-              </AdCard>
-            </Link>
-          ))}
-        </AdList>
+                        )}
+                      </AdItemContainer>
+                    </AdBasicInfoContainer>
+                  </AdCard>
+                </Link>
+              ))}
+            </AdList>
+          </>
+        )}
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>

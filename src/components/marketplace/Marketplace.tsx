@@ -1,5 +1,5 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
   DividerContainer,
@@ -39,16 +39,16 @@ import {
   ModalOverlay,
   ProductCategory,
   ProductCategoryContainer,
-} from './Marketplace.styles';
-import Image from 'next/image';
+} from "./Marketplace.styles";
+import Image from "next/image";
 // import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import DefaultImage from '@/assets/NoImage2.jpg';
-import MarketplaceBanner from '../common/banners/MarketplaceBanner';
-import RichTextEditor from '../common/editor/RichTextEditor';
-import { Editor } from '@tiptap/core';
-import { formatDistanceToNow } from 'date-fns';
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import DefaultImage from "@/assets/NoImage2.jpg";
+import MarketplaceBanner from "../common/banners/MarketplaceBanner";
+import RichTextEditor from "../common/editor/RichTextEditor";
+import { Editor } from "@tiptap/core";
+import { formatDistanceToNow } from "date-fns";
 
 export interface ProductProps {
   id?: string;
@@ -79,15 +79,15 @@ interface CloudinaryWidget {
 const MarketPlace = () => {
   // const { data: session } = useSession();
   const router = useRouter();
-  const [category, setCategory] = useState('ALL');
+  const [category, setCategory] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   // const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
+  const [price, setPrice] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -95,10 +95,27 @@ const MarketPlace = () => {
     null
   );
 
+  // Add this state to track sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const itemsPerPage = 6;
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [editor, setEditor] = useState<Editor | null>(null);
+
+  // Add this useEffect to detect when sidebar opens/closes
+  useEffect(() => {
+    const checkSidebar = () => {
+      // Simple detection - check for backdrop
+      const backdrop = document.querySelector('[class*="Backdrop"]');
+      const isVisible =
+        backdrop && window.getComputedStyle(backdrop).display !== "none";
+      setIsSidebarOpen(!!isVisible);
+    };
+
+    const interval = setInterval(checkSidebar, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent); // Update content when editor changes
@@ -106,7 +123,7 @@ const MarketPlace = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/marketplace');
+      const response = await fetch("/api/marketplace");
       const data: ProductProps[] = await response.json();
 
       data.sort((a, b) => {
@@ -118,7 +135,7 @@ const MarketPlace = () => {
       setProducts(data);
       setTotalPages(Math.ceil(data.length / itemsPerPage));
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
   };
   useEffect(() => {
@@ -127,7 +144,7 @@ const MarketPlace = () => {
 
   // Filter and paginate products
   const filteredProducts =
-    category === 'ALL'
+    category === "ALL"
       ? products
       : products.filter((product) => product.category === category);
 
@@ -154,17 +171,17 @@ const MarketPlace = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.cloudinary) {
+    if (typeof window !== "undefined" && window.cloudinary) {
       const cloudinaryWidget = window.cloudinary.createUploadWidget(
         {
           cloudName: process.env.NEXT_PUBLIC_CLOUD_NAME,
-          uploadPreset: 'kabayankonek',
+          uploadPreset: "kabayankonek",
           multiple: true, // Allow multiple images
-          sources: ['local', 'url', 'camera'],
+          sources: ["local", "url", "camera"],
           debug: true,
         },
         (error: Error | null, result: CloudinaryWidgetResult) => {
-          if (result?.event === 'success') {
+          if (result?.event === "success") {
             // Collect all uploaded image URLs
             const uploadedUrls = result.info.secure_url
               ? [result.info.secure_url]
@@ -175,7 +192,7 @@ const MarketPlace = () => {
               setImageUrls((prevUrls) => [...prevUrls, ...uploadedUrls]);
             }
           } else if (error) {
-            console.error('Cloudinary upload error:', error);
+            console.error("Cloudinary upload error:", error);
           }
         }
       );
@@ -196,7 +213,7 @@ const MarketPlace = () => {
       !contactPhone ||
       imageUrls.length === 0
     ) {
-      alert('Please fill out all required fields.');
+      alert("Please fill out all required fields.");
       setIsSubmitting(false);
       return;
     }
@@ -214,13 +231,13 @@ const MarketPlace = () => {
     try {
       const endpoint = editingProduct
         ? `/api/marketplace/${editingProduct.id}` // Edit endpoint
-        : '/api/marketplace'; // Create endpoint
-      const method = editingProduct ? 'PUT' : 'POST'; // Use PUT for edit
+        : "/api/marketplace"; // Create endpoint
+      const method = editingProduct ? "PUT" : "POST"; // Use PUT for edit
 
       const response = await fetch(endpoint, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(productData),
       });
@@ -229,30 +246,30 @@ const MarketPlace = () => {
 
       if (!response.ok) {
         console.error(
-          'Error submitting product:',
-          responseBody.error || 'Unknown error'
+          "Error submitting product:",
+          responseBody.error || "Unknown error"
         );
-        alert(responseBody.error || 'Error submitting product');
+        alert(responseBody.error || "Error submitting product");
         return;
       }
 
       console.log(
-        editingProduct ? 'Product updated!' : 'Product created!',
+        editingProduct ? "Product updated!" : "Product created!",
         responseBody
       );
       setIsModalOpen(false);
       setEditingProduct(null); // Reset editing state
       fetchProducts(); // Refresh products list
     } catch (error) {
-      console.error('Error submitting product:', error);
-      alert('Error submitting product. Please try again later.');
+      console.error("Error submitting product:", error);
+      alert("Error submitting product. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleLoginClick = () => {
-    router.push('/login');
+    router.push("/login");
   };
 
   return (
@@ -351,10 +368,10 @@ const MarketPlace = () => {
                     {imageUrls.length > 0 && (
                       <div
                         style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          flexWrap: 'wrap',
-                          gap: '10px',
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          gap: "10px",
                         }}
                       >
                         {imageUrls.map((url, index) => (
@@ -372,7 +389,7 @@ const MarketPlace = () => {
                   </ImageContainer>
                 </FormItemContainer>
                 <SubmitButton type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Create Product'}
+                  {isSubmitting ? "Submitting..." : "Create Product"}
                 </SubmitButton>
               </ModalContentForm>
               <ModalCloseButton onClick={toggleModal}>Close</ModalCloseButton>
@@ -381,91 +398,76 @@ const MarketPlace = () => {
         </ModalOverlay>
       )}
       <SectionContainer>
-        <FilterSection>
-          <div>
-            <FilterLabel>Category:</FilterLabel>
-            <FilterSelect
-              value={category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-                setCurrentPage(1);
-              }}
-            >
-              <option value="ALL">All</option>
-              <option value="ELECTRONICS">Electronics</option>
-              <option value="FASHION">Fashion</option>
-              <option value="HOME">Home</option>
-              <option value="FOOD">Food</option>
-              <option value="OTHERS">Others</option>
-            </FilterSelect>
-          </div>
-        </FilterSection>
+        {/* ONLY HIDE THE FUCKING FILTER AND PRODUCTS LIST WHEN SIDEBAR IS OPEN */}
+        {isSidebarOpen ? (
+          <div style={{ display: "none" }} />
+        ) : (
+          <>
+            <FilterSection>
+              <div>
+                <FilterLabel>Category:</FilterLabel>
+                <FilterSelect
+                  value={category}
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <option value="ALL">All</option>
+                  <option value="ELECTRONICS">Electronics</option>
+                  <option value="FASHION">Fashion</option>
+                  <option value="HOME">Home</option>
+                  <option value="FOOD">Food</option>
+                  <option value="OTHERS">Others</option>
+                </FilterSelect>
+              </div>
+            </FilterSection>
 
-        <ProductList>
-          {displayedItems.map((product) => (
-            <ProductCard key={product.id}>
-              <ProductCategoryContainer>
-                <ProductCategory>{product.category}</ProductCategory>
-              </ProductCategoryContainer>
-              <ProductImage
-                src={product.primaryImageUrl || DefaultImage}
-                alt={product.name}
-                width={150}
-                height={150}
-                priority
-              />
-              <BasicProductInfoContainer>
-                <ProductItemContainer>
-                  <ProductPrice>€{product.price}</ProductPrice>
-                </ProductItemContainer>
-                <ProductItemContainer>
-                  <Link
-                    href={`/marketplace/${product.id}`}
-                    style={{ textDecoration: 'none', color: 'black' }}
-                  >
-                    <ProductTitle>{product.name}</ProductTitle>
-                  </Link>
-                </ProductItemContainer>
-                <ProductItemContainer>
-                  {/* <ProductDescription>
-                    {product.description.length > 100 ? (
-                      <>
+            <ProductList>
+              {displayedItems.map((product) => (
+                <ProductCard key={product.id}>
+                  <ProductCategoryContainer>
+                    <ProductCategory>{product.category}</ProductCategory>
+                  </ProductCategoryContainer>
+                  <ProductImage
+                    src={product.primaryImageUrl || DefaultImage}
+                    alt={product.name}
+                    width={150}
+                    height={150}
+                    priority
+                  />
+                  <BasicProductInfoContainer>
+                    <ProductItemContainer>
+                      <ProductPrice>€{product.price}</ProductPrice>
+                    </ProductItemContainer>
+                    <ProductItemContainer>
+                      <Link
+                        href={`/marketplace/${product.id}`}
+                        style={{ textDecoration: "none", color: "black" }}
+                      >
+                        <ProductTitle>{product.name}</ProductTitle>
+                      </Link>
+                    </ProductItemContainer>
+                    <ProductItemContainer>
+                      {product.createdAt && (
                         <div
-                          dangerouslySetInnerHTML={{
-                            __html: product.description.slice(0, 100) + '...',
+                          style={{
+                            fontSize: "12px",
+                            color: "gray",
+                            marginTop: "5px",
                           }}
-                        ></div>
-                        <StyledLink href={`/marketplace/${product.id}`}>
-                          <span style={{ color: 'tomato', cursor: 'pointer' }}>
-                            Read More
-                          </span>
-                        </StyledLink>
-                      </>
-                    ) : (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: product.description,
-                        }}
-                      ></div>
-                    )}
-                  </ProductDescription> */}
-                  {product.createdAt && (
-                    <div
-                      style={{
-                        fontSize: '12px',
-                        color: 'gray',
-                        marginTop: '5px',
-                      }}
-                    >
-                      Posted {formatDistanceToNow(new Date(product.createdAt))}{' '}
-                      ago
-                    </div>
-                  )}
-                </ProductItemContainer>
-              </BasicProductInfoContainer>
-            </ProductCard>
-          ))}
-        </ProductList>
+                        >
+                          Posted{" "}
+                          {formatDistanceToNow(new Date(product.createdAt))} ago
+                        </div>
+                      )}
+                    </ProductItemContainer>
+                  </BasicProductInfoContainer>
+                </ProductCard>
+              ))}
+            </ProductList>
+          </>
+        )}
 
         <PaginationContainer>
           <PrevButton onClick={handlePrev} disabled={currentPage === 1}>
