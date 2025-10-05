@@ -51,12 +51,10 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* background-color: pink; */
 
   @media (min-width: 640px) {
     font-size: 1.875rem;
     padding: 50px 50px;
-    /* background-color: aliceblue; */
   }
 `;
 
@@ -68,19 +66,6 @@ export const Title = styled.h1`
 
   @media (min-width: 640px) {
     font-size: 1.875rem;
-  }
-`;
-
-export const SubTitle = styled.h2`
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 1rem;
-  padding: 5px 0;
-
-  @media (min-width: 640px) {
-    font-size: 1.5rem;
-    padding: 10px 0;
   }
 `;
 
@@ -98,22 +83,32 @@ export const SectionTitle = styled.h3`
   }
 `;
 
+export const DeskTopCaseTitle = styled.h3`
+  display: none; // Hide by default on mobile
+
+  @media (min-width: 769px) {
+    display: block; // Show on desktop
+    /* margin: 0 0 15px 0; */
+    padding: 10px;
+    background-color: #2c5aa0;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    width: 100%;
+  }
+`;
+
 // Desktop Table (7 columns) - shows on larger screens
 export const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  table-layout: fixed;
+  table-layout: fixed; // Keep this
 
   @media (max-width: 768px) {
     display: none;
   }
-`;
-
-export const StyledTableCell = styled.td`
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
 `;
 
 export const StyledTableHeader = styled.th`
@@ -122,6 +117,30 @@ export const StyledTableHeader = styled.th`
   background-color: #f8f9fa;
   font-weight: bold;
   text-align: center;
+  box-sizing: border-box; // Add this
+
+  &:first-child {
+    width: 50%; // Equal columns for desktop
+  }
+
+  &:last-child {
+    width: 50%; // Equal columns for desktop
+  }
+`;
+
+export const StyledTableCell = styled.td`
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  box-sizing: border-box; // Add this
+
+  &:first-child {
+    width: 50%; // Match header
+  }
+
+  &:last-child {
+    width: 50%; // Match header
+  }
 `;
 
 // Mobile Tables Container
@@ -142,7 +161,7 @@ export const MobileCaseSection = styled.div`
 `;
 
 export const CaseTitle = styled.h3`
-  /* margin: 0 0 15px 0; */
+  margin: 0 0 15px 0;
   padding: 10px;
   background-color: #2c5aa0;
   color: white;
@@ -157,7 +176,7 @@ export const MobileTable = styled.table`
   border-collapse: collapse;
   margin: 0;
   color: black;
-  table-layout: fixed;
+  table-layout: fixed; // Add this for consistent column widths
 `;
 
 export const MobileTableHeader = styled.th`
@@ -167,37 +186,32 @@ export const MobileTableHeader = styled.th`
   font-weight: bold;
   text-align: left;
   color: black;
+  box-sizing: border-box; // Include padding in width calculation
+
+  &:first-child {
+    width: 40%; // Explicit width for first column
+  }
+
+  &:last-child {
+    width: 60%; // Explicit width for second column
+  }
 `;
 
 export const MobileTableCell = styled.td`
   border: 1px solid #ddd;
   padding: 10px;
   color: black;
+  box-sizing: border-box; // Include padding in width calculation
 
   &:first-child {
     font-weight: 500;
     background-color: #f0f0f0;
-    width: 40%;
+    width: 40%; // Match header width
     color: black;
   }
 
   &:last-child {
-    width: 60%;
+    width: 60%; // Match header width
     color: black;
-  }
-`;
-
-export const DeskTopCaseTitle = styled.h3`
-  display: none; // Hide by default on mobile
-
-  @media (min-width: 769px) {
-    display: block; // Show on desktop
-    /* margin: 0 0 15px 0; */
-    padding: 10px;
-    background-color: #2c5aa0;
-    color: white;
-    text-align: center;
-    border-radius: 4px;
-    font-size: 1.5rem;
   }
 `;

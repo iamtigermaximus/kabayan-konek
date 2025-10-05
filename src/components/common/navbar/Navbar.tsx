@@ -193,19 +193,21 @@ const Navbar = () => {
                     >
                       Numbers and Colors
                     </SidebarSubMenuLink>
-                    {/* <SidebarSubMenuLink
-                      href="/basics/days-months"
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/days-months"
                       onClick={closeSidebar}
                     >
                       Days and Months
                     </SidebarSubMenuLink>
                     <SidebarSubMenuLink
-                      href="/basics/time"
+                      href="/opi-suomea/basics/time"
                       onClick={closeSidebar}
                     >
                       Time
                     </SidebarSubMenuLink>
-                    <SidebarSubMenuLink
+
+                    {/* 
+                       <SidebarSubMenuLink
                       href="/basics/directions"
                       onClick={closeSidebar}
                     >
@@ -459,10 +461,13 @@ const Navbar = () => {
                     <SubMenuLink href="/opi-suomea/basics/numbers-colors">
                       Numbers and Colors
                     </SubMenuLink>
-                    {/* <SubMenuLink href="/basics/days-months">
+                    <SubMenuLink href="/opi-suomea/basics/days-months">
                       Days and Months
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/time">Time</SubMenuLink>
+                    <SubMenuLink href="/opi-suomea/basics/time">
+                      Time
+                    </SubMenuLink>
+                    {/* 
                     <SubMenuLink href="/basics/directions">
                       Directions
                     </SubMenuLink>
