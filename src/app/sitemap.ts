@@ -49,6 +49,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: "https://www.kabayankonek.com/opi-suomea/time",
       priority: 0.8,
     },
+
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/directions",
+      priority: 0.8,
+    },
   ];
 
   // Dynamic pages with www URLs

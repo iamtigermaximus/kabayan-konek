@@ -205,14 +205,15 @@ const Navbar = () => {
                     >
                       Time
                     </SidebarSubMenuLink>
-
-                    {/* 
-                       <SidebarSubMenuLink
-                      href="/basics/directions"
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/directions"
                       onClick={closeSidebar}
                     >
                       Directions
                     </SidebarSubMenuLink>
+
+                    {/* 
+               
                     <SidebarSubMenuLink
                       href="/basics/personal-pronouns"
                       onClick={closeSidebar}
@@ -467,10 +468,11 @@ const Navbar = () => {
                     <SubMenuLink href="/opi-suomea/basics/time">
                       Time
                     </SubMenuLink>
-                    {/* 
-                    <SubMenuLink href="/basics/directions">
+                    <SubMenuLink href="/opi-suomea/basics/directions">
                       Directions
                     </SubMenuLink>
+                    {/* 
+                
                     <SubMenuLink href="/basics/personal-pronouns">
                       Personal Pronouns
                     </SubMenuLink>
