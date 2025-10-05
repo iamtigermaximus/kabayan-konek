@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { breakpoints as bp } from '../../../utils/layout';
-import Link from 'next/link';
+import styled from "styled-components";
+import { breakpoints as bp } from "../../../utils/layout";
+import Link from "next/link";
 
 export const HeroSection = styled.div`
   position: relative;
@@ -58,6 +58,7 @@ export const MenuContainer = styled.div`
   gap: 12px;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 8px 16px;
+  z-index: 100;
 
   @media (max-width: ${bp.md}) {
     display: none;
@@ -71,7 +72,7 @@ export const MenuLink = styled(Link)`
   font-weight: bold;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
-  font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 
   &:hover {
     color: tomato;
@@ -96,6 +97,7 @@ export const BurgerMenu = styled.div`
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 5px;
+  z-index: 100;
 
   span {
     width: 25px;
@@ -104,7 +106,6 @@ export const BurgerMenu = styled.div`
     border-radius: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
-  z-index: 100;
 
   @media (max-width: ${bp.md}) {
     display: flex;
@@ -124,23 +125,36 @@ export const Sidebar = styled.div<{ isOpen: boolean }>`
   align-items: center;
   padding: 20px;
   transform: ${(props) =>
-    props.isOpen ? 'translateX(0)' : 'translateX(-100%)'};
-  transition: left 0.3s ease;
+    props.isOpen ? "translateX(0)" : "translateX(-100%)"};
+  transition: transform 0.3s ease;
   z-index: 1000;
-  gap: 20px;
-
-  a {
-    color: #636363;
-    text-decoration: none;
-    font-size: 1.25rem;
-    font-weight: bold;
-    &:hover {
-      color: tomato;
-    }
-  }
+  gap: 15px;
+  overflow-y: auto;
 
   @media (min-width: ${bp.md}) {
     display: none;
+  }
+`;
+
+export const SidebarMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 60%;
+  gap: 5px;
+`;
+
+export const SidebarLink = styled(Link)`
+  color: #636363;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  padding: 1px 0;
+  text-align: left;
+
+  &:hover {
+    color: tomato;
   }
 `;
 
@@ -151,6 +165,7 @@ export const CloseButton = styled.button`
   color: black;
   font-size: 1.5rem;
   cursor: pointer;
+  z-index: 1001;
 
   &:hover {
     color: lightblue;
@@ -164,7 +179,7 @@ export const Backdrop = styled.div<{ isOpen: boolean }>`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
   z-index: 999;
 
   @media (min-width: ${bp.md}) {
@@ -174,10 +189,10 @@ export const Backdrop = styled.div<{ isOpen: boolean }>`
 
 export const LogoContainer = styled.div`
   position: absolute;
-  /* z-index: 99; */
   top: 20px;
   margin-bottom: 100px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  z-index: 100;
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -189,6 +204,8 @@ export const LogoContainer = styled.div`
 export const SidebarLogoContainer = styled.div`
   margin-bottom: 10px;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
 
   @media (min-width: ${bp.md}) {
     top: 100px;
@@ -203,6 +220,8 @@ export const LoginButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
+  z-index: 10;
+  position: relative;
 `;
 
 export const LoginButton = styled.button`
@@ -214,6 +233,7 @@ export const LoginButton = styled.button`
   cursor: pointer;
   border: none;
   font-size: 1rem;
+  position: relative;
 
   &:hover {
     background-color: #e64a19;
@@ -245,5 +265,161 @@ export const AccountLogoutButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 8px;
-  /* background-color: tomato; */
+`;
+
+export const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  z-index: 2000;
+`;
+
+export const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2001;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 5px;
+`;
+
+export const DropdownMenuItem = styled.div`
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 0.9em;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  a {
+    padding: 4px 8px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f5f5f5;
+      color: #000;
+    }
+  }
+`;
+
+export const SidebarDropdown = styled.div`
+  margin: 0;
+  position: relative;
+  z-index: 1001;
+  width: 100%;
+`;
+
+export const SidebarDropdownHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* padding: 8px 0; */
+  cursor: pointer;
+  color: #636363;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: left;
+
+  &:hover {
+    color: tomato;
+  }
+`;
+
+export const SidebarDropdownSubMenuHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 0;
+  cursor: pointer;
+  color: #636363;
+  /* color: red; */
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: left;
+
+  &:hover {
+    color: tomato;
+  }
+`;
+
+export const SidebarDropdownContent = styled.div<{ isOpen: boolean }>`
+  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  margin-left: 5px;
+
+  a {
+    padding: px;
+    color: #555;
+    /* color: green; */
+    text-decoration: none;
+    border-radius: 3px;
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: #f5f5f5;
+      color: tomato;
+    }
+  }
+`;
+
+export const DropdownArrow = styled.span<{ isOpen: boolean }>`
+  margin-left: 5px;
+  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  transition: transform 0.3s ease;
+  font-size: 0.7em;
+  display: inline-block;
+`;
+
+export const SubMenuLink = styled(Link)`
+  display: block;
+  padding: 8px 25px;
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9em;
+  transition: text-decoration 0.2s ease;
+
+  &:hover {
+    /* text-decoration: underline; */
+    color: tomato;
+  }
+`;
+
+export const SidebarSubMenuLink = styled(Link)`
+  display: block;
+  /* padding: 8px 25px; */
+  color: #555;
+  text-decoration: none;
+  font-size: 10px;
+  transition: text-decoration 0.2s ease;
+
+  &:hover {
+    text-decoration: underline;
+    color: tomato;
+  }
 `;

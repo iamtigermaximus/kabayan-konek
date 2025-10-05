@@ -1,11 +1,11 @@
-'use client';
-import React from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import Image from 'next/image';
-import { breakpoints as bp } from '../../../utils/layout';
-import LogoImage from '../../../assets/kabayankonek.png';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+"use client";
+import React from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import Image from "next/image";
+import { breakpoints as bp } from "../../../utils/layout";
+import LogoImage from "../../../assets/kabayankonek.png";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const FooterContainer = styled.footer`
   background-color: #222;
@@ -96,7 +96,7 @@ const Footer = () => {
           </LogoContainer>
           <p
             style={{
-              fontSize: '14px',
+              fontSize: "14px",
             }}
           >
             Connecting Filipinos in Finland
@@ -120,9 +120,9 @@ const Footer = () => {
             {/* <li>
               <Link href="/news">News</Link>
             </li> */}
-            <li>
+            {/* <li>
               <Link href="/marketplace">Marketplace</Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/advertisement">Advertisement</Link>
             </li>
@@ -159,14 +159,14 @@ const Footer = () => {
               <FaInstagram />
             </a>
           </SocialMedia>
-          <div style={{ color: 'white', cursor: 'pointer', padding: '5px 0' }}>
-            <strong>Email:</strong>{' '}
+          <div style={{ color: "white", cursor: "pointer", padding: "5px 0" }}>
+            <strong>Email:</strong>{" "}
             <a
               href="mailto:contact@kabayankonek.com?subject=Inquiry%20from%20About%20Page&body=Hello,%20I%20have%20a%20question..."
               style={{
-                color: 'white',
-                cursor: 'pointer',
-                textDecoration: 'none',
+                color: "white",
+                cursor: "pointer",
+                textDecoration: "none",
               }}
             >
               contact@kabayankonek.com
@@ -176,7 +176,7 @@ const Footer = () => {
       </FooterContent>
       <Copyright>
         © {new Date().getFullYear()}
-        <strong style={{ color: 'tomato' }}>kabayankonek</strong>. All Rights
+        <strong style={{ color: "tomato" }}>kabayankonek</strong>. All Rights
         Reserved.
       </Copyright>
     </FooterContainer>

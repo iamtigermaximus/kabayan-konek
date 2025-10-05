@@ -44,17 +44,17 @@ import HomeBanner from "../common/banners/HomeBanner";
 // import 'swiper/css';
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import {
-  ProductList,
-  ProductCard,
-  ProductCategoryContainer,
-  ProductCategory,
-  ProductImage,
-  BasicProductInfoContainer,
-  ProductItemContainer,
-  ProductPrice,
-  ProductTitle,
-} from "../marketplace/Marketplace.styles";
+// import {
+//   ProductList,
+//   ProductCard,
+//   ProductCategoryContainer,
+//   ProductCategory,
+//   ProductImage,
+//   BasicProductInfoContainer,
+//   ProductItemContainer,
+//   ProductPrice,
+//   ProductTitle,
+// } from "../marketplace/Marketplace.styles";
 import {
   AdBasicInfoContainer,
   AdCard,
@@ -144,7 +144,7 @@ const Home = () => {
   const [kabayanArticles, setKabayanArticles] = useState<KabayanArticle[]>([]);
   const [events, setEvents] = useState<EventProps[]>([]);
   // const [newsArticles, setNewsArticles] = useState<NewsArticleProps[]>([]);
-  const [products, setProducts] = useState<ProductProps[]>([]);
+  // const [products, setProducts] = useState<ProductProps[]>([]);
   const [advertisements, setAdvertisements] = useState<AdvertisementProps[]>(
     []
   );
@@ -295,15 +295,15 @@ const Home = () => {
   //   fetchNewsArticles();
   // }, []);
 
-  const fetchMarketplace = async () => {
-    try {
-      const response = await fetch("/api/marketplace");
-      const data: ProductProps[] = await response.json();
-      setProducts(data);
-    } catch (error) {
-      console.error("Error fetching marketplace products:", error);
-    }
-  };
+  // const fetchMarketplace = async () => {
+  //   try {
+  //     const response = await fetch("/api/marketplace");
+  //     const data: ProductProps[] = await response.json();
+  //     setProducts(data);
+  //   } catch (error) {
+  //     console.error("Error fetching marketplace products:", error);
+  //   }
+  // };
 
   const fetchAdvertisements = async () => {
     try {
@@ -316,7 +316,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchMarketplace();
+    // fetchMarketplace();
     fetchAdvertisements();
   }, []);
 
@@ -541,7 +541,7 @@ const Home = () => {
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
       </ShowMoreButtonContainer>
-      <DividerContainer>
+      {/* <DividerContainer>
         <DividerLine />
         <DividerLabel>LATEST PRODUCTS</DividerLabel>
         <DividerLine />
@@ -600,7 +600,7 @@ const Home = () => {
         <ShowMoreButtonLink href="/marketplace">
           <ShowMoreButton>Show More</ShowMoreButton>
         </ShowMoreButtonLink>
-      </ShowMoreButtonContainer>
+      </ShowMoreButtonContainer> */}
       <DividerContainer>
         <DividerLine />
         <DividerLabel>LATEST ADVERTISEMENTS</DividerLabel>
