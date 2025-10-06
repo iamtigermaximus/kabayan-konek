@@ -69,6 +69,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: "https://www.kabayankonek.com/opi-suomea/interrogative-pronouns",
       priority: 0.8,
     },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/basic-verbs",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/adjectives",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/useful-words",
+      priority: 0.8,
+    },
   ];
 
   // Dynamic pages with www URLs

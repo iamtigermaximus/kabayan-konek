@@ -230,7 +230,6 @@ const Navbar = () => {
                       Interrogative Pronouns
                     </SidebarSubMenuLink>
 
-                    {/* 
                     <SidebarSubMenuLink
                       href="/opi-suomea/basics/basic-verbs"
                       onClick={closeSidebar}
@@ -248,7 +247,7 @@ const Navbar = () => {
                       onClick={closeSidebar}
                     >
                       Useful Words
-                    </SidebarSubMenuLink> */}
+                    </SidebarSubMenuLink>
                   </div>
                 )}
               </div>
@@ -479,9 +478,6 @@ const Navbar = () => {
                     <SubMenuLink href="/opi-suomea/basics/interrogative-pronouns">
                       Interrogative Pronouns
                     </SubMenuLink>
-                    {/* 
-                
-            
                     <SubMenuLink href="/opi-suomea/basics/basic-verbs">
                       Basic Verbs
                     </SubMenuLink>
@@ -490,7 +486,7 @@ const Navbar = () => {
                     </SubMenuLink>
                     <SubMenuLink href="/opi-suomea/basics/useful-words">
                       Useful Words
-                    </SubMenuLink> */}
+                    </SubMenuLink>
                   </div>
                 )}
               </div>
