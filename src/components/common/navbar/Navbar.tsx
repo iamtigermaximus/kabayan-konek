@@ -211,41 +211,40 @@ const Navbar = () => {
                     >
                       Directions
                     </SidebarSubMenuLink>
-
-                    {/* 
-               
                     <SidebarSubMenuLink
-                      href="/basics/personal-pronouns"
+                      href="/opi-suomea/basics/personal-pronouns"
                       onClick={closeSidebar}
                     >
                       Personal Pronouns
                     </SidebarSubMenuLink>
                     <SidebarSubMenuLink
-                      href="/basics/demonstrative-pronouns"
+                      href="/opi-suomea/basics/demonstrative-pronouns"
                       onClick={closeSidebar}
                     >
                       Demonstrative Pronouns
                     </SidebarSubMenuLink>
                     <SidebarSubMenuLink
-                      href="/basics/interrogative-pronouns"
+                      href="/opi-suomea/basics/interrogative-pronouns"
                       onClick={closeSidebar}
                     >
                       Interrogative Pronouns
                     </SidebarSubMenuLink>
+
+                    {/* 
                     <SidebarSubMenuLink
-                      href="/basics/basic-verbs"
+                      href="/opi-suomea/basics/basic-verbs"
                       onClick={closeSidebar}
                     >
                       Basic Verbs
                     </SidebarSubMenuLink>
                     <SidebarSubMenuLink
-                      href="/basics/adjectives"
+                      href="/opi-suomea/basics/adjectives"
                       onClick={closeSidebar}
                     >
                       Adjectives
                     </SidebarSubMenuLink>
                     <SidebarSubMenuLink
-                      href="/basics/useful-words"
+                      href="/opi-suomea/basics/useful-words"
                       onClick={closeSidebar}
                     >
                       Useful Words
@@ -471,24 +470,25 @@ const Navbar = () => {
                     <SubMenuLink href="/opi-suomea/basics/directions">
                       Directions
                     </SubMenuLink>
-                    {/* 
-                
-                    <SubMenuLink href="/basics/personal-pronouns">
+                    <SubMenuLink href="/opi-suomea/basics/personal-pronouns">
                       Personal Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/demonstrative-pronouns">
+                    <SubMenuLink href="/opi-suomea/basics/demonstrative-pronouns">
                       Demonstrative Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/interrogative-pronouns">
+                    <SubMenuLink href="/opi-suomea/basics/interrogative-pronouns">
                       Interrogative Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/basic-verbs">
+                    {/* 
+                
+            
+                    <SubMenuLink href="/opi-suomea/basics/basic-verbs">
                       Basic Verbs
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/adjectives">
+                    <SubMenuLink href="/opi-suomea/basics/adjectives">
                       Adjectives
                     </SubMenuLink>
-                    <SubMenuLink href="/basics/useful-words">
+                    <SubMenuLink href="/opi-suomea/basics/useful-words">
                       Useful Words
                     </SubMenuLink> */}
                   </div>

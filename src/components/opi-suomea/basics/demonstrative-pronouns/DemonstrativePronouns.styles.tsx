@@ -60,8 +60,8 @@ export const Container = styled.div`
   }
 `;
 
-export const Title = styled.h1`
-  font-size: 1.2rem;
+export const Title = styled.h2`
+  font-size: 1.5rem;
   font-weight: bold;
   color: #1e40af;
   margin-bottom: 1rem;
@@ -70,20 +70,18 @@ export const Title = styled.h1`
     font-size: 1.875rem;
   }
 `;
-
 export const SubTitle = styled.h2`
+  display: flex;
+  font-size: 1rem;
+  padding: 10px;
   font-size: 0.8rem;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 1rem;
+  color: #36454f;
+  /* margin-bottom: 1rem; */
   padding: 5px 0;
-
   @media (min-width: 640px) {
-    font-size: 1.5rem;
-    padding: 10px 0;
+    font-size: 1rem;
   }
 `;
-
 export const SectionTitle = styled.h3`
   margin: 0 0 15px 0;
   padding: 10px;
@@ -103,7 +101,7 @@ export const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  table-layout: fixed;
+  font-size: 1.2rem;
 
   @media (max-width: 768px) {
     display: none;
@@ -142,7 +140,7 @@ export const MobileCaseSection = styled.div`
 `;
 
 export const CaseTitle = styled.h3`
-  /* margin: 0 0 15px 0; */
+  margin: 0 0 15px 0;
   padding: 10px;
   background-color: #2c5aa0;
   color: white;
@@ -157,7 +155,6 @@ export const MobileTable = styled.table`
   border-collapse: collapse;
   margin: 0;
   color: black;
-  table-layout: fixed;
 `;
 
 export const MobileTableHeader = styled.th`
@@ -184,20 +181,5 @@ export const MobileTableCell = styled.td`
   &:last-child {
     width: 60%;
     color: black;
-  }
-`;
-
-export const DeskTopCaseTitle = styled.h3`
-  display: none; // Hide by default on mobile
-
-  @media (min-width: 769px) {
-    display: block; // Show on desktop
-    /* margin: 0 0 15px 0; */
-    padding: 10px;
-    background-color: #2c5aa0;
-    color: white;
-    text-align: center;
-    border-radius: 4px;
-    font-size: 1.5rem;
   }
 `;

@@ -53,7 +53,7 @@ export const Container = styled.div`
   flex-direction: column;
 
   @media (min-width: 640px) {
-    font-size: 1.875rem;
+    font-size: 1.5rem;
     padding: 50px 50px;
   }
 `;

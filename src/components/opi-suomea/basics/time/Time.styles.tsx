@@ -54,7 +54,7 @@ export const Container = styled.div`
   /* background-color: pink; */
 
   @media (min-width: 640px) {
-    font-size: 1.875rem;
+    font-size: 1.5rem;
     padding: 50px 50px;
     /* background-color: aliceblue; */
   }
