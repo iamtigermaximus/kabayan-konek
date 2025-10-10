@@ -102,6 +102,11 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
+  const handleLinkClick = () => {
+    setLearnFinnishOpen(false);
+    setDesktopSubDropdown(null);
+  };
+
   const firstName = session?.user?.name?.split(" ")[0];
 
   return (
@@ -248,21 +253,45 @@ const Navbar = () => {
                     >
                       Useful Words
                     </SidebarSubMenuLink>
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/family-relationships"
+                      onClick={closeSidebar}
+                    >
+                      Family and Relationships
+                    </SidebarSubMenuLink>
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/housing"
+                      onClick={closeSidebar}
+                    >
+                      Housing
+                    </SidebarSubMenuLink>
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/holidays-celebrations"
+                      onClick={closeSidebar}
+                    >
+                      Holidays and Celebrations
+                    </SidebarSubMenuLink>
+                    <SidebarSubMenuLink
+                      href="/opi-suomea/basics/anatomy"
+                      onClick={closeSidebar}
+                    >
+                      Anatomy
+                    </SidebarSubMenuLink>
                   </div>
                 )}
               </div>
 
               {/* Intermediate dropdown */}
               <div>
-                {/* <SidebarDropdownSubMenuHeader
+                <SidebarDropdownSubMenuHeader
                   onClick={() => toggleSubDropdown("intermediate")}
                 >
                   Intermediate
                   <DropdownArrow isOpen={openSubDropdown === "intermediate"}>
                     ▼
                   </DropdownArrow>
-                </SidebarDropdownSubMenuHeader> */}
-                {/* {openSubDropdown === "intermediate" && (
+                </SidebarDropdownSubMenuHeader>
+                {openSubDropdown === "intermediate" && (
                   <div
                     style={{
                       marginLeft: "2px",
@@ -273,18 +302,18 @@ const Navbar = () => {
                     }}
                   >
                     <SidebarSubMenuLink
-                      href="/intermediate/kpt"
+                      href="/opi-suomea/intermediate/kpt"
                       onClick={closeSidebar}
                     >
                       KPT
                     </SidebarSubMenuLink>
-                    <SidebarSubMenuLink
-                      href="/intermediate/verbtypes-present"
+                    {/* <SidebarSubMenuLink
+                      href="/opi-suomea/intermediate/verbtypes-present"
                       onClick={closeSidebar}
                     >
                       Verb Types and Present Tense
-                    </SidebarSubMenuLink>
-                    <SidebarSubMenuLink
+                    </SidebarSubMenuLink> */}
+                    {/* <SidebarSubMenuLink
                       href="/intermediate/past-tense"
                       onClick={closeSidebar}
                     >
@@ -301,8 +330,8 @@ const Navbar = () => {
                       onClick={closeSidebar}
                     >
                       Past Perfect Tense
-                    </SidebarSubMenuLink>
-                    <SidebarSubMenuLink
+                    </SidebarSubMenuLink> */}
+                    {/* <SidebarSubMenuLink
                       href="/intermediate/partitive"
                       onClick={closeSidebar}
                     >
@@ -319,10 +348,13 @@ const Navbar = () => {
                       onClick={closeSidebar}
                     >
                       Passive
-                    </SidebarSubMenuLink>
-                    <Link href="/intermediate/necessive" onClick={closeSidebar}>
+                    </SidebarSubMenuLink> */}
+                    {/* <SidebarSubMenuLink
+                      href="/intermediate/necessive"
+                      onClick={closeSidebar}
+                    >
                       Necessive
-                    </Link>
+                    </SidebarSubMenuLink>
                     <SidebarSubMenuLink
                       href="/intermediate/imperative"
                       onClick={closeSidebar}
@@ -340,9 +372,9 @@ const Navbar = () => {
                       onClick={closeSidebar}
                     >
                       Adverb
-                    </SidebarSubMenuLink>
-                  </div> 
-                )}*/}
+                    </SidebarSubMenuLink> */}
+                  </div>
+                )}
               </div>
 
               {/* Advanced dropdown */}
@@ -454,38 +486,95 @@ const Navbar = () => {
                       borderRadius: "4px",
                     }}
                   >
-                    <SubMenuLink href="/opi-suomea/basics/greetings">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/greetings"
+                      onClick={handleLinkClick}
+                    >
                       Greetings
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/numbers-colors">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/numbers-colors"
+                      onClick={handleLinkClick}
+                    >
                       Numbers and Colors
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/days-months">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/days-months"
+                      onClick={handleLinkClick}
+                    >
                       Days and Months
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/time">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/time"
+                      onClick={handleLinkClick}
+                    >
                       Time
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/directions">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/directions"
+                      onClick={handleLinkClick}
+                    >
                       Directions
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/personal-pronouns">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/personal-pronouns"
+                      onClick={handleLinkClick}
+                    >
                       Personal Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/demonstrative-pronouns">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/demonstrative-pronouns"
+                      onClick={handleLinkClick}
+                    >
                       Demonstrative Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/interrogative-pronouns">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/interrogative-pronouns"
+                      onClick={handleLinkClick}
+                    >
                       Interrogative Pronouns
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/basic-verbs">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/basic-verbs"
+                      onClick={handleLinkClick}
+                    >
                       Basic Verbs
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/adjectives">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/adjectives"
+                      onClick={handleLinkClick}
+                    >
                       Adjectives
                     </SubMenuLink>
-                    <SubMenuLink href="/opi-suomea/basics/useful-words">
+                    <SubMenuLink
+                      href="/opi-suomea/basics/useful-words"
+                      onClick={handleLinkClick}
+                    >
                       Useful Words
+                    </SubMenuLink>
+                    <SubMenuLink
+                      href="/opi-suomea/basics/family-relationships"
+                      onClick={handleLinkClick}
+                    >
+                      Family and Relationships
+                    </SubMenuLink>
+                    <SubMenuLink
+                      href="/opi-suomea/basics/housing"
+                      onClick={handleLinkClick}
+                    >
+                      Housing
+                    </SubMenuLink>
+                    <SubMenuLink
+                      href="/opi-suomea/basics/holidays-celebrations"
+                      onClick={handleLinkClick}
+                    >
+                      Holidays and Celebrations
+                    </SubMenuLink>
+                    <SubMenuLink
+                      href="/opi-suomea/basics/anatomy"
+                      onClick={handleLinkClick}
+                    >
+                      Anatomy
                     </SubMenuLink>
                   </div>
                 )}
@@ -493,7 +582,7 @@ const Navbar = () => {
 
               {/* Intermediate Section - Clean integrated design */}
               <div style={{ position: "relative" }}>
-                {/* <div
+                <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -510,8 +599,8 @@ const Navbar = () => {
                   <span style={{ fontSize: "0.8em", marginLeft: "10px" }}>
                     {desktopSubDropdown === "intermediate" ? "▼" : "▶"}
                   </span>
-                </div> */}
-                {/* {desktopSubDropdown === "intermediate" && (
+                </div>
+                {desktopSubDropdown === "intermediate" && (
                   <div
                     style={{
                       backgroundColor: "#f8f9fa",
@@ -519,42 +608,80 @@ const Navbar = () => {
                       borderRadius: "4px",
                     }}
                   >
-                    <SubMenuLink href="/intermediate/kpt">KPT</SubMenuLink>
-                    <SubMenuLink href="/intermediate/verbtypes-present">
-                      Verb Types and Present Tense
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/kpt"
+                      onClick={handleLinkClick}
+                    >
+                      KPT
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/past-tense">
+                    {/* <SubMenuLink
+                      href="/opi-suomea/intermediate/verbtypes-present"
+                      onClick={handleLinkClick}
+                    >
+                      Verb Types and Present Tense
+                    </SubMenuLink> */}
+                    {/* <SubMenuLink
+                      href="/opi-suomea/intermediate/past-tense"
+                      onClick={handleLinkClick}
+                    >
                       Past Tense
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/perfect-tense">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/perfect-tense"
+                      onClick={handleLinkClick}
+                    >
                       Perfect Tense
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/past-perfect-tense">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/past-perfect-tense"
+                      onClick={handleLinkClick}
+                    >
                       Past Perfect Tense
-                    </SubMenuLink>
-                    <SubMenuLink href="/intermediate/partitive">
+                    </SubMenuLink> */}
+                    {/* <SubMenuLink
+                      href="/opi-suomea/intermediate/partitive"
+                      onClick={handleLinkClick}
+                    >
                       Partitive
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/word-types">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/word-types"
+                      onClick={handleLinkClick}
+                    >
                       Word Types
-                    </SubMenuLink>
-                    <SubMenuLink href="/intermediate/passive">
+                    </SubMenuLink> */}
+                    {/* <SubMenuLink
+                      href="/opi-suomea/intermediate/passive"
+                      onClick={handleLinkClick}
+                    >
                       Passive
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/necessive">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/necessive"
+                      onClick={handleLinkClick}
+                    >
                       Necessive
-                    </SubMenuLink>
-                    <SubMenuLink href="/intermediate/imperative">
+                    </SubMenuLink> */}
+                    {/* <SubMenuLink
+                      href="/opi-suomea//intermediate/imperative"
+                      onClick={handleLinkClick}
+                    >
                       Imperative
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/object">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/object"
+                      onClick={handleLinkClick}
+                    >
                       Object
                     </SubMenuLink>
-                    <SubMenuLink href="/intermediate/adverb">
+                    <SubMenuLink
+                      href="/opi-suomea/intermediate/adverb"
+                      onClick={handleLinkClick}
+                    >
                       Adverb
-                    </SubMenuLink>
+                    </SubMenuLink> */}
                   </div>
-                )} */}
+                )}
               </div>
 
               {/* Advanced Section - Clean integrated design */}

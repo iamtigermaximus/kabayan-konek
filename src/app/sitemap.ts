@@ -38,49 +38,73 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: "https://www.kabayankonek.com/terms-and-conditions", priority: 0.3 },
     { url: "https://www.kabayankonek.com/opi-suomea/greetings", priority: 0.8 },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/numbers-colors",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/numbers-colors",
       priority: 0.8,
     },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/days-months",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/days-months",
       priority: 0.8,
     },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/time",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/time",
       priority: 0.8,
     },
 
     {
-      url: "https://www.kabayankonek.com/opi-suomea/directions",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/directions",
       priority: 0.8,
     },
 
     {
-      url: "https://www.kabayankonek.com/opi-suomea/personal-pronouns",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/personal-pronouns",
       priority: 0.8,
     },
 
     {
-      url: "https://www.kabayankonek.com/opi-suomea/demonstrative-pronouns",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/demonstrative-pronouns",
       priority: 0.8,
     },
 
     {
-      url: "https://www.kabayankonek.com/opi-suomea/interrogative-pronouns",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/interrogative-pronouns",
       priority: 0.8,
     },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/basic-verbs",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/basic-verbs",
       priority: 0.8,
     },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/adjectives",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/adjectives",
       priority: 0.8,
     },
     {
-      url: "https://www.kabayankonek.com/opi-suomea/useful-words",
+      url: "https://www.kabayankonek.com/opi-suomea/basics/useful-words",
       priority: 0.8,
     },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/basics/family-relationships",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/basics/housing",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/basics/holidays-celebrations",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/basics/anatomy",
+      priority: 0.8,
+    },
+    {
+      url: "https://www.kabayankonek.com/opi-suomea/intermediate/kpt",
+      priority: 0.8,
+    },
+    // {
+    //   url: "https://www.kabayankonek.com/opi-suomea/intermediate/verbtypes-present",
+    //   priority: 0.8,
+    // },
   ];
 
   // Dynamic pages with www URLs

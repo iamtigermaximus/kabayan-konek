@@ -58,6 +58,15 @@ export const Container = styled.div`
     padding: 50px 50px;
     /* background-color: aliceblue; */
   }
+  /* Desktop and up */
+  @media (min-width: 1024px) {
+    padding: 80px 100px;
+  }
+
+  /* Large desktop and up */
+  @media (min-width: 1440px) {
+    padding: 80px 200px;
+  }
 `;
 
 export const Title = styled.h2`
